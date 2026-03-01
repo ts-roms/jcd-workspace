@@ -1,0 +1,518 @@
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
+import * as xlsx from 'xlsx';
+import * as tf from '@tensorflow/tfjs';
+import { PersonnelService } from '../personnel/personnel.service';
+import { PerformanceEvaluationsService } from '../performance-evaluations/performance-evaluations.service';
+import { InjectModel } from '@nestjs/mongoose';
+import {
+  PerformanceEvaluation,
+  PerformanceEvaluationDocument,
+} from '../performance-evaluations/schemas/performance-evaluation.schema';
+import {
+  EvaluationFormResponse,
+  EvaluationFormResponseDocument,
+} from '../evaluation-form-responses/schemas/evaluation-form-response.schema';
+import { Model } from 'mongoose';
+import {
+  FEATURES,
+  TARGET,
+  METRIC_FAILURE_THRESHOLD,
+  DataNormalizer,
+  createPerformanceModel,
+  prepareTrainingData,
+  trainModel,
+  predict,
+  evaluateModel,
+  TrainingHistory,
+  ModelMetrics,
+  saveModel,
+  loadModel,
+  modelExists,
+} from './tensorflow-model';
+import { classifyPerformance } from '../personnel/utils/classification.util';
+
+let tensorflowModel: {
+  model: tf.LayersModel;
+  normalizer: DataNormalizer;
+  trainedAt: Date;
+  trainingHistory: TrainingHistory;
+  metrics: ModelMetrics;
+} | null = null;
+
+export interface PredictionResponse {
+  prediction: number;
+  trainedAt: Date;
+  failedMetrics: string[];
+  modelMetrics?: ModelMetrics;
+}
+
+export interface TrainingResponse {
+  message: string;
+  records: number;
+  trainingHistory: TrainingHistory;
+  metrics: ModelMetrics;
+  trainedAt: Date;
+}
+
+// Section to Metric mapping
+const SECTION_TO_METRIC_MAP: Record<string, string> = {
+  'Professionalism & Attitude Assessment': 'PAA',
+  'Knowledge & Skill Management': 'KSM',
+  'Technical Skills': 'TS',
+  'Communication Management': 'CM',
+  'Attitude & Leadership': 'AL',
+  'Goal Orientation': 'GO',
+  // Add variations for flexibility
+  'PAA': 'PAA',
+  'KSM': 'KSM',
+  'TS': 'TS',
+  'CM': 'CM',
+  'AL': 'AL',
+  'GO': 'GO',
+};
+
+@Injectable()
+export class MlService {
+  constructor(
+    private readonly personnelService: PersonnelService,
+    private readonly performanceEvaluationsService: PerformanceEvaluationsService,
+    @InjectModel(PerformanceEvaluation.name)
+    private readonly performanceEvaluationModel: Model<PerformanceEvaluationDocument>,
+    @InjectModel(EvaluationFormResponse.name)
+    private readonly evaluationFormResponseModel: Model<EvaluationFormResponseDocument>,
+  ) {
+    this.initializeModel();
+  }
+
+  /**
+   * Initialize the model by loading from disk if available
+   */
+  private async initializeModel() {
+    try {
+      if (modelExists()) {
+        console.log('Loading existing TensorFlow model...');
+        const loadedModel = await loadModel();
+        if (loadedModel) {
+          tensorflowModel = loadedModel;
+          console.log('TensorFlow model loaded successfully');
+        }
+      } else {
+        console.log(
+          'No existing model found. Train a new model to get started.',
+        );
+      }
+    } catch (error) {
+      console.error('Error initializing model:', error);
+    }
+  }
+
+  @Cron('0 0 * * *')
+  handleCron() {
+    console.log('Scheduled task: Checking for model updates...');
+  }
+
+  async getAnalytics() {
+    const overallAverages = await this.performanceEvaluationModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          PAA: { $avg: '$scores.PAA' },
+          KSM: { $avg: '$scores.KSM' },
+          TS: { $avg: '$scores.TS' },
+          CM: { $avg: '$scores.CM' },
+          AL: { $avg: '$scores.AL' },
+          GO: { $avg: '$scores.GO' },
+          totalEvaluations: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const semesterTrends = await this.performanceEvaluationModel.aggregate([
+      {
+        $group: {
+          _id: '$semester',
+          avgScore: {
+            $avg: {
+              $avg: [
+                '$scores.PAA',
+                '$scores.KSM',
+                '$scores.TS',
+                '$scores.CM',
+                '$scores.AL',
+                '$scores.GO',
+              ],
+            },
+          },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    return {
+      overallAverages: overallAverages[0] || {},
+      semesterTrends,
+    };
+  }
+
+  async trainModelFromFile(fileBuffer: Buffer): Promise<TrainingResponse> {
+    console.log('Starting TensorFlow model training...');
+
+    const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const data: any = xlsx.utils.sheet_to_json(worksheet);
+
+    if (data.length === 0) {
+      throw new Error('No data found in the uploaded file');
+    }
+
+    // Prepare training data
+    const trainingData = prepareTrainingData(data);
+
+    // Split data for validation (80-20 split)
+    const splitIndex = Math.floor(trainingData.features.length * 0.8);
+    const trainFeatures = trainingData.features.slice(0, splitIndex);
+    const trainTargets = trainingData.targets.slice(0, splitIndex);
+    const testFeatures = trainingData.features.slice(splitIndex);
+    const testTargets = trainingData.targets.slice(splitIndex);
+
+    // Dispose of previous model if it exists
+    if (tensorflowModel?.model) {
+      tensorflowModel.model.dispose();
+    }
+
+    // Create new model and normalizer
+    const model = createPerformanceModel(FEATURES.length);
+    const normalizer = new DataNormalizer();
+
+    console.log(
+      `Training on ${trainFeatures.length} samples, validating on ${testFeatures.length} samples`,
+    );
+
+    // Train the model
+    const history = await trainModel(
+      model,
+      normalizer,
+      { features: trainFeatures, targets: trainTargets },
+      100, // epochs
+      0.2, // validation split
+    );
+
+    // Evaluate on test set
+    const metrics = await evaluateModel(model, normalizer, {
+      features: testFeatures,
+      targets: testTargets,
+    });
+
+    console.log('Model training completed!');
+    console.log(
+      `Test Metrics - Loss: ${metrics.loss.toFixed(4)}, MAE: ${metrics.mae.toFixed(4)}, MSE: ${metrics.mse.toFixed(4)}`,
+    );
+
+    // Store the trained model
+    const trainedAt = new Date();
+    tensorflowModel = {
+      model,
+      normalizer,
+      trainedAt,
+      trainingHistory: history,
+      metrics,
+    };
+
+    // Save the model to disk
+    try {
+      await saveModel(model, normalizer, history, metrics);
+      console.log('Model saved to disk successfully');
+    } catch (error) {
+      console.error('Error saving model to disk:', error);
+      // Continue even if save fails
+    }
+
+    return {
+      message: 'TensorFlow model trained successfully from file.',
+      records: data.length,
+      trainingHistory: history,
+      metrics,
+      trainedAt,
+    };
+  }
+
+  /**
+   * Aggregate evaluation form responses for a personnel to calculate metric scores
+   */
+  private async aggregateEvaluationResponses(
+    personnelId: string,
+  ): Promise<Record<string, number> | null> {
+    // Get personnel info to match by name
+    const personnel = await this.personnelService.findOne(personnelId);
+    if (!personnel) {
+      return null;
+    }
+
+    const personnelFullName = `${personnel.firstName} ${personnel.lastName}`.trim();
+
+    // Find all evaluation form responses where this personnel is being evaluated
+    const responses = await this.evaluationFormResponseModel
+      .find({ evaluator: personnelFullName })
+      .exec();
+
+    if (responses.length === 0) {
+      return null;
+    }
+
+    // Aggregate scores by section
+    const sectionScores = new Map<
+      string,
+      { totalScore: number; count: number }
+    >();
+
+    responses.forEach((response) => {
+      response.answers.forEach((answer) => {
+        const section = answer.section;
+        const existing = sectionScores.get(section) || {
+          totalScore: 0,
+          count: 0,
+        };
+        existing.totalScore += answer.score;
+        existing.count += 1;
+        sectionScores.set(section, existing);
+      });
+    });
+
+    // Calculate average per section and map to metrics
+    const metrics: Record<string, number> = {};
+
+    sectionScores.forEach((data, section) => {
+      const average = data.count > 0 ? data.totalScore / data.count : 0;
+      const metricKey = SECTION_TO_METRIC_MAP[section];
+
+      if (metricKey) {
+        // If metric already exists, average them (in case multiple sections map to same metric)
+        if (metrics[metricKey]) {
+          metrics[metricKey] = (metrics[metricKey] + average) / 2;
+        } else {
+          metrics[metricKey] = average;
+        }
+      }
+    });
+
+    // Ensure all required features are present
+    const hasAllFeatures = FEATURES.every((feature) => feature in metrics);
+    if (!hasAllFeatures) {
+      return null;
+    }
+
+    return metrics;
+  }
+
+  async predictPerformance(personnelId: string): Promise<PredictionResponse> {
+    if (!tensorflowModel) {
+      throw new NotFoundException(
+        'TensorFlow model not trained yet. Please upload a training file.',
+      );
+    }
+
+    // First, try to get data from evaluation form responses
+    let features = await this.aggregateEvaluationResponses(personnelId);
+
+    // If no evaluation responses found, fall back to performance evaluation records
+    if (!features) {
+      const latestEvaluation =
+        await this.performanceEvaluationsService.findLatestByPersonnelId(
+          personnelId,
+        );
+      if (!latestEvaluation) {
+        throw new NotFoundException(
+          'No evaluation data found for this person. Please add evaluation responses or performance evaluation first.',
+        );
+      }
+
+      features = latestEvaluation.scores as unknown as Record<string, number>;
+    }
+
+    const prediction = await predict(
+      tensorflowModel.model,
+      tensorflowModel.normalizer,
+      features,
+    );
+    const roundedPrediction = Number.parseFloat(prediction.toFixed(2));
+
+    const failedMetrics = FEATURES.filter(
+      (feat) => features[feat] < METRIC_FAILURE_THRESHOLD,
+    );
+
+    const performanceStatus = classifyPerformance(roundedPrediction);
+
+    await this.personnelService.update(personnelId, {
+      predictedPerformance: roundedPrediction.toString(),
+      performanceStatus,
+    });
+
+    return {
+      prediction: roundedPrediction,
+      trainedAt: tensorflowModel.trainedAt,
+      failedMetrics,
+      modelMetrics: tensorflowModel.metrics,
+    };
+  }
+
+  async predictManual(
+    metrics: Record<string, number>,
+    personnelId: string,
+    semester: string,
+  ): Promise<PredictionResponse> {
+    if (!tensorflowModel) {
+      throw new NotFoundException(
+        'TensorFlow model not trained yet. Please upload a training file.',
+      );
+    }
+
+    // Check if prediction already exists for this personnel and semester
+    const hasExisting =
+      await this.performanceEvaluationsService.hasEvaluationForSemester(
+        personnelId,
+        semester,
+      );
+
+    if (hasExisting) {
+      throw new BadRequestException(
+        `A prediction already exists for this personnel in ${semester}. Cannot create duplicate predictions for the same semester.`,
+      );
+    }
+
+    const prediction = await predict(
+      tensorflowModel.model,
+      tensorflowModel.normalizer,
+      metrics,
+    );
+    const roundedPrediction = Number.parseFloat(prediction.toFixed(2));
+    const failedMetrics = FEATURES.filter(
+      (feat) => metrics[feat] < METRIC_FAILURE_THRESHOLD,
+    );
+
+    const performanceStatus = classifyPerformance(roundedPrediction);
+
+    // Update personnel with predicted performance and classification
+    await this.personnelService.update(personnelId, {
+      predictedPerformance: roundedPrediction.toString(),
+      performanceStatus,
+    });
+
+    return {
+      prediction: roundedPrediction,
+      trainedAt: tensorflowModel.trainedAt,
+      failedMetrics,
+      modelMetrics: tensorflowModel.metrics,
+    };
+  }
+
+  /**
+   * Get training history and model metrics
+   */
+  getModelInfo() {
+    if (!tensorflowModel) {
+      throw new NotFoundException('TensorFlow model not trained yet.');
+    }
+
+    return {
+      trainedAt: tensorflowModel.trainedAt,
+      trainingHistory: tensorflowModel.trainingHistory,
+      metrics: tensorflowModel.metrics,
+      modelSummary: {
+        inputFeatures: FEATURES,
+        targetVariable: TARGET,
+        architecture: 'Neural Network (32-16-8-1)',
+      },
+    };
+  }
+
+  /**
+   * Check if the model is trained
+   */
+  isModelTrained(): boolean {
+    return tensorflowModel !== null;
+  }
+
+  /**
+   * Check if a personnel already has a prediction for a specific semester
+   */
+  async checkExistingPrediction(
+    personnelId: string,
+    semester: string,
+  ): Promise<{ exists: boolean; evaluation?: any }> {
+    const evaluation =
+      await this.performanceEvaluationsService.findByPersonnelAndSemester(
+        personnelId,
+        semester,
+      );
+
+    if (evaluation) {
+      return {
+        exists: true,
+        evaluation: {
+          _id: (evaluation as any)._id,
+          personnel: evaluation.personnel,
+          semester: evaluation.semester,
+          evaluationDate: evaluation.evaluationDate,
+          scores: evaluation.scores,
+          feedback: evaluation.feedback,
+        },
+      };
+    }
+
+    return { exists: false };
+  }
+
+  /**
+   * Get accuracy trends from training history
+   * Converts training loss/MSE into accuracy percentage trends
+   */
+  getAccuracyTrends(): Array<{
+    date: string;
+    accuracy: number;
+    count?: number;
+  }> {
+    if (!tensorflowModel || !tensorflowModel.trainingHistory) {
+      return [];
+    }
+
+    const history = tensorflowModel.trainingHistory;
+    const trainedAt = tensorflowModel.trainedAt;
+
+    // Convert epochs to dates (distributed across training time)
+    // Assuming training happened on trainedAt date
+    const baseDate = new Date(trainedAt);
+
+    // Calculate accuracy from validation loss (lower loss = higher accuracy)
+    // Using formula: accuracy = 1 / (1 + valLoss) * 100
+    // This gives us a percentage where lower error = higher accuracy
+    const trends = history.epoch.map((epoch, index) => {
+      // Create date for each epoch (spread across training period)
+      const epochDate = new Date(baseDate);
+      epochDate.setMinutes(
+        epochDate.getMinutes() - (history.epoch.length - epoch - 1) * 5,
+      );
+
+      // Calculate accuracy from validation loss or regular loss
+      const loss = history.valLoss?.[index] ?? history.loss[index];
+
+      // Convert loss to accuracy percentage
+      // Lower loss = higher accuracy
+      // Using: accuracy = (1 / (1 + loss)) * 100
+      const accuracy = (1 / (1 + loss)) * 100;
+
+      return {
+        date: epochDate.toISOString(),
+        accuracy: Number(accuracy.toFixed(2)),
+        count: epoch + 1, // Epoch number as count
+      };
+    });
+
+    return trends;
+  }
+}

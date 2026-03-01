@@ -1,0 +1,2534 @@
+{
+  "version": "6.0",
+  "nxVersion": "22.5.3",
+  "pathMappings": {},
+  "nxJsonPlugins": [
+    {
+      "name": "@nx/js",
+      "version": "^22.5.3",
+      "options": {
+        "analyzeSourceFiles": true
+      }
+    }
+  ],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".claude/agents/code-cleaner-linter.md",
+        "hash": "3267810340165430106"
+      },
+      {
+        "file": ".claude/settings.local.json",
+        "hash": "1506127434724108353"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "12313479055793642121"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "3943368189484042247"
+      },
+      {
+        "file": ".npmrc",
+        "hash": "18085261541358865259"
+      },
+      {
+        "file": "nx.json",
+        "hash": "10327955749198812002"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "11826115076568488275"
+      },
+      {
+        "file": "package.json",
+        "hash": "9229286766320966119"
+      },
+      {
+        "file": "test-template.xlsx",
+        "hash": "1140151589068033049"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "14518493200127778559"
+      }
+    ],
+    "projectFileMap": {
+      "web": [
+        {
+          "file": "apps/web/.claude/agents/ml-app-architect.md",
+          "hash": "914907221804675860"
+        },
+        {
+          "file": "apps/web/.claude/settings.local.json",
+          "hash": "13768911059121948416"
+        },
+        {
+          "file": "apps/web/.dockerignore",
+          "hash": "10292485035093217964"
+        },
+        {
+          "file": "apps/web/.env.example",
+          "hash": "5510325037896432867"
+        },
+        {
+          "file": "apps/web/.gitignore",
+          "hash": "5315037311929760417"
+        },
+        {
+          "file": "apps/web/Dockerfile",
+          "hash": "11776267687616467400"
+        },
+        {
+          "file": "apps/web/README.md",
+          "hash": "7050881425265736038"
+        },
+        {
+          "file": "apps/web/app/(auth)/forgot-password/page.tsx",
+          "hash": "8010233325427334759",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/(auth)/layout.tsx",
+          "hash": "13779736196297055923"
+        },
+        {
+          "file": "apps/web/app/(auth)/login/page.tsx",
+          "hash": "16142358747144808575",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/(auth)/register/page.tsx",
+          "hash": "3805749599092857022",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/departments/DepartmentForm.tsx",
+          "hash": "16985129066546862515",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:@hookform/resolvers",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/departments/DepartmentsTable.tsx",
+          "hash": "3166047947004388363",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/departments/page.tsx",
+          "hash": "9891211464513206128",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/evaluation-forms/[id]/edit/page.tsx",
+          "hash": "1238279884419117292",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/evaluation-forms/[id]/print/page.tsx",
+          "hash": "3535007494303487840",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/evaluation-forms/[id]/responses/page.tsx",
+          "hash": "1164095406591514904",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/evaluation-forms/page.tsx",
+          "hash": "13370617587124298973",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/evaluation-forms/preview/page.tsx",
+          "hash": "8945886157847555427",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/help-guide/page.tsx",
+          "hash": "10638038987709981412",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/layout.tsx",
+          "hash": "12568896077126308784",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/non-teaching-evaluations/NonTeachingBulkUploadDialog.tsx",
+          "hash": "2242571597853017038",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/non-teaching-evaluations/NonTeachingEvaluationForm.tsx",
+          "hash": "5322012217622517228",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:@hookform/resolvers",
+            "npm:zod",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/non-teaching-evaluations/NonTeachingEvaluationsTable.tsx",
+          "hash": "8808258992616832245",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/non-teaching-evaluations/page.tsx",
+          "hash": "9593424129503314874",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/performance-evaluations/BulkUploadDialog.tsx",
+          "hash": "11285792993261438860",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/performance-evaluations/PerformanceEvaluationForm.tsx",
+          "hash": "3882839936700434623",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:@hookform/resolvers",
+            "npm:zod",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/performance-evaluations/PerformanceEvaluationsTable.tsx",
+          "hash": "7160099956842414595",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/performance-evaluations/page.tsx",
+          "hash": "9027993189165649504",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/permissions/page.tsx",
+          "hash": "14004960129131498141",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-icons",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/personnel/BulkUploadDialog.tsx",
+          "hash": "8164861996752371441",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/personnel/ExcellenceAnalytics.tsx",
+          "hash": "3149221410386859082",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/personnel/PersonnelForm.tsx",
+          "hash": "490815163366013583",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:@hookform/resolvers",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/personnel/PersonnelTable.tsx",
+          "hash": "14113539785904543731",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/personnel/page.tsx",
+          "hash": "4797582680084439137",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/roles/page.tsx",
+          "hash": "3049068121594003486",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-icons",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/settings/page.tsx",
+          "hash": "378374031118982050",
+          "deps": [
+            "npm:react",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/students/page.tsx",
+          "hash": "13975102374472968855",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/subjects/SubjectForm.tsx",
+          "hash": "6104332294647257758",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:@hookform/resolvers",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/subjects/SubjectsTable.tsx",
+          "hash": "8139603433286251525",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/subjects/page.tsx",
+          "hash": "5778218140644568917",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/system/page.tsx",
+          "hash": "6815120950029169024",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/users/[id]/edit/page.tsx",
+          "hash": "205344943412486849",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/users/create/page.tsx",
+          "hash": "5437134835952851911",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/users/page.tsx",
+          "hash": "9981867983223184558",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@radix-ui/react-icons",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/api/docs/route.ts",
+          "hash": "8343598991801241638",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/auth/LoginForm.tsx",
+          "hash": "2905915118310797319",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@radix-ui/react-icons"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/auth/RegisterForm.tsx",
+          "hash": "5084825889323704844",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/guards/PermissionGate.tsx",
+          "hash": "9422160640565646161"
+        },
+        {
+          "file": "apps/web/app/components/guards/ProfileGuard.tsx",
+          "hash": "1511816064706610901",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/guards/ProtectedRoute.tsx",
+          "hash": "17577621311107704965",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/guards/RoleGate.tsx",
+          "hash": "2493684793083318410"
+        },
+        {
+          "file": "apps/web/app/components/layouts/Footer.tsx",
+          "hash": "16462909650190040466"
+        },
+        {
+          "file": "apps/web/app/components/layouts/Header.tsx",
+          "hash": "12979396887648540786",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/layouts/Sidenav.tsx",
+          "hash": "17199294496828892575",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ml/AccuracyTrendChart.tsx",
+          "hash": "14454344466879503445",
+          "deps": [
+            "npm:react",
+            "npm:recharts"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ml/FeatureImportanceChart.tsx",
+          "hash": "7324845464260101420",
+          "deps": [
+            "npm:react",
+            "npm:recharts"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ml/PerformanceDistributionChart.tsx",
+          "hash": "10105412243423087704",
+          "deps": [
+            "npm:react",
+            "npm:recharts"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ml/PredictionCard.tsx",
+          "hash": "12463569692593970269",
+          "deps": [
+            "npm:react",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ml/RecommendationsList.tsx",
+          "hash": "878850477494159956",
+          "deps": [
+            "npm:react",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/providers/react-query-provider.tsx",
+          "hash": "12022871989852477259",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/providers/theme-provider.tsx",
+          "hash": "6441998381385588872",
+          "deps": [
+            "npm:react",
+            "npm:next-themes"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/ComboBox.tsx",
+          "hash": "17964355963801506381",
+          "deps": [
+            "npm:react",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/DataTable.tsx",
+          "hash": "13196192708309481239"
+        },
+        {
+          "file": "apps/web/app/components/ui/EmptyState.tsx",
+          "hash": "10968801302321479704"
+        },
+        {
+          "file": "apps/web/app/components/ui/ErrorDisplay.tsx",
+          "hash": "1130373190126520053"
+        },
+        {
+          "file": "apps/web/app/components/ui/FormField.tsx",
+          "hash": "9883651061784051797"
+        },
+        {
+          "file": "apps/web/app/components/ui/LoadingSkeleton.tsx",
+          "hash": "15342226373712053285"
+        },
+        {
+          "file": "apps/web/app/components/ui/PageHeader.tsx",
+          "hash": "3748938556456261898"
+        },
+        {
+          "file": "apps/web/app/components/ui/accordion.tsx",
+          "hash": "4051297820765862396",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-accordion",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/alert.tsx",
+          "hash": "12053058312868716629",
+          "deps": [
+            "npm:react",
+            "npm:class-variance-authority"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/avatar.tsx",
+          "hash": "12979174226257866157",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-avatar"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/badge.tsx",
+          "hash": "13751344573345743887",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-slot",
+            "npm:class-variance-authority"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/button.tsx",
+          "hash": "7537161150348943277",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-slot",
+            "npm:class-variance-authority"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/card.tsx",
+          "hash": "1066166560763247819",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/checkbox.tsx",
+          "hash": "11858802833299321807",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-checkbox",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/command.tsx",
+          "hash": "7863072390744481553",
+          "deps": [
+            "npm:react",
+            "npm:cmdk",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/dialog.tsx",
+          "hash": "9418750744707546320",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-dialog",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/dropdown-menu.tsx",
+          "hash": "15745888224830418655",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-dropdown-menu",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/form.tsx",
+          "hash": "11452437071502303449",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-label",
+            "npm:@radix-ui/react-slot",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/index.ts",
+          "hash": "16585492790715168441"
+        },
+        {
+          "file": "apps/web/app/components/ui/input.tsx",
+          "hash": "7559249078053866659",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/label.tsx",
+          "hash": "13820603927334681774",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-label"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/pagination.tsx",
+          "hash": "11060008130089567794",
+          "deps": [
+            "npm:react",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/popover.tsx",
+          "hash": "18063486277314170045",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-popover"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/progress.tsx",
+          "hash": "8375198016801900196",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-progress"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/scroll-area.tsx",
+          "hash": "14400165947169583196",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-scroll-area"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/select.tsx",
+          "hash": "14239235928970389845",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-select",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/separator.tsx",
+          "hash": "1612501407499403398",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-separator"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/sheet.tsx",
+          "hash": "2770243628096193358",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-dialog",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/skeleton.tsx",
+          "hash": "512398262418001779"
+        },
+        {
+          "file": "apps/web/app/components/ui/sonner.tsx",
+          "hash": "13943953257085822601",
+          "deps": [
+            "npm:lucide-react",
+            "npm:next-themes",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/switch.tsx",
+          "hash": "11137334054656769654",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-switch"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/table.tsx",
+          "hash": "3457743304035339138",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/tabs.tsx",
+          "hash": "14992079743428127530",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-tabs"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/textarea.tsx",
+          "hash": "760432194237246985",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/theme-toggle.tsx",
+          "hash": "3210753948464749844",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-icons",
+            "npm:next-themes"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/tooltip.tsx",
+          "hash": "2201590076125866835",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-tooltip"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/UserDashboard.tsx",
+          "hash": "14274387195249953442",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:lucide-react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/activity/page.tsx",
+          "hash": "14516097282773547276",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/analytics/page.tsx",
+          "hash": "4322201570452548248",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:recharts",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/complete-profile/page.tsx",
+          "hash": "4867195342324439968",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query",
+            "npm:lucide-react",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/evaluations/[id]/fill/page.tsx",
+          "hash": "14753380001338839400",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query",
+            "npm:lucide-react",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/evaluations/page.tsx",
+          "hash": "11693307631078877635",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:lucide-react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/layout.tsx",
+          "hash": "12007024476733400755"
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/algorithm/page.tsx",
+          "hash": "14554299024260217018",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/analytics/page.tsx",
+          "hash": "604312279777856626",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:recharts"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/manual-prediction/page.tsx",
+          "hash": "14976092908976482446",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:sonner",
+            "npm:axios",
+            "npm:@tanstack/react-query",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/predictions/PredictionResultDialog.tsx",
+          "hash": "14662733946203032467",
+          "deps": [
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/predictions/page.tsx",
+          "hash": "15271654770977665128",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/training/page.tsx",
+          "hash": "18311998261068351748",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/page.tsx",
+          "hash": "2526185038341982793",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:recharts",
+            "npm:lucide-react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/projects/page.tsx",
+          "hash": "15604041078624162706"
+        },
+        {
+          "file": "apps/web/app/dashboard/settings/page.tsx",
+          "hash": "11365626809293565299"
+        },
+        {
+          "file": "apps/web/app/favicon.ico",
+          "hash": "9157999678830540297"
+        },
+        {
+          "file": "apps/web/app/globals.css",
+          "hash": "4896981386717407851"
+        },
+        {
+          "file": "apps/web/app/layout.tsx",
+          "hash": "11961292958094761859",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/page.tsx",
+          "hash": "14855036207647978117",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/components.json",
+          "hash": "11503424862786147251"
+        },
+        {
+          "file": "apps/web/config/permissions.ts",
+          "hash": "17682615143370050810"
+        },
+        {
+          "file": "apps/web/config/roles.ts",
+          "hash": "17367459798318352643"
+        },
+        {
+          "file": "apps/web/config/routes.ts",
+          "hash": "15918780538471452148"
+        },
+        {
+          "file": "apps/web/cookies-new.txt",
+          "hash": "15243411188916157624"
+        },
+        {
+          "file": "apps/web/cookies-refreshed.txt",
+          "hash": "5944886049928124251"
+        },
+        {
+          "file": "apps/web/cookies-test.txt",
+          "hash": "4282194617897748988"
+        },
+        {
+          "file": "apps/web/cookies.txt",
+          "hash": "14851897442135537942"
+        },
+        {
+          "file": "apps/web/docs/ALGORITHM_MODIFICATION_GUIDE.md",
+          "hash": "7309077718484095166"
+        },
+        {
+          "file": "apps/web/docs/ARCHITECTURE.md",
+          "hash": "2138355567540970249"
+        },
+        {
+          "file": "apps/web/docs/BULK_UPLOAD_COMPLETE.md",
+          "hash": "15333903453949516783"
+        },
+        {
+          "file": "apps/web/docs/BULK_UPLOAD_FRONTEND.md",
+          "hash": "14198060644149543709"
+        },
+        {
+          "file": "apps/web/docs/BULK_UPLOAD_GUIDE.md",
+          "hash": "15590613090926584594"
+        },
+        {
+          "file": "apps/web/docs/CLEANUP_SUMMARY.md",
+          "hash": "2567030224616537801"
+        },
+        {
+          "file": "apps/web/docs/DEFAULT_TRAINING_FILE.md",
+          "hash": "6394676772844827442"
+        },
+        {
+          "file": "apps/web/docs/DEVELOPER_GUIDE.md",
+          "hash": "2781192908560234587"
+        },
+        {
+          "file": "apps/web/docs/EVALUATION_RESPONSE_AGGREGATION.md",
+          "hash": "14409750890546583939"
+        },
+        {
+          "file": "apps/web/docs/FIXES_SUMMARY.md",
+          "hash": "10997703333039554639"
+        },
+        {
+          "file": "apps/web/docs/METRIC_SYNC_FEATURE.md",
+          "hash": "5574624875582497383"
+        },
+        {
+          "file": "apps/web/docs/ML_SPECIFICATION.md",
+          "hash": "8952889877571032784"
+        },
+        {
+          "file": "apps/web/docs/README_RBAC.md",
+          "hash": "6556576103020659055"
+        },
+        {
+          "file": "apps/web/docs/ROLES_AND_PERMISSIONS.md",
+          "hash": "823615681527028514"
+        },
+        {
+          "file": "apps/web/docs/TROUBLESHOOTING.md",
+          "hash": "16580246834482285007"
+        },
+        {
+          "file": "apps/web/eslint.config.mjs",
+          "hash": "5072742284577310158",
+          "deps": [
+            "npm:eslint",
+            "npm:eslint-config-next"
+          ]
+        },
+        {
+          "file": "apps/web/install.cmd",
+          "hash": "13207197342230170624"
+        },
+        {
+          "file": "apps/web/lib/api/audit-logs.api.ts",
+          "hash": "17032503072200082853"
+        },
+        {
+          "file": "apps/web/lib/api/auth.api.ts",
+          "hash": "10781259191585079943"
+        },
+        {
+          "file": "apps/web/lib/api/axios.ts",
+          "hash": "7267853534860842133",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/web/lib/api/departments.api.ts",
+          "hash": "9616151631563989112"
+        },
+        {
+          "file": "apps/web/lib/api/evaluation-form-responses.api.ts",
+          "hash": "11023772574718785077"
+        },
+        {
+          "file": "apps/web/lib/api/evaluation-forms.api.ts",
+          "hash": "16403611037639359982"
+        },
+        {
+          "file": "apps/web/lib/api/index.ts",
+          "hash": "11614651551984046771"
+        },
+        {
+          "file": "apps/web/lib/api/ml.api.ts",
+          "hash": "1323662724368833948"
+        },
+        {
+          "file": "apps/web/lib/api/non-teaching-evaluations.api.ts",
+          "hash": "2956141392125576151"
+        },
+        {
+          "file": "apps/web/lib/api/performance-evaluations.api.ts",
+          "hash": "6340404941813574545"
+        },
+        {
+          "file": "apps/web/lib/api/permissions.api.ts",
+          "hash": "15958288259228145044"
+        },
+        {
+          "file": "apps/web/lib/api/personnel.api.ts",
+          "hash": "5631870036720472787"
+        },
+        {
+          "file": "apps/web/lib/api/roles.api.ts",
+          "hash": "10196497416270613518"
+        },
+        {
+          "file": "apps/web/lib/api/settings.api.ts",
+          "hash": "9653784833421192065"
+        },
+        {
+          "file": "apps/web/lib/api/subjects.api.ts",
+          "hash": "15234157965602802230"
+        },
+        {
+          "file": "apps/web/lib/api/users.api.ts",
+          "hash": "1680665732577554706"
+        },
+        {
+          "file": "apps/web/lib/contexts/AlertContext.tsx",
+          "hash": "76527757495405375",
+          "deps": [
+            "npm:react",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/contexts/AuthContext.tsx",
+          "hash": "16090471567197299514",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/lib/contexts/HeaderContext.tsx",
+          "hash": "10017140370805208596",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/contexts/SessionAlertContext.tsx",
+          "hash": "873501364577212987",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/contexts/SettingsContext.tsx",
+          "hash": "10724216188789767742",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/useAdminOrSystemAdmin.ts",
+          "hash": "10356330410751465320"
+        },
+        {
+          "file": "apps/web/lib/hooks/useApiData.ts",
+          "hash": "4235074988974736122",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/useIdleTimeout.ts",
+          "hash": "5824332738011987950",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/useMLAnalytics.ts",
+          "hash": "4501115623533904221",
+          "deps": [
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/useMLPredictions.ts",
+          "hash": "8508175580906991025",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/useMLTraining.ts",
+          "hash": "9040539004256295700",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/usePermission.ts",
+          "hash": "13842652327484038800"
+        },
+        {
+          "file": "apps/web/lib/hooks/useRole.ts",
+          "hash": "8380055225394982293"
+        },
+        {
+          "file": "apps/web/lib/hooks/useSystemAdmin.ts",
+          "hash": "7098387102990686466"
+        },
+        {
+          "file": "apps/web/lib/utils.ts",
+          "hash": "12218829721157087250",
+          "deps": [
+            "npm:clsx",
+            "npm:tailwind-merge"
+          ]
+        },
+        {
+          "file": "apps/web/next.config.ts",
+          "hash": "5307796689141320326",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/package.json",
+          "hash": "11785920967167412872"
+        },
+        {
+          "file": "apps/web/postcss.config.mjs",
+          "hash": "16325831446291273164"
+        },
+        {
+          "file": "apps/web/project.json",
+          "hash": "2881164588624028648"
+        },
+        {
+          "file": "apps/web/proxy.ts",
+          "hash": "483052922870407115",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/public/file.svg",
+          "hash": "15617830351863523835"
+        },
+        {
+          "file": "apps/web/public/globe.svg",
+          "hash": "9134466864871335697"
+        },
+        {
+          "file": "apps/web/public/next.svg",
+          "hash": "8300767200008744458"
+        },
+        {
+          "file": "apps/web/public/smcc-logo.svg",
+          "hash": "1375064318809370668"
+        },
+        {
+          "file": "apps/web/public/vercel.svg",
+          "hash": "3007623926711696394"
+        },
+        {
+          "file": "apps/web/public/window.svg",
+          "hash": "16677869292061012332"
+        },
+        {
+          "file": "apps/web/tsconfig.json",
+          "hash": "2727220773159863513"
+        },
+        {
+          "file": "apps/web/types/auth.types.ts",
+          "hash": "9199092759490469724"
+        },
+        {
+          "file": "apps/web/types/department.ts",
+          "hash": "9560836488100112364"
+        },
+        {
+          "file": "apps/web/types/evaluation-form-response.ts",
+          "hash": "17874101770842385079"
+        },
+        {
+          "file": "apps/web/types/evaluation-form.ts",
+          "hash": "7762828370048841552"
+        },
+        {
+          "file": "apps/web/types/ml.types.ts",
+          "hash": "672068156073684806"
+        },
+        {
+          "file": "apps/web/types/non-teaching-evaluation.ts",
+          "hash": "16006943482900310734"
+        },
+        {
+          "file": "apps/web/types/performance-evaluation.ts",
+          "hash": "10287133775133254904"
+        },
+        {
+          "file": "apps/web/types/permission.types.ts",
+          "hash": "1565760504030383740"
+        },
+        {
+          "file": "apps/web/types/personnel.ts",
+          "hash": "2991073871184659980"
+        },
+        {
+          "file": "apps/web/types/subject.ts",
+          "hash": "8664618046756082407"
+        },
+        {
+          "file": "apps/web/types/ui.types.ts",
+          "hash": "5538020091548005025"
+        }
+      ],
+      "api": [
+        {
+          "file": "apps/api/.dockerignore",
+          "hash": "9517441383949151932"
+        },
+        {
+          "file": "apps/api/.env.example",
+          "hash": "13229688677640588998"
+        },
+        {
+          "file": "apps/api/.eslintrc.js",
+          "hash": "15556246692254738742"
+        },
+        {
+          "file": "apps/api/.gitignore",
+          "hash": "6353835884886074969"
+        },
+        {
+          "file": "apps/api/.prettierrc",
+          "hash": "14145419060237914883"
+        },
+        {
+          "file": "apps/api/Dockerfile",
+          "hash": "6959774480152687194"
+        },
+        {
+          "file": "apps/api/README.md",
+          "hash": "13123434361241207768"
+        },
+        {
+          "file": "apps/api/data/employee_history_sample.csv",
+          "hash": "11951557278303276311"
+        },
+        {
+          "file": "apps/api/eslint.config.mjs",
+          "hash": "17520456152920331010",
+          "deps": [
+            "npm:@eslint/js",
+            "npm:eslint-plugin-prettier",
+            "npm:globals",
+            "npm:typescript-eslint"
+          ]
+        },
+        {
+          "file": "apps/api/migrate-mongo-config.js",
+          "hash": "6792597348530819269"
+        },
+        {
+          "file": "apps/api/migrations/20260202000000-seed-fake-data.js",
+          "hash": "3757494221843658119",
+          "deps": [
+            "npm:@faker-js/faker",
+            "npm:mongodb",
+            "npm:bcryptjs"
+          ]
+        },
+        {
+          "file": "apps/api/migrations/20260222000000-add-dean-permissions.js",
+          "hash": "8649055138010904349"
+        },
+        {
+          "file": "apps/api/migrations/20260222100000-seed-permissions-and-super-admin.js",
+          "hash": "6728864382236803660",
+          "deps": [
+            "npm:mongodb"
+          ]
+        },
+        {
+          "file": "apps/api/migrations/20260222120000-dean-users-manage-permissions.js",
+          "hash": "7709213294907620142"
+        },
+        {
+          "file": "apps/api/migrations/20260223000000-add-teaching-personnel.js",
+          "hash": "17682575456534747212",
+          "deps": [
+            "npm:@faker-js/faker",
+            "npm:mongodb"
+          ]
+        },
+        {
+          "file": "apps/api/migrations/20260223000001-cleanup-teaching-personnel.js",
+          "hash": "16000131009368443516",
+          "deps": [
+            "npm:mongodb"
+          ]
+        },
+        {
+          "file": "apps/api/migrations/README.md",
+          "hash": "8712569552920144919"
+        },
+        {
+          "file": "apps/api/migrations/USER_CREDENTIALS.md",
+          "hash": "15578925220286569014"
+        },
+        {
+          "file": "apps/api/nest-cli.json",
+          "hash": "18272654682417215031"
+        },
+        {
+          "file": "apps/api/package.json",
+          "hash": "18227206552334271515"
+        },
+        {
+          "file": "apps/api/project.json",
+          "hash": "1173999775792828883"
+        },
+        {
+          "file": "apps/api/scripts/generate-roles-permissions-doc.ts",
+          "hash": "1344748127777527132",
+          "deps": [
+            "npm:@nestjs/core",
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/app.controller.spec.ts",
+          "hash": "2727664763654384995",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api/src/app.controller.ts",
+          "hash": "4552329938751326480",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/app.module.ts",
+          "hash": "1117204882769494258",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/config",
+            "npm:@nestjs/mongoose",
+            "npm:@nestjs/throttler",
+            "npm:@nestjs/core",
+            "npm:nest-winston",
+            "npm:@nestjs/schedule",
+            "npm:joi"
+          ]
+        },
+        {
+          "file": "apps/api/src/app.service.ts",
+          "hash": "16892833931858030153",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/constants/permissions.ts",
+          "hash": "16044614888236007412"
+        },
+        {
+          "file": "apps/api/src/common/decorators/get-user.decorator.ts",
+          "hash": "4211122200223950142",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/decorators/public.decorator.ts",
+          "hash": "17960535925631508594",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/decorators/require-permission.decorator.ts",
+          "hash": "7517950682928996361",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/decorators/throttle.decorator.ts",
+          "hash": "9598398534197646338",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/filters/http-exception.filter.ts",
+          "hash": "771237860430668431",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:express"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/guards/jwt-auth.guard.ts",
+          "hash": "16486367579209077986",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport",
+            "npm:@nestjs/core"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/guards/jwt-refresh.guard.ts",
+          "hash": "17804610334621346270",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/guards/permission.guard.ts",
+          "hash": "15867087451600169913",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/core",
+            "npm:express"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/guards/throttler.guard.ts",
+          "hash": "3280382931686360707",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/throttler",
+            "npm:@nestjs/core"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/interceptors/transform.interceptor.ts",
+          "hash": "16242465400344230838",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/interfaces/api-response.interface.ts",
+          "hash": "12183225458953506581"
+        },
+        {
+          "file": "apps/api/src/common/interfaces/jwt-payload.interface.ts",
+          "hash": "18241820728181972473"
+        },
+        {
+          "file": "apps/api/src/common/logger/winston.config.ts",
+          "hash": "5720570464967429440",
+          "deps": [
+            "npm:nest-winston",
+            "npm:winston"
+          ]
+        },
+        {
+          "file": "apps/api/src/common/pipes/parse-mongo-id.pipe.ts",
+          "hash": "15550542604057482789",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/config/app.config.ts",
+          "hash": "10550936339332872183",
+          "deps": [
+            "npm:@nestjs/config"
+          ]
+        },
+        {
+          "file": "apps/api/src/config/database.config.ts",
+          "hash": "2283407997845823667",
+          "deps": [
+            "npm:@nestjs/config"
+          ]
+        },
+        {
+          "file": "apps/api/src/config/jwt.config.ts",
+          "hash": "5039106770559554984",
+          "deps": [
+            "npm:@nestjs/config"
+          ]
+        },
+        {
+          "file": "apps/api/src/database/seeds/audit-logs.seed.ts",
+          "hash": "14085144811972043368",
+          "deps": [
+            "npm:@nestjs/core"
+          ]
+        },
+        {
+          "file": "apps/api/src/database/seeds/evaluation-forms-responses.seed.ts",
+          "hash": "3068860725810837652",
+          "deps": [
+            "npm:@nestjs/core",
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/database/seeds/seed.ts",
+          "hash": "13310994987656686097",
+          "deps": [
+            "npm:@nestjs/core",
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/lib/utils/request-details.ts",
+          "hash": "6641401285825019588",
+          "deps": [
+            "npm:express"
+          ]
+        },
+        {
+          "file": "apps/api/src/main.ts",
+          "hash": "12236397434122925671",
+          "deps": [
+            "npm:@nestjs/core",
+            "npm:@nestjs/common",
+            "npm:@nestjs/swagger",
+            "npm:nest-winston",
+            "npm:cookie-parser"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+          "hash": "3787104330599956057",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/analytics/analytics.module.ts",
+          "hash": "6879028300895154722",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/analytics/analytics.service.ts",
+          "hash": "18238905979889717196",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/audit-logs/README.md",
+          "hash": "14793015876677242980"
+        },
+        {
+          "file": "apps/api/src/modules/audit-logs/audit-log.interceptor.ts",
+          "hash": "527598422687680476",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/core",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/audit-logs/audit-logs.controller.ts",
+          "hash": "17317741581618197105",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/audit-logs/audit-logs.module.ts",
+          "hash": "1756588159684723224",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/audit-logs/audit-logs.repository.ts",
+          "hash": "3117212350710355209",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/audit-logs/audit-logs.service.ts",
+          "hash": "14185869594090831286",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/audit-logs/decorators/audit-log.decorator.ts",
+          "hash": "3900022340168997050",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/audit-logs/dto/audit-log-filters.dto.ts",
+          "hash": "11952108614606729180",
+          "deps": [
+            "npm:class-validator",
+            "npm:class-transformer"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/audit-logs/index.ts",
+          "hash": "4417605978440584569"
+        },
+        {
+          "file": "apps/api/src/modules/audit-logs/schemas/audit-log.schema.ts",
+          "hash": "17861080254575853347",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/auth/auth.controller.ts",
+          "hash": "14962264117546636519",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/swagger",
+            "npm:@nestjs/throttler",
+            "npm:express"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/auth/auth.module.ts",
+          "hash": "5540784273030270571",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/jwt",
+            "npm:@nestjs/passport",
+            "npm:@nestjs/config"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/auth/auth.service.ts",
+          "hash": "7509973070881025654",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/jwt",
+            "npm:@nestjs/config",
+            "npm:nest-winston"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/auth/dto/login.dto.ts",
+          "hash": "2415926290652593739",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/auth/dto/register.dto.ts",
+          "hash": "3138513146455035726",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/auth/strategies/jwt-refresh.strategy.ts",
+          "hash": "18208004422874986550",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport",
+            "npm:passport-jwt",
+            "npm:@nestjs/config",
+            "npm:express"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/auth/strategies/jwt.strategy.ts",
+          "hash": "4943636437056588211",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport",
+            "npm:passport-jwt",
+            "npm:@nestjs/config",
+            "npm:express"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/departments/departments.controller.ts",
+          "hash": "12815929820086044947",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/departments/departments.module.ts",
+          "hash": "16790445229080337754",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/departments/departments.service.ts",
+          "hash": "1372780781535319159",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/departments/dto/create-department.dto.ts",
+          "hash": "11256883658323958533",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/departments/dto/update-department.dto.ts",
+          "hash": "17505571308815106805",
+          "deps": [
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/departments/schemas/department.schema.ts",
+          "hash": "15594262977073157562",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-form-responses/dto/bulk-upload-response.dto.ts",
+          "hash": "1811304571557543890"
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-form-responses/dto/create-evaluation-form-response.dto.ts",
+          "hash": "18041907374111576377",
+          "deps": [
+            "npm:class-validator",
+            "npm:class-transformer"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-form-responses/evaluation-form-responses.controller.ts",
+          "hash": "17594221724503405938",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:express",
+            "npm:@nestjs/platform-express"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-form-responses/evaluation-form-responses.module.ts",
+          "hash": "12269747240708752475",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-form-responses/evaluation-form-responses.service.ts",
+          "hash": "16933468976239562208",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose",
+            "npm:xlsx"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-form-responses/schemas/evaluation-form-response.schema.ts",
+          "hash": "7916021341688729586",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-forms/constants/default-teaching-sections.ts",
+          "hash": "12956690071845521175"
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-forms/dto/create-evaluation-form.dto.ts",
+          "hash": "10513633161213509141",
+          "deps": [
+            "npm:class-validator",
+            "npm:class-transformer"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-forms/dto/update-evaluation-form.dto.ts",
+          "hash": "2678051400980867744",
+          "deps": [
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-forms/evaluation-forms.controller.ts",
+          "hash": "6962218695684040576",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-forms/evaluation-forms.module.ts",
+          "hash": "5689186699260869492",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-forms/evaluation-forms.service.ts",
+          "hash": "9322280420096674424",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/evaluation-forms/schemas/evaluation-form.schema.ts",
+          "hash": "17373137620203160290",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/health/health.controller.ts",
+          "hash": "18272832929991936656",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/swagger",
+            "npm:@nestjs/terminus"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/health/health.module.ts",
+          "hash": "3842842342661664588",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/terminus"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/ml/dto/manual-prediction.dto.ts",
+          "hash": "14465182933049527925",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/ml/ml.controller.ts",
+          "hash": "5592459359902345645",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/platform-express"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/ml/ml.module.ts",
+          "hash": "5172389975712678975",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/ml/ml.service.ts",
+          "hash": "4908027336998726361",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/schedule",
+            "npm:xlsx",
+            "npm:@tensorflow/tfjs",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/ml/tensorflow-model.ts",
+          "hash": "5285783701523386208",
+          "deps": [
+            "npm:@tensorflow/tfjs"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/non-teaching-evaluations/dto/bulk-upload-response.dto.ts",
+          "hash": "1251192313912394109"
+        },
+        {
+          "file": "apps/api/src/modules/non-teaching-evaluations/dto/create-non-teaching-evaluation.dto.ts",
+          "hash": "3617066759637180187",
+          "deps": [
+            "npm:class-validator",
+            "npm:class-transformer"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/non-teaching-evaluations/dto/update-non-teaching-evaluation.dto.ts",
+          "hash": "2085389929052828545",
+          "deps": [
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/non-teaching-evaluations/non-teaching-evaluations.controller.ts",
+          "hash": "12704948557612289864",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:express",
+            "npm:@nestjs/platform-express"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/non-teaching-evaluations/non-teaching-evaluations.module.ts",
+          "hash": "3874267124918591398",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/non-teaching-evaluations/non-teaching-evaluations.service.ts",
+          "hash": "18355920180217552978",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose",
+            "npm:xlsx"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/non-teaching-evaluations/schemas/non-teaching-evaluation.schema.ts",
+          "hash": "2556641236735056852",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/performance-evaluations/dto/bulk-upload-response.dto.ts",
+          "hash": "11706229953953330354"
+        },
+        {
+          "file": "apps/api/src/modules/performance-evaluations/dto/create-performance-evaluation.dto.ts",
+          "hash": "12151742738645318187",
+          "deps": [
+            "npm:class-validator",
+            "npm:class-transformer"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/performance-evaluations/dto/update-performance-evaluation.dto.ts",
+          "hash": "11901601330663592043",
+          "deps": [
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/performance-evaluations/performance-evaluations.controller.ts",
+          "hash": "2100527044837262787",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:express",
+            "npm:@nestjs/platform-express"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/performance-evaluations/performance-evaluations.module.ts",
+          "hash": "17943952024454202434",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/performance-evaluations/performance-evaluations.service.ts",
+          "hash": "15538443831036898350",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose",
+            "npm:xlsx"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/performance-evaluations/schemas/performance-evaluation.schema.ts",
+          "hash": "10992833179985517388",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/permissions/dto/create-permission.dto.ts",
+          "hash": "8352790885502501811",
+          "deps": [
+            "npm:class-validator",
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/permissions/permissions.controller.ts",
+          "hash": "3052367745762195745",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/permissions/permissions.module.ts",
+          "hash": "13046603005592965269",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/permissions/permissions.repository.ts",
+          "hash": "15402487594179317343",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/permissions/permissions.service.ts",
+          "hash": "3710446523849193979",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/permissions/schemas/permission.schema.ts",
+          "hash": "8926469778511521367",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/personnel/dto/bulk-upload-response.dto.ts",
+          "hash": "16582064423544707934"
+        },
+        {
+          "file": "apps/api/src/modules/personnel/dto/calculate-excellence.dto.ts",
+          "hash": "7905020007921938250",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/personnel/dto/create-personnel.dto.ts",
+          "hash": "14061051649971379859",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/personnel/dto/update-personnel.dto.ts",
+          "hash": "1143909403356687713",
+          "deps": [
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/personnel/personnel.controller.ts",
+          "hash": "4736538654680958963",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/platform-express",
+            "npm:xlsx"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/personnel/personnel.module.ts",
+          "hash": "10723556732175558815",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/personnel/personnel.service.ts",
+          "hash": "17919449943385033451",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/personnel/schemas/excellence-history.schema.ts",
+          "hash": "6521234020858083459",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/personnel/schemas/personnel.schema.ts",
+          "hash": "9400937563404756678",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/personnel/services/excellence-tracking.service.ts",
+          "hash": "15278378016187149640",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/personnel/utils/classification.util.ts",
+          "hash": "2381067021561671885"
+        },
+        {
+          "file": "apps/api/src/modules/roles/dto/create-role.dto.ts",
+          "hash": "6717642513881085177",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/roles/dto/update-role.dto.ts",
+          "hash": "14447871537495791921",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/roles/roles.controller.ts",
+          "hash": "2784544924791077311",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/roles/roles.module.ts",
+          "hash": "10782364098535863752",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/roles/roles.repository.ts",
+          "hash": "11373720538877653031",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/roles/roles.service.ts",
+          "hash": "6490012968011799668",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/roles/schemas/role.schema.ts",
+          "hash": "10480850603313406746",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/sessions/schemas/session.schema.ts",
+          "hash": "15507769107069524348",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose",
+            "npm:uuid"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/sessions/sessions.module.ts",
+          "hash": "2036956252915014125",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/sessions/sessions.repository.ts",
+          "hash": "8956958118132418832",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/sessions/sessions.service.ts",
+          "hash": "9403562729406399336",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:mongoose",
+            "npm:bcryptjs"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/settings/dto/update-settings.dto.ts",
+          "hash": "3271226619255086464",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/settings/schemas/setting.schema.ts",
+          "hash": "16493048453998581753",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/settings/settings.controller.ts",
+          "hash": "15338582908525565535",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/settings/settings.module.ts",
+          "hash": "15625120517563026087",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/settings/settings.repository.ts",
+          "hash": "15989413466397750906",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/settings/settings.service.ts",
+          "hash": "6504784474075015629",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/subjects/dto/create-subject.dto.ts",
+          "hash": "15161897613473937735",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/subjects/dto/update-subject.dto.ts",
+          "hash": "9155329048217696767",
+          "deps": [
+            "npm:@nestjs/mapped-types"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/subjects/schemas/subject.schema.ts",
+          "hash": "3229915270791880834",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/subjects/subjects.controller.ts",
+          "hash": "321504732080926803",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/subjects/subjects.module.ts",
+          "hash": "13949238729347304362",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/subjects/subjects.service.ts",
+          "hash": "14505503058605351081",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/users/dto/assign-roles.dto.ts",
+          "hash": "12816688270566215650",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/users/dto/create-user.dto.ts",
+          "hash": "380458657746574906",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/users/dto/update-user.dto.ts",
+          "hash": "215459370604996592",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/users/dto/user-filters.dto.ts",
+          "hash": "9190362149905937317",
+          "deps": [
+            "npm:class-validator",
+            "npm:class-transformer"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/users/schemas/user.schema.ts",
+          "hash": "9605705602313361759",
+          "deps": [
+            "npm:@nestjs/mongoose",
+            "npm:mongoose",
+            "npm:bcryptjs"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/users/users.controller.ts",
+          "hash": "6357271201742676180",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/users/users.module.ts",
+          "hash": "8157496669960056486",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/users/users.repository.ts",
+          "hash": "6239190843756920953",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/mongoose",
+            "npm:mongoose"
+          ]
+        },
+        {
+          "file": "apps/api/src/modules/users/users.service.ts",
+          "hash": "4277347043286307017",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/test/app.e2e-spec.ts",
+          "hash": "12700387818545954749",
+          "deps": [
+            "npm:@nestjs/testing",
+            "npm:@nestjs/common",
+            "npm:supertest"
+          ]
+        },
+        {
+          "file": "apps/api/test/evaluation.e2e-spec.ts",
+          "hash": "5020789359375472142",
+          "deps": [
+            "npm:@nestjs/testing",
+            "npm:@nestjs/common",
+            "npm:supertest",
+            "npm:cookie-parser"
+          ]
+        },
+        {
+          "file": "apps/api/test/jest-e2e.json",
+          "hash": "10645908491471703423"
+        },
+        {
+          "file": "apps/api/tsconfig.build.json",
+          "hash": "9666801268768259513"
+        },
+        {
+          "file": "apps/api/tsconfig.json",
+          "hash": "10839802465427973230"
+        }
+      ]
+    }
+  },
+  "externalNodesHash": "9252701198381423138"
+}

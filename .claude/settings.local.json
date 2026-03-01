@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm start)",
+      "Bash(curl:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(node -e:*)",
+      "Bash(xargs:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(cat:*)",
+      "Bash(git config:*)",
+      "Bash(dos2unix:*)",
+      "Bash(npm run start:dev:*)",
+      "Bash(npm run migrate:down:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

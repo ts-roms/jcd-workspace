@@ -36,6 +36,7 @@ export interface Personnel {
   avgRL?: number;
   avgIN?: number;
   lastMetricSync?: string;
+  isActive?: boolean;
   createdAt: string;
   updatedAt: string;
 }

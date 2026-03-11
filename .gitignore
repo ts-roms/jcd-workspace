@@ -44,6 +44,7 @@ Thumbs.db
 .env.*.local
 
 # Nx
+.nx/*
 .nx/cache
 
 # Graph exports

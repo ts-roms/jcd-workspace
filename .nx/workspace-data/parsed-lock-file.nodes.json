@@ -2947,9 +2947,9 @@
       "type": "npm",
       "name": "npm:@next/env",
       "data": {
-        "version": "16.0.6",
+        "version": "16.1.6",
         "packageName": "@next/env",
-        "hash": "sha512-PFTK/G/vM3UJwK5XDYMFOqt8QW42mmhSgdKDapOlCqBUAOfJN2dyOnASR/xUR/JRrro0pLohh/zOJ77xUQWQAg=="
+        "hash": "sha512-N1ySLuZjnAtN3kFnwhAwPvZah8RJxKasD7x1f8shFqhncnWZn4JMfg37diLNuoHsLAlrDfM3g4mawVdtAG8XLQ=="
       }
     },
     "npm:@next/eslint-plugin-next": {
@@ -2965,72 +2965,72 @@
       "type": "npm",
       "name": "npm:@next/swc-darwin-arm64",
       "data": {
-        "version": "16.0.6",
+        "version": "16.1.6",
         "packageName": "@next/swc-darwin-arm64",
-        "hash": "sha512-AGzKiPlDiui+9JcPRHLI4V9WFTTcKukhJTfK9qu3e0tz+Y/88B7vo5yZoO7UaikplJEHORzG3QaBFQfkjhnL0Q=="
+        "hash": "sha512-wTzYulosJr/6nFnqGW7FrG3jfUUlEf8UjGA0/pyypJl42ExdVgC6xJgcXQ+V8QFn6niSG2Pb8+MIG1mZr2vczw=="
       }
     },
     "npm:@next/swc-darwin-x64": {
       "type": "npm",
       "name": "npm:@next/swc-darwin-x64",
       "data": {
-        "version": "16.0.6",
+        "version": "16.1.6",
         "packageName": "@next/swc-darwin-x64",
-        "hash": "sha512-LlLLNrK9WCIUkq2GciWDcquXYIf7vLxX8XE49gz7EncssZGL1vlHwgmURiJsUZAvk0HM1a8qb1ABDezsjAE/jw=="
+        "hash": "sha512-BLFPYPDO+MNJsiDWbeVzqvYd4NyuRrEYVB5k2N3JfWncuHAy2IVwMAOlVQDFjj+krkWzhY2apvmekMkfQR0CUQ=="
       }
     },
     "npm:@next/swc-linux-arm64-gnu": {
       "type": "npm",
       "name": "npm:@next/swc-linux-arm64-gnu",
       "data": {
-        "version": "16.0.6",
+        "version": "16.1.6",
         "packageName": "@next/swc-linux-arm64-gnu",
-        "hash": "sha512-r04NzmLSGGfG8EPXKVK72N5zDNnq9pa9el78LhdtqIC3zqKh74QfKHnk24DoK4PEs6eY7sIK/CnNpt30oc59kg=="
+        "hash": "sha512-OJYkCd5pj/QloBvoEcJ2XiMnlJkRv9idWA/j0ugSuA34gMT6f5b7vOiCQHVRpvStoZUknhl6/UxOXL4OwtdaBw=="
       }
     },
     "npm:@next/swc-linux-arm64-musl": {
       "type": "npm",
       "name": "npm:@next/swc-linux-arm64-musl",
       "data": {
-        "version": "16.0.6",
+        "version": "16.1.6",
         "packageName": "@next/swc-linux-arm64-musl",
-        "hash": "sha512-hfB/QV0hA7lbD1OJxp52wVDlpffUMfyxUB5ysZbb/pBC5iuhyLcEKSVQo56PFUUmUQzbMsAtUu6k2Gh9bBtWXA=="
+        "hash": "sha512-S4J2v+8tT3NIO9u2q+S0G5KdvNDjXfAv06OhfOzNDaBn5rw84DGXWndOEB7d5/x852A20sW1M56vhC/tRVbccQ=="
       }
     },
     "npm:@next/swc-linux-x64-gnu": {
       "type": "npm",
       "name": "npm:@next/swc-linux-x64-gnu",
       "data": {
-        "version": "16.0.6",
+        "version": "16.1.6",
         "packageName": "@next/swc-linux-x64-gnu",
-        "hash": "sha512-PZJushBgfvKhJBy01yXMdgL+l5XKr7uSn5jhOQXQXiH3iPT2M9iG64yHpPNGIKitKrHJInwmhPVGogZBAJOCPw=="
+        "hash": "sha512-2eEBDkFlMMNQnkTyPBhQOAyn2qMxyG2eE7GPH2WIDGEpEILcBPI/jdSv4t6xupSP+ot/jkfrCShLAa7+ZUPcJQ=="
       }
     },
     "npm:@next/swc-linux-x64-musl": {
       "type": "npm",
       "name": "npm:@next/swc-linux-x64-musl",
       "data": {
-        "version": "16.0.6",
+        "version": "16.1.6",
         "packageName": "@next/swc-linux-x64-musl",
-        "hash": "sha512-LqY76IojrH9yS5fyATjLzlOIOgwyzBuNRqXwVxcGfZ58DWNQSyfnLGlfF6shAEqjwlDNLh4Z+P0rnOI87Y9jEw=="
+        "hash": "sha512-oicJwRlyOoZXVlxmIMaTq7f8pN9QNbdes0q2FXfRsPhfCi8n8JmOZJm5oo1pwDaFbnnD421rVU409M3evFbIqg=="
       }
     },
     "npm:@next/swc-win32-arm64-msvc": {
       "type": "npm",
       "name": "npm:@next/swc-win32-arm64-msvc",
       "data": {
-        "version": "16.0.6",
+        "version": "16.1.6",
         "packageName": "@next/swc-win32-arm64-msvc",
-        "hash": "sha512-eIfSNNqAkj0tqKRf0u7BVjqylJCuabSrxnpSENY3YKApqwDMeAqYPmnOwmVe6DDl3Lvkbe7cJAyP6i9hQ5PmmQ=="
+        "hash": "sha512-gQmm8izDTPgs+DCWH22kcDmuUp7NyiJgEl18bcr8irXA5N2m2O+JQIr6f3ct42GOs9c0h8QF3L5SzIxcYAAXXw=="
       }
     },
     "npm:@next/swc-win32-x64-msvc": {
       "type": "npm",
       "name": "npm:@next/swc-win32-x64-msvc",
       "data": {
-        "version": "16.0.6",
+        "version": "16.1.6",
         "packageName": "@next/swc-win32-x64-msvc",
-        "hash": "sha512-QGs18P4OKdK9y2F3Th42+KGnwsc2iaThOe6jxQgP62kslUU4W+g6AzI6bdIn/pslhSfxjAMU5SjakfT5Fyo/xA=="
+        "hash": "sha512-NRfO39AIrzBnixKbjuo2YiYhB6o9d8v/ymU9m/Xk8cyVk+k7XylniXkHwjs4s70wedVffc6bQNbufk5v0xEm0A=="
       }
     },
     "npm:@noble/hashes": {
@@ -9589,9 +9589,9 @@
       "type": "npm",
       "name": "npm:next",
       "data": {
-        "version": "16.0.6",
+        "version": "16.1.6",
         "packageName": "next",
-        "hash": "sha512-2zOZ/4FdaAp5hfCU/RnzARlZzBsjaTZ/XjNQmuyYLluAPM7kcrbIkdeO2SL0Ysd1vnrSgU+GwugfeWX1cUCgCg=="
+        "hash": "sha512-hkyRkcu5x/41KoqnROkfTm2pZVbKxvbZRuNvKXLRXxs3VfyO0WhY50TQS40EuKO9SW3rBj/sF3WbVwDACeMZyw=="
       }
     },
     "npm:next-themes": {

@@ -12776,6 +12776,11 @@
   },
   {
     "source": "npm:next",
+    "target": "npm:baseline-browser-mapping",
+    "type": "static"
+  },
+  {
+    "source": "npm:next",
     "target": "npm:caniuse-lite",
     "type": "static"
   },

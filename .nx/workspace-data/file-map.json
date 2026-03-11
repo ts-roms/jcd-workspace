@@ -14,12 +14,48 @@
   "fileMap": {
     "nonProjectFiles": [
       {
+        "file": ".claude/agents/code-cleaner-linter.md",
+        "hash": "3267810340165430106"
+      },
+      {
+        "file": ".claude/settings.local.json",
+        "hash": "1506127434724108353"
+      },
+      {
         "file": ".editorconfig",
         "hash": "12313479055793642121"
       },
       {
+        "file": ".gitignore",
+        "hash": "3943368189484042247"
+      },
+      {
+        "file": ".npmrc",
+        "hash": "18085261541358865259"
+      },
+      {
+        "file": "Dockerfile.api",
+        "hash": "6539947847511461521"
+      },
+      {
+        "file": "Dockerfile.web",
+        "hash": "9505897936653212341"
+      },
+      {
+        "file": "RAILWAY.md",
+        "hash": "17682978313924689160"
+      },
+      {
+        "file": "nx.json",
+        "hash": "10327955749198812002"
+      },
+      {
         "file": "package-lock.json",
-        "hash": "11826115076568488275"
+        "hash": "9307833629453487151"
+      },
+      {
+        "file": "package.json",
+        "hash": "15995354406113263440"
       },
       {
         "file": "test-template.xlsx",
@@ -28,30 +64,6 @@
       {
         "file": "tsconfig.base.json",
         "hash": "14518493200127778559"
-      },
-      {
-        "file": ".npmrc",
-        "hash": "18085261541358865259"
-      },
-      {
-        "file": "package.json",
-        "hash": "15791296533029306918"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "3943368189484042247"
-      },
-      {
-        "file": "nx.json",
-        "hash": "10327955749198812002"
-      },
-      {
-        "file": ".claude/agents/code-cleaner-linter.md",
-        "hash": "3267810340165430106"
-      },
-      {
-        "file": ".claude/settings.local.json",
-        "hash": "1506127434724108353"
       }
     ],
     "projectFileMap": {
@@ -907,7 +919,7 @@
         },
         {
           "file": "apps/api/src/modules/personnel/dto/create-personnel.dto.ts",
-          "hash": "14061051649971379859",
+          "hash": "4343315494713495188",
           "deps": [
             "npm:class-validator"
           ]
@@ -938,7 +950,7 @@
         },
         {
           "file": "apps/api/src/modules/personnel/personnel.service.ts",
-          "hash": "17919449943385033451",
+          "hash": "2181993703008392732",
           "deps": [
             "npm:@nestjs/common",
             "npm:@nestjs/mongoose",
@@ -955,7 +967,7 @@
         },
         {
           "file": "apps/api/src/modules/personnel/schemas/personnel.schema.ts",
-          "hash": "9400937563404756678",
+          "hash": "3497546100482589159",
           "deps": [
             "npm:@nestjs/mongoose",
             "npm:mongoose"
@@ -1540,7 +1552,7 @@
         },
         {
           "file": "apps/web/app/admin/students/page.tsx",
-          "hash": "13975102374472968855",
+          "hash": "7696137655152593933",
           "deps": [
             "npm:react",
             "npm:@tanstack/react-query",
@@ -1581,7 +1593,7 @@
         },
         {
           "file": "apps/web/app/admin/users/[id]/edit/page.tsx",
-          "hash": "2074583365215399720",
+          "hash": "17230869348921838748",
           "deps": [
             "npm:react",
             "npm:next"
@@ -1589,7 +1601,7 @@
         },
         {
           "file": "apps/web/app/admin/users/create/page.tsx",
-          "hash": "5437134835952851911",
+          "hash": "3563561431040784329",
           "deps": [
             "npm:react",
             "npm:next",
@@ -2423,7 +2435,7 @@
         },
         {
           "file": "apps/web/next.config.ts",
-          "hash": "5307796689141320326",
+          "hash": "4741483211181202923",
           "deps": [
             "npm:next"
           ]
@@ -2509,7 +2521,7 @@
         },
         {
           "file": "apps/web/types/personnel.ts",
-          "hash": "2991073871184659980"
+          "hash": "6617755363354309332"
         },
         {
           "file": "apps/web/types/subject.ts",
@@ -2522,5 +2534,5 @@
       ]
     }
   },
-  "externalNodesHash": "9252701198381423138"
+  "externalNodesHash": "13716317310915880331"
 }

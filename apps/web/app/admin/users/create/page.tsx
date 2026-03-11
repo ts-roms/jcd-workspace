@@ -16,10 +16,18 @@ import {
   Checkbox,
   Label,
   PageHeader,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/app/components/ui';
 import { toast } from 'sonner';
 import { useAlert } from '@/lib/contexts/AlertContext';
 import { usePermission } from '@/lib/hooks/usePermission';
+import { useAuth } from '@/lib/contexts/AuthContext';
+import { getDepartments } from '@/lib/api/departments.api';
+import { Department } from '@/types/department';
 
 interface Role {
   _id: string;
@@ -31,29 +39,44 @@ interface Role {
 export default function CreateUserPage() {
   const router = useRouter();
   const alert = useAlert();
+  const { hasRole } = useAuth();
+  const isSuperAdmin = hasRole('superadmin');
   const canCreateUser = usePermission(PERMISSIONS.USERS_CREATE);
   const [roles, setRoles] = useState<Role[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     firstName: '',
     lastName: '',
-    roles: [] as string[]
+    roles: [] as string[],
+    department: '',
   });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchRoles();
-  }, []);
+    if (isSuperAdmin) {
+      fetchDepartments();
+    }
+  }, [isSuperAdmin]);
 
   const fetchRoles = async () => {
     try {
       const response = await axiosInstance.get('/roles');
-      // After interceptor, response.data is unwrapped
       setRoles(response.data.roles);
     } catch (error) {
       console.error('Error fetching roles:', error);
       alert.showError('Failed to load roles.', { title: 'Load Failed' });
+    }
+  };
+
+  const fetchDepartments = async () => {
+    try {
+      const data = await getDepartments();
+      setDepartments(data);
+    } catch (error) {
+      console.error('Error fetching departments:', error);
     }
   };
 
@@ -92,7 +115,11 @@ export default function CreateUserPage() {
         );
         return;
       }
-      await axiosInstance.post('/users', formData);
+      const submitData = { ...formData };
+      if (!submitData.department) {
+        delete (submitData as Record<string, unknown>).department;
+      }
+      await axiosInstance.post('/users', submitData);
       toast.success('User created successfully');
       router.push('/admin/users');
     } catch (err) {
@@ -178,6 +205,33 @@ export default function CreateUserPage() {
                   ))}
                 </div>
               </div>
+
+              {isSuperAdmin && (
+                <div className="space-y-3">
+                  <Label>Department</Label>
+                  <Select
+                    value={formData.department || 'none'}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        department: value === 'none' ? '' : value,
+                      }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Department" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">No Department</SelectItem>
+                      {departments.map((dept) => (
+                        <SelectItem key={dept._id} value={dept._id}>
+                          {dept.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
 
               <div className="flex gap-4 pt-4">
                 <Button

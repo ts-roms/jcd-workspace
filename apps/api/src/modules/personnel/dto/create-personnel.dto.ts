@@ -45,7 +45,7 @@ export class CreatePersonnelDto {
   gender: string;
 
   @IsString()
-  @IsIn(['Teaching', 'Non-Teaching'])
+  @IsIn(['Teaching', 'Non-Teaching', 'Student'])
   @IsOptional()
   personnelType?: string;
 

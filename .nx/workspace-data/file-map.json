@@ -14,36 +14,12 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": ".claude/agents/code-cleaner-linter.md",
-        "hash": "3267810340165430106"
-      },
-      {
-        "file": ".claude/settings.local.json",
-        "hash": "1506127434724108353"
-      },
-      {
         "file": ".editorconfig",
         "hash": "12313479055793642121"
       },
       {
-        "file": ".gitignore",
-        "hash": "3943368189484042247"
-      },
-      {
-        "file": ".npmrc",
-        "hash": "18085261541358865259"
-      },
-      {
-        "file": "nx.json",
-        "hash": "10327955749198812002"
-      },
-      {
         "file": "package-lock.json",
         "hash": "11826115076568488275"
-      },
-      {
-        "file": "package.json",
-        "hash": "9229286766320966119"
       },
       {
         "file": "test-template.xlsx",
@@ -52,1279 +28,33 @@
       {
         "file": "tsconfig.base.json",
         "hash": "14518493200127778559"
+      },
+      {
+        "file": ".npmrc",
+        "hash": "18085261541358865259"
+      },
+      {
+        "file": "package.json",
+        "hash": "15791296533029306918"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "3943368189484042247"
+      },
+      {
+        "file": "nx.json",
+        "hash": "10327955749198812002"
+      },
+      {
+        "file": ".claude/agents/code-cleaner-linter.md",
+        "hash": "3267810340165430106"
+      },
+      {
+        "file": ".claude/settings.local.json",
+        "hash": "1506127434724108353"
       }
     ],
     "projectFileMap": {
-      "web": [
-        {
-          "file": "apps/web/.claude/agents/ml-app-architect.md",
-          "hash": "914907221804675860"
-        },
-        {
-          "file": "apps/web/.claude/settings.local.json",
-          "hash": "13768911059121948416"
-        },
-        {
-          "file": "apps/web/.dockerignore",
-          "hash": "10292485035093217964"
-        },
-        {
-          "file": "apps/web/.env.example",
-          "hash": "5510325037896432867"
-        },
-        {
-          "file": "apps/web/.gitignore",
-          "hash": "5315037311929760417"
-        },
-        {
-          "file": "apps/web/Dockerfile",
-          "hash": "11776267687616467400"
-        },
-        {
-          "file": "apps/web/README.md",
-          "hash": "7050881425265736038"
-        },
-        {
-          "file": "apps/web/app/(auth)/forgot-password/page.tsx",
-          "hash": "8010233325427334759",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/(auth)/layout.tsx",
-          "hash": "13779736196297055923"
-        },
-        {
-          "file": "apps/web/app/(auth)/login/page.tsx",
-          "hash": "16142358747144808575",
-          "deps": [
-            "npm:react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/(auth)/register/page.tsx",
-          "hash": "3805749599092857022",
-          "deps": [
-            "npm:react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/departments/DepartmentForm.tsx",
-          "hash": "16985129066546862515",
-          "deps": [
-            "npm:react-hook-form",
-            "npm:@hookform/resolvers",
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/departments/DepartmentsTable.tsx",
-          "hash": "3166047947004388363",
-          "deps": [
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/departments/page.tsx",
-          "hash": "9891211464513206128",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/evaluation-forms/[id]/edit/page.tsx",
-          "hash": "1238279884419117292",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:@tanstack/react-query",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/evaluation-forms/[id]/print/page.tsx",
-          "hash": "3535007494303487840",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:@tanstack/react-query"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/evaluation-forms/[id]/responses/page.tsx",
-          "hash": "1164095406591514904",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:@tanstack/react-query",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/evaluation-forms/page.tsx",
-          "hash": "13370617587124298973",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:@tanstack/react-query",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/evaluation-forms/preview/page.tsx",
-          "hash": "8945886157847555427",
-          "deps": [
-            "npm:react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/help-guide/page.tsx",
-          "hash": "10638038987709981412",
-          "deps": [
-            "npm:next",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/layout.tsx",
-          "hash": "12568896077126308784",
-          "deps": [
-            "npm:next",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/non-teaching-evaluations/NonTeachingBulkUploadDialog.tsx",
-          "hash": "2242571597853017038",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:sonner",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/non-teaching-evaluations/NonTeachingEvaluationForm.tsx",
-          "hash": "5322012217622517228",
-          "deps": [
-            "npm:react-hook-form",
-            "npm:@hookform/resolvers",
-            "npm:zod",
-            "npm:@tanstack/react-query"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/non-teaching-evaluations/NonTeachingEvaluationsTable.tsx",
-          "hash": "8808258992616832245",
-          "deps": [
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/non-teaching-evaluations/page.tsx",
-          "hash": "9593424129503314874",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:sonner",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/performance-evaluations/BulkUploadDialog.tsx",
-          "hash": "11285792993261438860",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:sonner",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/performance-evaluations/PerformanceEvaluationForm.tsx",
-          "hash": "3882839936700434623",
-          "deps": [
-            "npm:react-hook-form",
-            "npm:@hookform/resolvers",
-            "npm:zod",
-            "npm:@tanstack/react-query"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/performance-evaluations/PerformanceEvaluationsTable.tsx",
-          "hash": "7160099956842414595",
-          "deps": [
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/performance-evaluations/page.tsx",
-          "hash": "9027993189165649504",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:sonner",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/permissions/page.tsx",
-          "hash": "14004960129131498141",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-icons",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/personnel/BulkUploadDialog.tsx",
-          "hash": "8164861996752371441",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:sonner",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/personnel/ExcellenceAnalytics.tsx",
-          "hash": "3149221410386859082",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/personnel/PersonnelForm.tsx",
-          "hash": "490815163366013583",
-          "deps": [
-            "npm:react-hook-form",
-            "npm:@hookform/resolvers",
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/personnel/PersonnelTable.tsx",
-          "hash": "14113539785904543731",
-          "deps": [
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/personnel/page.tsx",
-          "hash": "4797582680084439137",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:sonner",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/roles/page.tsx",
-          "hash": "3049068121594003486",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-icons",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/settings/page.tsx",
-          "hash": "378374031118982050",
-          "deps": [
-            "npm:react",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/students/page.tsx",
-          "hash": "13975102374472968855",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/subjects/SubjectForm.tsx",
-          "hash": "6104332294647257758",
-          "deps": [
-            "npm:react-hook-form",
-            "npm:@hookform/resolvers",
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/subjects/SubjectsTable.tsx",
-          "hash": "8139603433286251525",
-          "deps": [
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/subjects/page.tsx",
-          "hash": "5778218140644568917",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/system/page.tsx",
-          "hash": "6815120950029169024",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/users/[id]/edit/page.tsx",
-          "hash": "205344943412486849",
-          "deps": [
-            "npm:react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/users/create/page.tsx",
-          "hash": "5437134835952851911",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/admin/users/page.tsx",
-          "hash": "9981867983223184558",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:@radix-ui/react-icons",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/api/docs/route.ts",
-          "hash": "8343598991801241638",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/auth/LoginForm.tsx",
-          "hash": "2905915118310797319",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:@radix-ui/react-icons"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/auth/RegisterForm.tsx",
-          "hash": "5084825889323704844",
-          "deps": [
-            "npm:react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/guards/PermissionGate.tsx",
-          "hash": "9422160640565646161"
-        },
-        {
-          "file": "apps/web/app/components/guards/ProfileGuard.tsx",
-          "hash": "1511816064706610901",
-          "deps": [
-            "npm:react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/guards/ProtectedRoute.tsx",
-          "hash": "17577621311107704965",
-          "deps": [
-            "npm:next",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/guards/RoleGate.tsx",
-          "hash": "2493684793083318410"
-        },
-        {
-          "file": "apps/web/app/components/layouts/Footer.tsx",
-          "hash": "16462909650190040466"
-        },
-        {
-          "file": "apps/web/app/components/layouts/Header.tsx",
-          "hash": "12979396887648540786",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/layouts/Sidenav.tsx",
-          "hash": "17199294496828892575",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ml/AccuracyTrendChart.tsx",
-          "hash": "14454344466879503445",
-          "deps": [
-            "npm:react",
-            "npm:recharts"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ml/FeatureImportanceChart.tsx",
-          "hash": "7324845464260101420",
-          "deps": [
-            "npm:react",
-            "npm:recharts"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ml/PerformanceDistributionChart.tsx",
-          "hash": "10105412243423087704",
-          "deps": [
-            "npm:react",
-            "npm:recharts"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ml/PredictionCard.tsx",
-          "hash": "12463569692593970269",
-          "deps": [
-            "npm:react",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ml/RecommendationsList.tsx",
-          "hash": "878850477494159956",
-          "deps": [
-            "npm:react",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/providers/react-query-provider.tsx",
-          "hash": "12022871989852477259",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/providers/theme-provider.tsx",
-          "hash": "6441998381385588872",
-          "deps": [
-            "npm:react",
-            "npm:next-themes"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/ComboBox.tsx",
-          "hash": "17964355963801506381",
-          "deps": [
-            "npm:react",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/DataTable.tsx",
-          "hash": "13196192708309481239"
-        },
-        {
-          "file": "apps/web/app/components/ui/EmptyState.tsx",
-          "hash": "10968801302321479704"
-        },
-        {
-          "file": "apps/web/app/components/ui/ErrorDisplay.tsx",
-          "hash": "1130373190126520053"
-        },
-        {
-          "file": "apps/web/app/components/ui/FormField.tsx",
-          "hash": "9883651061784051797"
-        },
-        {
-          "file": "apps/web/app/components/ui/LoadingSkeleton.tsx",
-          "hash": "15342226373712053285"
-        },
-        {
-          "file": "apps/web/app/components/ui/PageHeader.tsx",
-          "hash": "3748938556456261898"
-        },
-        {
-          "file": "apps/web/app/components/ui/accordion.tsx",
-          "hash": "4051297820765862396",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-accordion",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/alert.tsx",
-          "hash": "12053058312868716629",
-          "deps": [
-            "npm:react",
-            "npm:class-variance-authority"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/avatar.tsx",
-          "hash": "12979174226257866157",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-avatar"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/badge.tsx",
-          "hash": "13751344573345743887",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-slot",
-            "npm:class-variance-authority"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/button.tsx",
-          "hash": "7537161150348943277",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-slot",
-            "npm:class-variance-authority"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/card.tsx",
-          "hash": "1066166560763247819",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/checkbox.tsx",
-          "hash": "11858802833299321807",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-checkbox",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/command.tsx",
-          "hash": "7863072390744481553",
-          "deps": [
-            "npm:react",
-            "npm:cmdk",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/dialog.tsx",
-          "hash": "9418750744707546320",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-dialog",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/dropdown-menu.tsx",
-          "hash": "15745888224830418655",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-dropdown-menu",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/form.tsx",
-          "hash": "11452437071502303449",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-label",
-            "npm:@radix-ui/react-slot",
-            "npm:react-hook-form"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/index.ts",
-          "hash": "16585492790715168441"
-        },
-        {
-          "file": "apps/web/app/components/ui/input.tsx",
-          "hash": "7559249078053866659",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/label.tsx",
-          "hash": "13820603927334681774",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-label"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/pagination.tsx",
-          "hash": "11060008130089567794",
-          "deps": [
-            "npm:react",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/popover.tsx",
-          "hash": "18063486277314170045",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-popover"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/progress.tsx",
-          "hash": "8375198016801900196",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-progress"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/scroll-area.tsx",
-          "hash": "14400165947169583196",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-scroll-area"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/select.tsx",
-          "hash": "14239235928970389845",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-select",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/separator.tsx",
-          "hash": "1612501407499403398",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-separator"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/sheet.tsx",
-          "hash": "2770243628096193358",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-dialog",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/skeleton.tsx",
-          "hash": "512398262418001779"
-        },
-        {
-          "file": "apps/web/app/components/ui/sonner.tsx",
-          "hash": "13943953257085822601",
-          "deps": [
-            "npm:lucide-react",
-            "npm:next-themes",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/switch.tsx",
-          "hash": "11137334054656769654",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-switch"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/table.tsx",
-          "hash": "3457743304035339138",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/tabs.tsx",
-          "hash": "14992079743428127530",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-tabs"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/textarea.tsx",
-          "hash": "760432194237246985",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/theme-toggle.tsx",
-          "hash": "3210753948464749844",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-icons",
-            "npm:next-themes"
-          ]
-        },
-        {
-          "file": "apps/web/app/components/ui/tooltip.tsx",
-          "hash": "2201590076125866835",
-          "deps": [
-            "npm:react",
-            "npm:@radix-ui/react-tooltip"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/UserDashboard.tsx",
-          "hash": "14274387195249953442",
-          "deps": [
-            "npm:@tanstack/react-query",
-            "npm:lucide-react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/activity/page.tsx",
-          "hash": "14516097282773547276",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/analytics/page.tsx",
-          "hash": "4322201570452548248",
-          "deps": [
-            "npm:@tanstack/react-query",
-            "npm:recharts",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/complete-profile/page.tsx",
-          "hash": "4867195342324439968",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:@tanstack/react-query",
-            "npm:lucide-react",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/evaluations/[id]/fill/page.tsx",
-          "hash": "14753380001338839400",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:@tanstack/react-query",
-            "npm:lucide-react",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/evaluations/page.tsx",
-          "hash": "11693307631078877635",
-          "deps": [
-            "npm:@tanstack/react-query",
-            "npm:lucide-react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/layout.tsx",
-          "hash": "12007024476733400755"
-        },
-        {
-          "file": "apps/web/app/dashboard/ml/algorithm/page.tsx",
-          "hash": "14554299024260217018",
-          "deps": [
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/ml/analytics/page.tsx",
-          "hash": "604312279777856626",
-          "deps": [
-            "npm:@tanstack/react-query",
-            "npm:recharts"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/ml/manual-prediction/page.tsx",
-          "hash": "14976092908976482446",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:sonner",
-            "npm:axios",
-            "npm:@tanstack/react-query",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/ml/predictions/PredictionResultDialog.tsx",
-          "hash": "14662733946203032467",
-          "deps": [
-            "npm:sonner",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/ml/predictions/page.tsx",
-          "hash": "15271654770977665128",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:sonner",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/ml/training/page.tsx",
-          "hash": "18311998261068351748",
-          "deps": [
-            "npm:react",
-            "npm:@tanstack/react-query",
-            "npm:sonner",
-            "npm:lucide-react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/page.tsx",
-          "hash": "2526185038341982793",
-          "deps": [
-            "npm:@tanstack/react-query",
-            "npm:recharts",
-            "npm:lucide-react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/dashboard/projects/page.tsx",
-          "hash": "15604041078624162706"
-        },
-        {
-          "file": "apps/web/app/dashboard/settings/page.tsx",
-          "hash": "11365626809293565299"
-        },
-        {
-          "file": "apps/web/app/favicon.ico",
-          "hash": "9157999678830540297"
-        },
-        {
-          "file": "apps/web/app/globals.css",
-          "hash": "4896981386717407851"
-        },
-        {
-          "file": "apps/web/app/layout.tsx",
-          "hash": "11961292958094761859",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/app/page.tsx",
-          "hash": "14855036207647978117",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/components.json",
-          "hash": "11503424862786147251"
-        },
-        {
-          "file": "apps/web/config/permissions.ts",
-          "hash": "17682615143370050810"
-        },
-        {
-          "file": "apps/web/config/roles.ts",
-          "hash": "17367459798318352643"
-        },
-        {
-          "file": "apps/web/config/routes.ts",
-          "hash": "15918780538471452148"
-        },
-        {
-          "file": "apps/web/cookies-new.txt",
-          "hash": "15243411188916157624"
-        },
-        {
-          "file": "apps/web/cookies-refreshed.txt",
-          "hash": "5944886049928124251"
-        },
-        {
-          "file": "apps/web/cookies-test.txt",
-          "hash": "4282194617897748988"
-        },
-        {
-          "file": "apps/web/cookies.txt",
-          "hash": "14851897442135537942"
-        },
-        {
-          "file": "apps/web/docs/ALGORITHM_MODIFICATION_GUIDE.md",
-          "hash": "7309077718484095166"
-        },
-        {
-          "file": "apps/web/docs/ARCHITECTURE.md",
-          "hash": "2138355567540970249"
-        },
-        {
-          "file": "apps/web/docs/BULK_UPLOAD_COMPLETE.md",
-          "hash": "15333903453949516783"
-        },
-        {
-          "file": "apps/web/docs/BULK_UPLOAD_FRONTEND.md",
-          "hash": "14198060644149543709"
-        },
-        {
-          "file": "apps/web/docs/BULK_UPLOAD_GUIDE.md",
-          "hash": "15590613090926584594"
-        },
-        {
-          "file": "apps/web/docs/CLEANUP_SUMMARY.md",
-          "hash": "2567030224616537801"
-        },
-        {
-          "file": "apps/web/docs/DEFAULT_TRAINING_FILE.md",
-          "hash": "6394676772844827442"
-        },
-        {
-          "file": "apps/web/docs/DEVELOPER_GUIDE.md",
-          "hash": "2781192908560234587"
-        },
-        {
-          "file": "apps/web/docs/EVALUATION_RESPONSE_AGGREGATION.md",
-          "hash": "14409750890546583939"
-        },
-        {
-          "file": "apps/web/docs/FIXES_SUMMARY.md",
-          "hash": "10997703333039554639"
-        },
-        {
-          "file": "apps/web/docs/METRIC_SYNC_FEATURE.md",
-          "hash": "5574624875582497383"
-        },
-        {
-          "file": "apps/web/docs/ML_SPECIFICATION.md",
-          "hash": "8952889877571032784"
-        },
-        {
-          "file": "apps/web/docs/README_RBAC.md",
-          "hash": "6556576103020659055"
-        },
-        {
-          "file": "apps/web/docs/ROLES_AND_PERMISSIONS.md",
-          "hash": "823615681527028514"
-        },
-        {
-          "file": "apps/web/docs/TROUBLESHOOTING.md",
-          "hash": "16580246834482285007"
-        },
-        {
-          "file": "apps/web/eslint.config.mjs",
-          "hash": "5072742284577310158",
-          "deps": [
-            "npm:eslint",
-            "npm:eslint-config-next"
-          ]
-        },
-        {
-          "file": "apps/web/install.cmd",
-          "hash": "13207197342230170624"
-        },
-        {
-          "file": "apps/web/lib/api/audit-logs.api.ts",
-          "hash": "17032503072200082853"
-        },
-        {
-          "file": "apps/web/lib/api/auth.api.ts",
-          "hash": "10781259191585079943"
-        },
-        {
-          "file": "apps/web/lib/api/axios.ts",
-          "hash": "7267853534860842133",
-          "deps": [
-            "npm:axios"
-          ]
-        },
-        {
-          "file": "apps/web/lib/api/departments.api.ts",
-          "hash": "9616151631563989112"
-        },
-        {
-          "file": "apps/web/lib/api/evaluation-form-responses.api.ts",
-          "hash": "11023772574718785077"
-        },
-        {
-          "file": "apps/web/lib/api/evaluation-forms.api.ts",
-          "hash": "16403611037639359982"
-        },
-        {
-          "file": "apps/web/lib/api/index.ts",
-          "hash": "11614651551984046771"
-        },
-        {
-          "file": "apps/web/lib/api/ml.api.ts",
-          "hash": "1323662724368833948"
-        },
-        {
-          "file": "apps/web/lib/api/non-teaching-evaluations.api.ts",
-          "hash": "2956141392125576151"
-        },
-        {
-          "file": "apps/web/lib/api/performance-evaluations.api.ts",
-          "hash": "6340404941813574545"
-        },
-        {
-          "file": "apps/web/lib/api/permissions.api.ts",
-          "hash": "15958288259228145044"
-        },
-        {
-          "file": "apps/web/lib/api/personnel.api.ts",
-          "hash": "5631870036720472787"
-        },
-        {
-          "file": "apps/web/lib/api/roles.api.ts",
-          "hash": "10196497416270613518"
-        },
-        {
-          "file": "apps/web/lib/api/settings.api.ts",
-          "hash": "9653784833421192065"
-        },
-        {
-          "file": "apps/web/lib/api/subjects.api.ts",
-          "hash": "15234157965602802230"
-        },
-        {
-          "file": "apps/web/lib/api/users.api.ts",
-          "hash": "1680665732577554706"
-        },
-        {
-          "file": "apps/web/lib/contexts/AlertContext.tsx",
-          "hash": "76527757495405375",
-          "deps": [
-            "npm:react",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/lib/contexts/AuthContext.tsx",
-          "hash": "16090471567197299514",
-          "deps": [
-            "npm:react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/lib/contexts/HeaderContext.tsx",
-          "hash": "10017140370805208596",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/lib/contexts/SessionAlertContext.tsx",
-          "hash": "873501364577212987",
-          "deps": [
-            "npm:react",
-            "npm:next",
-            "npm:lucide-react"
-          ]
-        },
-        {
-          "file": "apps/web/lib/contexts/SettingsContext.tsx",
-          "hash": "10724216188789767742",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/lib/hooks/useAdminOrSystemAdmin.ts",
-          "hash": "10356330410751465320"
-        },
-        {
-          "file": "apps/web/lib/hooks/useApiData.ts",
-          "hash": "4235074988974736122",
-          "deps": [
-            "npm:@tanstack/react-query",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/lib/hooks/useIdleTimeout.ts",
-          "hash": "5824332738011987950",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/web/lib/hooks/useMLAnalytics.ts",
-          "hash": "4501115623533904221",
-          "deps": [
-            "npm:@tanstack/react-query"
-          ]
-        },
-        {
-          "file": "apps/web/lib/hooks/useMLPredictions.ts",
-          "hash": "8508175580906991025",
-          "deps": [
-            "npm:@tanstack/react-query",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/lib/hooks/useMLTraining.ts",
-          "hash": "9040539004256295700",
-          "deps": [
-            "npm:@tanstack/react-query",
-            "npm:sonner"
-          ]
-        },
-        {
-          "file": "apps/web/lib/hooks/usePermission.ts",
-          "hash": "13842652327484038800"
-        },
-        {
-          "file": "apps/web/lib/hooks/useRole.ts",
-          "hash": "8380055225394982293"
-        },
-        {
-          "file": "apps/web/lib/hooks/useSystemAdmin.ts",
-          "hash": "7098387102990686466"
-        },
-        {
-          "file": "apps/web/lib/utils.ts",
-          "hash": "12218829721157087250",
-          "deps": [
-            "npm:clsx",
-            "npm:tailwind-merge"
-          ]
-        },
-        {
-          "file": "apps/web/next.config.ts",
-          "hash": "5307796689141320326",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/package.json",
-          "hash": "11785920967167412872"
-        },
-        {
-          "file": "apps/web/postcss.config.mjs",
-          "hash": "16325831446291273164"
-        },
-        {
-          "file": "apps/web/project.json",
-          "hash": "2881164588624028648"
-        },
-        {
-          "file": "apps/web/proxy.ts",
-          "hash": "483052922870407115",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/web/public/file.svg",
-          "hash": "15617830351863523835"
-        },
-        {
-          "file": "apps/web/public/globe.svg",
-          "hash": "9134466864871335697"
-        },
-        {
-          "file": "apps/web/public/next.svg",
-          "hash": "8300767200008744458"
-        },
-        {
-          "file": "apps/web/public/smcc-logo.svg",
-          "hash": "1375064318809370668"
-        },
-        {
-          "file": "apps/web/public/vercel.svg",
-          "hash": "3007623926711696394"
-        },
-        {
-          "file": "apps/web/public/window.svg",
-          "hash": "16677869292061012332"
-        },
-        {
-          "file": "apps/web/tsconfig.json",
-          "hash": "2727220773159863513"
-        },
-        {
-          "file": "apps/web/types/auth.types.ts",
-          "hash": "9199092759490469724"
-        },
-        {
-          "file": "apps/web/types/department.ts",
-          "hash": "9560836488100112364"
-        },
-        {
-          "file": "apps/web/types/evaluation-form-response.ts",
-          "hash": "17874101770842385079"
-        },
-        {
-          "file": "apps/web/types/evaluation-form.ts",
-          "hash": "7762828370048841552"
-        },
-        {
-          "file": "apps/web/types/ml.types.ts",
-          "hash": "672068156073684806"
-        },
-        {
-          "file": "apps/web/types/non-teaching-evaluation.ts",
-          "hash": "16006943482900310734"
-        },
-        {
-          "file": "apps/web/types/performance-evaluation.ts",
-          "hash": "10287133775133254904"
-        },
-        {
-          "file": "apps/web/types/permission.types.ts",
-          "hash": "1565760504030383740"
-        },
-        {
-          "file": "apps/web/types/personnel.ts",
-          "hash": "2991073871184659980"
-        },
-        {
-          "file": "apps/web/types/subject.ts",
-          "hash": "8664618046756082407"
-        },
-        {
-          "file": "apps/web/types/ui.types.ts",
-          "hash": "5538020091548005025"
-        }
-      ],
       "api": [
         {
           "file": "apps/api/.dockerignore",
@@ -1455,7 +185,7 @@
         },
         {
           "file": "apps/api/src/app.module.ts",
-          "hash": "1117204882769494258",
+          "hash": "13175208644922268642",
           "deps": [
             "npm:@nestjs/common",
             "npm:@nestjs/config",
@@ -1741,7 +471,7 @@
         },
         {
           "file": "apps/api/src/modules/auth/auth.controller.ts",
-          "hash": "14962264117546636519",
+          "hash": "13951630858857758167",
           "deps": [
             "npm:@nestjs/common",
             "npm:@nestjs/swagger",
@@ -1975,7 +705,7 @@
         },
         {
           "file": "apps/api/src/modules/ml/ml.controller.ts",
-          "hash": "5592459359902345645",
+          "hash": "12936630365875499581",
           "deps": [
             "npm:@nestjs/common",
             "npm:@nestjs/platform-express"
@@ -1991,7 +721,7 @@
         },
         {
           "file": "apps/api/src/modules/ml/ml.service.ts",
-          "hash": "4908027336998726361",
+          "hash": "9809023055934765186",
           "deps": [
             "npm:@nestjs/common",
             "npm:@nestjs/schedule",
@@ -2526,6 +1256,1268 @@
         {
           "file": "apps/api/tsconfig.json",
           "hash": "10839802465427973230"
+        }
+      ],
+      "web": [
+        {
+          "file": "apps/web/.dockerignore",
+          "hash": "10292485035093217964"
+        },
+        {
+          "file": "apps/web/.env.example",
+          "hash": "5510325037896432867"
+        },
+        {
+          "file": "apps/web/.gitignore",
+          "hash": "5315037311929760417"
+        },
+        {
+          "file": "apps/web/Dockerfile",
+          "hash": "11776267687616467400"
+        },
+        {
+          "file": "apps/web/README.md",
+          "hash": "7050881425265736038"
+        },
+        {
+          "file": "apps/web/app/(auth)/forgot-password/page.tsx",
+          "hash": "8010233325427334759",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/(auth)/layout.tsx",
+          "hash": "13779736196297055923"
+        },
+        {
+          "file": "apps/web/app/(auth)/login/page.tsx",
+          "hash": "16142358747144808575",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/(auth)/register/page.tsx",
+          "hash": "3805749599092857022",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/departments/DepartmentForm.tsx",
+          "hash": "16985129066546862515",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:@hookform/resolvers",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/departments/DepartmentsTable.tsx",
+          "hash": "3166047947004388363",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/departments/page.tsx",
+          "hash": "9891211464513206128",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/evaluation-forms/[id]/edit/page.tsx",
+          "hash": "1238279884419117292",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/evaluation-forms/[id]/print/page.tsx",
+          "hash": "3535007494303487840",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/evaluation-forms/[id]/responses/page.tsx",
+          "hash": "1164095406591514904",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/evaluation-forms/page.tsx",
+          "hash": "13370617587124298973",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/evaluation-forms/preview/page.tsx",
+          "hash": "8945886157847555427",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/help-guide/page.tsx",
+          "hash": "10638038987709981412",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/layout.tsx",
+          "hash": "12568896077126308784",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/non-teaching-evaluations/NonTeachingBulkUploadDialog.tsx",
+          "hash": "2242571597853017038",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/non-teaching-evaluations/NonTeachingEvaluationForm.tsx",
+          "hash": "5322012217622517228",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:@hookform/resolvers",
+            "npm:zod",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/non-teaching-evaluations/NonTeachingEvaluationsTable.tsx",
+          "hash": "8808258992616832245",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/non-teaching-evaluations/page.tsx",
+          "hash": "9593424129503314874",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/performance-evaluations/BulkUploadDialog.tsx",
+          "hash": "11285792993261438860",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/performance-evaluations/PerformanceEvaluationForm.tsx",
+          "hash": "3882839936700434623",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:@hookform/resolvers",
+            "npm:zod",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/performance-evaluations/PerformanceEvaluationsTable.tsx",
+          "hash": "7160099956842414595",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/performance-evaluations/page.tsx",
+          "hash": "9027993189165649504",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/permissions/page.tsx",
+          "hash": "14004960129131498141",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-icons",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/personnel/BulkUploadDialog.tsx",
+          "hash": "8164861996752371441",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/personnel/ExcellenceAnalytics.tsx",
+          "hash": "3149221410386859082",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/personnel/PersonnelForm.tsx",
+          "hash": "490815163366013583",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:@hookform/resolvers",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/personnel/PersonnelTable.tsx",
+          "hash": "14113539785904543731",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/personnel/page.tsx",
+          "hash": "15805789170434631131",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/roles/page.tsx",
+          "hash": "3049068121594003486",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-icons",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/settings/page.tsx",
+          "hash": "378374031118982050",
+          "deps": [
+            "npm:react",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/students/page.tsx",
+          "hash": "13975102374472968855",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/subjects/SubjectForm.tsx",
+          "hash": "6104332294647257758",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:@hookform/resolvers",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/subjects/SubjectsTable.tsx",
+          "hash": "8139603433286251525",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/subjects/page.tsx",
+          "hash": "5778218140644568917",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/system/page.tsx",
+          "hash": "6815120950029169024",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/users/[id]/edit/page.tsx",
+          "hash": "2074583365215399720",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/users/create/page.tsx",
+          "hash": "5437134835952851911",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/admin/users/page.tsx",
+          "hash": "9981867983223184558",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@radix-ui/react-icons",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/api/docs/route.ts",
+          "hash": "8343598991801241638",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/auth/LoginForm.tsx",
+          "hash": "2905915118310797319",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@radix-ui/react-icons"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/auth/RegisterForm.tsx",
+          "hash": "5084825889323704844",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/guards/PermissionGate.tsx",
+          "hash": "9422160640565646161"
+        },
+        {
+          "file": "apps/web/app/components/guards/ProfileGuard.tsx",
+          "hash": "1511816064706610901",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/guards/ProtectedRoute.tsx",
+          "hash": "17577621311107704965",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/guards/RoleGate.tsx",
+          "hash": "2493684793083318410"
+        },
+        {
+          "file": "apps/web/app/components/layouts/Footer.tsx",
+          "hash": "16462909650190040466"
+        },
+        {
+          "file": "apps/web/app/components/layouts/Header.tsx",
+          "hash": "12979396887648540786",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/layouts/Sidenav.tsx",
+          "hash": "17199294496828892575",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ml/AccuracyTrendChart.tsx",
+          "hash": "14454344466879503445",
+          "deps": [
+            "npm:react",
+            "npm:recharts"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ml/FeatureImportanceChart.tsx",
+          "hash": "7324845464260101420",
+          "deps": [
+            "npm:react",
+            "npm:recharts"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ml/PerformanceDistributionChart.tsx",
+          "hash": "10105412243423087704",
+          "deps": [
+            "npm:react",
+            "npm:recharts"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ml/PredictionCard.tsx",
+          "hash": "12463569692593970269",
+          "deps": [
+            "npm:react",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ml/RecommendationsList.tsx",
+          "hash": "878850477494159956",
+          "deps": [
+            "npm:react",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/providers/react-query-provider.tsx",
+          "hash": "12022871989852477259",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/providers/theme-provider.tsx",
+          "hash": "6441998381385588872",
+          "deps": [
+            "npm:react",
+            "npm:next-themes"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/ComboBox.tsx",
+          "hash": "17964355963801506381",
+          "deps": [
+            "npm:react",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/DataTable.tsx",
+          "hash": "13196192708309481239"
+        },
+        {
+          "file": "apps/web/app/components/ui/EmptyState.tsx",
+          "hash": "10968801302321479704"
+        },
+        {
+          "file": "apps/web/app/components/ui/ErrorDisplay.tsx",
+          "hash": "1130373190126520053"
+        },
+        {
+          "file": "apps/web/app/components/ui/FormField.tsx",
+          "hash": "9883651061784051797"
+        },
+        {
+          "file": "apps/web/app/components/ui/LoadingSkeleton.tsx",
+          "hash": "15342226373712053285"
+        },
+        {
+          "file": "apps/web/app/components/ui/PageHeader.tsx",
+          "hash": "3748938556456261898"
+        },
+        {
+          "file": "apps/web/app/components/ui/accordion.tsx",
+          "hash": "4051297820765862396",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-accordion",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/alert.tsx",
+          "hash": "12053058312868716629",
+          "deps": [
+            "npm:react",
+            "npm:class-variance-authority"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/avatar.tsx",
+          "hash": "12979174226257866157",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-avatar"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/badge.tsx",
+          "hash": "13751344573345743887",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-slot",
+            "npm:class-variance-authority"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/button.tsx",
+          "hash": "7537161150348943277",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-slot",
+            "npm:class-variance-authority"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/card.tsx",
+          "hash": "1066166560763247819",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/checkbox.tsx",
+          "hash": "11858802833299321807",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-checkbox",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/command.tsx",
+          "hash": "7863072390744481553",
+          "deps": [
+            "npm:react",
+            "npm:cmdk",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/dialog.tsx",
+          "hash": "9418750744707546320",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-dialog",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/dropdown-menu.tsx",
+          "hash": "15745888224830418655",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-dropdown-menu",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/form.tsx",
+          "hash": "11452437071502303449",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-label",
+            "npm:@radix-ui/react-slot",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/index.ts",
+          "hash": "16585492790715168441"
+        },
+        {
+          "file": "apps/web/app/components/ui/input.tsx",
+          "hash": "7559249078053866659",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/label.tsx",
+          "hash": "13820603927334681774",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-label"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/pagination.tsx",
+          "hash": "11060008130089567794",
+          "deps": [
+            "npm:react",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/popover.tsx",
+          "hash": "18063486277314170045",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-popover"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/progress.tsx",
+          "hash": "8375198016801900196",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-progress"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/scroll-area.tsx",
+          "hash": "14400165947169583196",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-scroll-area"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/select.tsx",
+          "hash": "14239235928970389845",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-select",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/separator.tsx",
+          "hash": "1612501407499403398",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-separator"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/sheet.tsx",
+          "hash": "2770243628096193358",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-dialog",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/skeleton.tsx",
+          "hash": "512398262418001779"
+        },
+        {
+          "file": "apps/web/app/components/ui/sonner.tsx",
+          "hash": "13943953257085822601",
+          "deps": [
+            "npm:lucide-react",
+            "npm:next-themes",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/switch.tsx",
+          "hash": "11137334054656769654",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-switch"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/table.tsx",
+          "hash": "3457743304035339138",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/tabs.tsx",
+          "hash": "14992079743428127530",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-tabs"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/textarea.tsx",
+          "hash": "760432194237246985",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/theme-toggle.tsx",
+          "hash": "3210753948464749844",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-icons",
+            "npm:next-themes"
+          ]
+        },
+        {
+          "file": "apps/web/app/components/ui/tooltip.tsx",
+          "hash": "2201590076125866835",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-tooltip"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/UserDashboard.tsx",
+          "hash": "14274387195249953442",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:lucide-react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/activity/page.tsx",
+          "hash": "14516097282773547276",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/analytics/page.tsx",
+          "hash": "8790482425191161143",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:recharts",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/complete-profile/page.tsx",
+          "hash": "4867195342324439968",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query",
+            "npm:lucide-react",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/evaluations/[id]/fill/page.tsx",
+          "hash": "14753380001338839400",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:@tanstack/react-query",
+            "npm:lucide-react",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/evaluations/page.tsx",
+          "hash": "11693307631078877635",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:lucide-react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/layout.tsx",
+          "hash": "12007024476733400755"
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/algorithm/page.tsx",
+          "hash": "14554299024260217018",
+          "deps": [
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/analytics/page.tsx",
+          "hash": "11110682028703850860",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:recharts"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/manual-prediction/page.tsx",
+          "hash": "14976092908976482446",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:sonner",
+            "npm:axios",
+            "npm:@tanstack/react-query",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/predictions/PredictionResultDialog.tsx",
+          "hash": "14662733946203032467",
+          "deps": [
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/predictions/page.tsx",
+          "hash": "15271654770977665128",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/ml/training/page.tsx",
+          "hash": "18311998261068351748",
+          "deps": [
+            "npm:react",
+            "npm:@tanstack/react-query",
+            "npm:sonner",
+            "npm:lucide-react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/page.tsx",
+          "hash": "2526185038341982793",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:recharts",
+            "npm:lucide-react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/dashboard/projects/page.tsx",
+          "hash": "15604041078624162706"
+        },
+        {
+          "file": "apps/web/app/dashboard/settings/page.tsx",
+          "hash": "11365626809293565299"
+        },
+        {
+          "file": "apps/web/app/favicon.ico",
+          "hash": "9157999678830540297"
+        },
+        {
+          "file": "apps/web/app/globals.css",
+          "hash": "4896981386717407851"
+        },
+        {
+          "file": "apps/web/app/layout.tsx",
+          "hash": "11961292958094761859",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/app/page.tsx",
+          "hash": "14855036207647978117",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/components.json",
+          "hash": "11503424862786147251"
+        },
+        {
+          "file": "apps/web/config/permissions.ts",
+          "hash": "17682615143370050810"
+        },
+        {
+          "file": "apps/web/config/roles.ts",
+          "hash": "17367459798318352643"
+        },
+        {
+          "file": "apps/web/config/routes.ts",
+          "hash": "15918780538471452148"
+        },
+        {
+          "file": "apps/web/cookies-new.txt",
+          "hash": "15243411188916157624"
+        },
+        {
+          "file": "apps/web/cookies-refreshed.txt",
+          "hash": "5944886049928124251"
+        },
+        {
+          "file": "apps/web/cookies-test.txt",
+          "hash": "4282194617897748988"
+        },
+        {
+          "file": "apps/web/cookies.txt",
+          "hash": "14851897442135537942"
+        },
+        {
+          "file": "apps/web/docs/ALGORITHM_MODIFICATION_GUIDE.md",
+          "hash": "7309077718484095166"
+        },
+        {
+          "file": "apps/web/docs/ARCHITECTURE.md",
+          "hash": "2138355567540970249"
+        },
+        {
+          "file": "apps/web/docs/BULK_UPLOAD_COMPLETE.md",
+          "hash": "15333903453949516783"
+        },
+        {
+          "file": "apps/web/docs/BULK_UPLOAD_FRONTEND.md",
+          "hash": "14198060644149543709"
+        },
+        {
+          "file": "apps/web/docs/BULK_UPLOAD_GUIDE.md",
+          "hash": "15590613090926584594"
+        },
+        {
+          "file": "apps/web/docs/CLEANUP_SUMMARY.md",
+          "hash": "2567030224616537801"
+        },
+        {
+          "file": "apps/web/docs/DEFAULT_TRAINING_FILE.md",
+          "hash": "6394676772844827442"
+        },
+        {
+          "file": "apps/web/docs/DEVELOPER_GUIDE.md",
+          "hash": "2781192908560234587"
+        },
+        {
+          "file": "apps/web/docs/EVALUATION_RESPONSE_AGGREGATION.md",
+          "hash": "14409750890546583939"
+        },
+        {
+          "file": "apps/web/docs/FIXES_SUMMARY.md",
+          "hash": "10997703333039554639"
+        },
+        {
+          "file": "apps/web/docs/METRIC_SYNC_FEATURE.md",
+          "hash": "5574624875582497383"
+        },
+        {
+          "file": "apps/web/docs/ML_SPECIFICATION.md",
+          "hash": "8952889877571032784"
+        },
+        {
+          "file": "apps/web/docs/README_RBAC.md",
+          "hash": "6556576103020659055"
+        },
+        {
+          "file": "apps/web/docs/ROLES_AND_PERMISSIONS.md",
+          "hash": "823615681527028514"
+        },
+        {
+          "file": "apps/web/docs/TROUBLESHOOTING.md",
+          "hash": "16580246834482285007"
+        },
+        {
+          "file": "apps/web/eslint.config.mjs",
+          "hash": "5072742284577310158",
+          "deps": [
+            "npm:eslint",
+            "npm:eslint-config-next"
+          ]
+        },
+        {
+          "file": "apps/web/install.cmd",
+          "hash": "13207197342230170624"
+        },
+        {
+          "file": "apps/web/lib/api/audit-logs.api.ts",
+          "hash": "17032503072200082853"
+        },
+        {
+          "file": "apps/web/lib/api/auth.api.ts",
+          "hash": "10781259191585079943"
+        },
+        {
+          "file": "apps/web/lib/api/axios.ts",
+          "hash": "7267853534860842133",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/web/lib/api/departments.api.ts",
+          "hash": "9616151631563989112"
+        },
+        {
+          "file": "apps/web/lib/api/evaluation-form-responses.api.ts",
+          "hash": "11023772574718785077"
+        },
+        {
+          "file": "apps/web/lib/api/evaluation-forms.api.ts",
+          "hash": "16403611037639359982"
+        },
+        {
+          "file": "apps/web/lib/api/index.ts",
+          "hash": "11614651551984046771"
+        },
+        {
+          "file": "apps/web/lib/api/ml.api.ts",
+          "hash": "1323662724368833948"
+        },
+        {
+          "file": "apps/web/lib/api/non-teaching-evaluations.api.ts",
+          "hash": "2956141392125576151"
+        },
+        {
+          "file": "apps/web/lib/api/performance-evaluations.api.ts",
+          "hash": "6340404941813574545"
+        },
+        {
+          "file": "apps/web/lib/api/permissions.api.ts",
+          "hash": "15958288259228145044"
+        },
+        {
+          "file": "apps/web/lib/api/personnel.api.ts",
+          "hash": "5631870036720472787"
+        },
+        {
+          "file": "apps/web/lib/api/roles.api.ts",
+          "hash": "10196497416270613518"
+        },
+        {
+          "file": "apps/web/lib/api/settings.api.ts",
+          "hash": "9653784833421192065"
+        },
+        {
+          "file": "apps/web/lib/api/subjects.api.ts",
+          "hash": "15234157965602802230"
+        },
+        {
+          "file": "apps/web/lib/api/users.api.ts",
+          "hash": "1680665732577554706"
+        },
+        {
+          "file": "apps/web/lib/contexts/AlertContext.tsx",
+          "hash": "76527757495405375",
+          "deps": [
+            "npm:react",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/contexts/AuthContext.tsx",
+          "hash": "16090471567197299514",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/lib/contexts/HeaderContext.tsx",
+          "hash": "10017140370805208596",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/contexts/SessionAlertContext.tsx",
+          "hash": "873501364577212987",
+          "deps": [
+            "npm:react",
+            "npm:next",
+            "npm:lucide-react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/contexts/SettingsContext.tsx",
+          "hash": "10724216188789767742",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/useAdminOrSystemAdmin.ts",
+          "hash": "10356330410751465320"
+        },
+        {
+          "file": "apps/web/lib/hooks/useApiData.ts",
+          "hash": "4235074988974736122",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/useIdleTimeout.ts",
+          "hash": "5824332738011987950",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/useMLAnalytics.ts",
+          "hash": "4501115623533904221",
+          "deps": [
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/useMLPredictions.ts",
+          "hash": "8508175580906991025",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/useMLTraining.ts",
+          "hash": "9040539004256295700",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:sonner"
+          ]
+        },
+        {
+          "file": "apps/web/lib/hooks/usePermission.ts",
+          "hash": "13842652327484038800"
+        },
+        {
+          "file": "apps/web/lib/hooks/useRole.ts",
+          "hash": "8380055225394982293"
+        },
+        {
+          "file": "apps/web/lib/hooks/useSystemAdmin.ts",
+          "hash": "7098387102990686466"
+        },
+        {
+          "file": "apps/web/lib/utils.ts",
+          "hash": "12218829721157087250",
+          "deps": [
+            "npm:clsx",
+            "npm:tailwind-merge"
+          ]
+        },
+        {
+          "file": "apps/web/next.config.ts",
+          "hash": "5307796689141320326",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/package.json",
+          "hash": "11785920967167412872"
+        },
+        {
+          "file": "apps/web/postcss.config.mjs",
+          "hash": "16325831446291273164"
+        },
+        {
+          "file": "apps/web/project.json",
+          "hash": "2881164588624028648"
+        },
+        {
+          "file": "apps/web/proxy.ts",
+          "hash": "483052922870407115",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/web/public/file.svg",
+          "hash": "15617830351863523835"
+        },
+        {
+          "file": "apps/web/public/globe.svg",
+          "hash": "9134466864871335697"
+        },
+        {
+          "file": "apps/web/public/next.svg",
+          "hash": "8300767200008744458"
+        },
+        {
+          "file": "apps/web/public/smcc-logo.svg",
+          "hash": "1375064318809370668"
+        },
+        {
+          "file": "apps/web/public/vercel.svg",
+          "hash": "3007623926711696394"
+        },
+        {
+          "file": "apps/web/public/window.svg",
+          "hash": "16677869292061012332"
+        },
+        {
+          "file": "apps/web/tsconfig.json",
+          "hash": "2727220773159863513"
+        },
+        {
+          "file": "apps/web/types/auth.types.ts",
+          "hash": "9199092759490469724"
+        },
+        {
+          "file": "apps/web/types/department.ts",
+          "hash": "9560836488100112364"
+        },
+        {
+          "file": "apps/web/types/evaluation-form-response.ts",
+          "hash": "17874101770842385079"
+        },
+        {
+          "file": "apps/web/types/evaluation-form.ts",
+          "hash": "7762828370048841552"
+        },
+        {
+          "file": "apps/web/types/ml.types.ts",
+          "hash": "672068156073684806"
+        },
+        {
+          "file": "apps/web/types/non-teaching-evaluation.ts",
+          "hash": "16006943482900310734"
+        },
+        {
+          "file": "apps/web/types/performance-evaluation.ts",
+          "hash": "10287133775133254904"
+        },
+        {
+          "file": "apps/web/types/permission.types.ts",
+          "hash": "1565760504030383740"
+        },
+        {
+          "file": "apps/web/types/personnel.ts",
+          "hash": "2991073871184659980"
+        },
+        {
+          "file": "apps/web/types/subject.ts",
+          "hash": "8664618046756082407"
+        },
+        {
+          "file": "apps/web/types/ui.types.ts",
+          "hash": "5538020091548005025"
         }
       ]
     }

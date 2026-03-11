@@ -116,8 +116,18 @@ export class MlService {
     console.log('Scheduled task: Checking for model updates...');
   }
 
-  async getAnalytics() {
+  async getAnalytics(departmentId?: string) {
+    const pipeline: any[] = [];
+
+    // If filtering by department, match evaluations for personnel in that department
+    if (departmentId) {
+      const personnelInDept = await this.personnelService.findAll(departmentId);
+      const personnelIds = personnelInDept.map((p) => (p as any)._id);
+      pipeline.push({ $match: { personnel: { $in: personnelIds } } });
+    }
+
     const overallAverages = await this.performanceEvaluationModel.aggregate([
+      ...pipeline,
       {
         $group: {
           _id: null,
@@ -133,6 +143,7 @@ export class MlService {
     ]);
 
     const semesterTrends = await this.performanceEvaluationModel.aggregate([
+      ...pipeline,
       {
         $group: {
           _id: '$semester',

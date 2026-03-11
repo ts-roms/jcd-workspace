@@ -33,7 +33,7 @@ export class Personnel {
   @Prop()
   gender: string;
 
-  @Prop({ enum: ['Teaching', 'Non-Teaching'], default: 'Teaching' })
+  @Prop({ enum: ['Teaching', 'Non-Teaching', 'Student'], default: 'Teaching' })
   personnelType: string;
 
   @Prop()

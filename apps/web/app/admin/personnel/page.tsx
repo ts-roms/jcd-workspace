@@ -35,6 +35,7 @@ import { ExcellenceAnalytics } from './ExcellenceAnalytics';
 import { toast } from 'sonner';
 import { Upload, UserCheck, Award, RefreshCw } from 'lucide-react';
 import { useAlert } from '@/lib/contexts/AlertContext';
+import { Input } from '@/app/components/ui';
 
 export default function PersonnelPage() {
   const queryClient = useQueryClient();
@@ -43,6 +44,7 @@ export default function PersonnelPage() {
   const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false);
   const [selectedPersonnel, setSelectedPersonnel] = useState<Personnel | null>(null);
   const [excellenceFilter, setExcellenceFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
 
@@ -158,9 +160,28 @@ export default function PersonnelPage() {
   });
 
   const filteredPersonnel = useMemo(() => {
-    if (excellenceFilter === 'all') return personnel;
-    return personnel.filter((p) => p.excellenceStatus === excellenceFilter);
-  }, [personnel, excellenceFilter]);
+    let result = personnel;
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter((p) => {
+        const fullName = `${p.firstName} ${p.middleName ?? ''} ${p.lastName}`.toLowerCase();
+        const deptName = typeof p.department === 'object' ? p.department?.name?.toLowerCase() ?? '' : '';
+        return (
+          fullName.includes(query) ||
+          p.email.toLowerCase().includes(query) ||
+          (p.jobTitle?.toLowerCase().includes(query) ?? false) ||
+          deptName.includes(query)
+        );
+      });
+    }
+
+    if (excellenceFilter !== 'all') {
+      result = result.filter((p) => p.excellenceStatus === excellenceFilter);
+    }
+
+    return result;
+  }, [personnel, searchQuery, excellenceFilter]);
 
   const paginatedPersonnel = useMemo(() => {
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
@@ -202,6 +223,11 @@ export default function PersonnelPage() {
     return <div>Loading...</div>;
   }
 
+  const handleSearchPersonnel = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    setPage(1);
+  }
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
@@ -241,9 +267,13 @@ export default function PersonnelPage() {
 
       <div className="mb-4">
         <div className="flex gap-2 items-center">
-          <label className="text-sm font-medium">Filter by Excellence:</label>
+          <div>
+            <Input placeholder="Search Personnel" className="w-full" onChange={handleSearchPersonnel}/>
+          </div>
+          <div>
+          <label htmlFor='search' className="text-sm font-medium">Filter by Excellence:</label>
           <Select value={excellenceFilter} onValueChange={setExcellenceFilter}>
-            <SelectTrigger className="w-[200px]">
+            <SelectTrigger className="w-50">
               <SelectValue placeholder="All" />
             </SelectTrigger>
             <SelectContent>
@@ -258,6 +288,7 @@ export default function PersonnelPage() {
           <span className="text-sm text-muted-foreground">
             Showing {filteredPersonnel.length} of {personnel.length} personnel
           </span>
+          </div>
         </div>
       </div>
 

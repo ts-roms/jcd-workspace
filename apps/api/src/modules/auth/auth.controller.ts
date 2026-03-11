@@ -73,7 +73,7 @@ export class AuthController {
     status: 429,
     description: 'Too many requests - rate limit exceeded',
   })
-  @Throttle({ short: { limit: 5, ttl: 60000 } }) // 5 login attempts per minute
+  @Throttle({ short: { limit: 15, ttl: 60000 } }) // 15 login attempts per minute
   @Public()
   @Post('login')
   async login(

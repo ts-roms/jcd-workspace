@@ -1,0 +1,38 @@
+# ---- Build Stage ----
+FROM node:22-alpine AS build
+
+WORKDIR /app
+
+# Copy root package files for workspace install
+COPY package.json package-lock.json* ./
+COPY apps/api/package.json ./apps/api/
+COPY apps/web/package.json ./apps/web/
+
+RUN npm install
+
+# Copy source code
+COPY tsconfig.base.json ./
+COPY apps/web/ ./apps/web/
+
+# Set build-time env (replaced at runtime by Railway)
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
+# Build the Next.js app
+RUN npm run web:build
+
+# ---- Production Stage ----
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Next.js standalone output includes everything needed
+COPY --from=build /app/apps/web/.next/standalone ./
+COPY --from=build /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=build /app/apps/web/public ./apps/web/public
+
+EXPOSE ${PORT:-3000}
+
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "apps/web/server.js"]

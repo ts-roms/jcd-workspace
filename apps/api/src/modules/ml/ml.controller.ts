@@ -8,10 +8,14 @@ import {
   Get,
   Query,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MlService, PredictionResponse, TrainingResponse } from './ml.service';
 import { ManualPredictionDto } from './dto/manual-prediction.dto';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { GetUser } from '../../common/decorators/get-user.decorator';
+import type { AuthenticatedUser } from '../../common/interfaces/jwt-payload.interface';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -19,9 +23,12 @@ import * as path from 'path';
 export class MlController {
   constructor(private readonly mlService: MlService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('analytics')
-  async getAnalytics() {
-    return this.mlService.getAnalytics();
+  async getAnalytics(@GetUser() user: AuthenticatedUser) {
+    const isDean = user.roles.includes('dean');
+    const departmentFilter = isDean && user.department ? user.department : undefined;
+    return this.mlService.getAnalytics(departmentFilter);
   }
 
   @Get('model-info')

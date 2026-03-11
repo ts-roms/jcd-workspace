@@ -7,6 +7,9 @@ import { PERMISSIONS } from '@/config/permissions';
 import PermissionGate from '@/app/components/guards/PermissionGate';
 import { useAlert } from '@/lib/contexts/AlertContext';
 import { usePermission } from '@/lib/hooks/usePermission';
+import { useAuth } from '@/lib/contexts/AuthContext';
+import { getDepartments } from '@/lib/api/departments.api';
+import { Department } from '@/types/department';
 
 interface Role {
   _id: string;
@@ -22,6 +25,7 @@ interface User {
   lastName: string;
   isActive: boolean;
   roles: Array<{ _id: string; name: string; displayName: string }>;
+  department?: { _id: string; name: string } | string;
 }
 
 interface UpdateUserData {
@@ -31,6 +35,7 @@ interface UpdateUserData {
   roles: string[];
   isActive: boolean;
   password?: string;
+  department?: string;
 }
 
 export default function EditUserPage() {
@@ -38,9 +43,12 @@ export default function EditUserPage() {
   const params = useParams();
   const userId = params.id as string;
   const alert = useAlert();
+  const { hasRole } = useAuth();
+  const isSuperAdmin = hasRole('superadmin');
   const canUpdateUser = usePermission(PERMISSIONS.USERS_UPDATE);
 
   const [roles, setRoles] = useState<Role[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [formData, setFormData] = useState({
     email: '',
@@ -48,7 +56,8 @@ export default function EditUserPage() {
     lastName: '',
     roles: [] as string[],
     isActive: true,
-    password: '' // Optional - only if user wants to change password
+    password: '',
+    department: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -57,24 +66,40 @@ export default function EditUserPage() {
   const fetchUserAndRoles = useCallback(async () => {
     try {
       setFetchLoading(true);
-      const [userResponse, rolesResponse] = await Promise.all([
+      const requests: Promise<any>[] = [
         axiosInstance.get(`/users/${userId}`),
-        axiosInstance.get('/roles')
-      ]);
+        axiosInstance.get('/roles'),
+      ];
+      if (isSuperAdmin) {
+        requests.push(getDepartments());
+      }
+      const results = await Promise.all(requests);
+      const userResponse = results[0];
+      const rolesResponse = results[1];
 
-      // After interceptor, response.data is unwrapped
       const userData = userResponse.data.user;
       setUser(userData);
+
+      const userDeptId =
+        typeof userData.department === 'object' && userData.department
+          ? userData.department._id
+          : userData.department || '';
+
       setFormData({
         email: userData.email,
         firstName: userData.firstName,
         lastName: userData.lastName,
         roles: userData.roles.map((r: { _id: string }) => r._id),
         isActive: userData.isActive,
-        password: ''
+        password: '',
+        department: userDeptId,
       });
 
       setRoles(rolesResponse.data.roles);
+
+      if (isSuperAdmin && results[2]) {
+        setDepartments(results[2]);
+      }
     } catch (error) {
       const axiosError = error as { response?: { data?: { error?: { message?: string } } } };
       const message =
@@ -84,7 +109,7 @@ export default function EditUserPage() {
     } finally {
       setFetchLoading(false);
     }
-  }, [userId, alert]);
+  }, [userId, alert, isSuperAdmin]);
 
   useEffect(() => {
     fetchUserAndRoles();
@@ -122,8 +147,12 @@ export default function EditUserPage() {
         firstName: formData.firstName,
         lastName: formData.lastName,
         roles: formData.roles,
-        isActive: formData.isActive
+        isActive: formData.isActive,
       };
+
+      if (isSuperAdmin) {
+        updateData.department = formData.department || undefined;
+      }
 
       if (formData.password) {
         if (formData.password.length < 8) {
@@ -139,7 +168,7 @@ export default function EditUserPage() {
         updateData.password = formData.password;
       }
 
-      await axiosInstance.patch(`/users/${userId}`, updateData);
+      await axiosInstance.put(`/users/${userId}`, updateData);
       router.push('/admin/users');
     } catch (err) {
       const axiosError = err as { response?: { data?: { error?: { message?: string } } } };
@@ -263,6 +292,26 @@ export default function EditUserPage() {
                 ))}
               </div>
             </div>
+
+            {isSuperAdmin && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Department
+                </label>
+                <select
+                  value={formData.department}
+                  onChange={(e) => setFormData(prev => ({ ...prev, department: e.target.value }))}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                >
+                  <option value="">No Department</option>
+                  {departments.map((dept) => (
+                    <option key={dept._id} value={dept._id}>
+                      {dept.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <div>
               <label className="flex items-center">

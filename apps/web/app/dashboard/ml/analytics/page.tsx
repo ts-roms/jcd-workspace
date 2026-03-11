@@ -16,6 +16,7 @@ import {
   Line,
 } from 'recharts';
 import { AccuracyTrendChart } from '@/app/components/ml/AccuracyTrendChart';
+import { useAuth } from '@/lib/contexts/AuthContext';
 
 interface AnalyticsData {
   overallAverages: {
@@ -45,6 +46,10 @@ const fetchAccuracyTrends = async (): Promise<Array<{ date: string; accuracy: nu
 };
 
 export default function AnalyticsPage() {
+  const { user, hasRole } = useAuth();
+  const isDean = hasRole('dean');
+  const departmentName = user?.department?.name;
+
   const { data, isLoading, error } = useQuery<AnalyticsData>({
     queryKey: ['mlAnalytics'],
     queryFn: fetchAnalyticsData,
@@ -71,18 +76,27 @@ export default function AnalyticsPage() {
 
   return (
     <div className="container mx-auto p-4 space-y-8">
-      <h1 className="text-3xl font-bold">Performance Analytics</h1>
+      <h1 className="text-3xl font-bold">
+        {isDean && departmentName
+          ? `${departmentName} - Performance Analytics`
+          : 'Performance Analytics'}
+      </h1>
+
+      {isDean && departmentName && (
+        <p className="text-muted-foreground">
+          Showing performance analytics for your department: <strong>{departmentName}</strong>
+        </p>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>Total Evaluations</CardTitle>
+            <CardTitle>{isDean ? 'Department Evaluations' : 'Total Evaluations'}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{overallAverages?.totalEvaluations || 0}</div>
           </CardContent>
         </Card>
-        {/* Add more stat cards if needed */}
       </div>
 
       {/* Model Accuracy Trend Chart */}
@@ -92,7 +106,7 @@ export default function AnalyticsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Overall Metric Averages</CardTitle>
+          <CardTitle>{isDean ? 'Department Metric Averages' : 'Overall Metric Averages'}</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
@@ -110,7 +124,7 @@ export default function AnalyticsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Performance Trend Across Semesters</CardTitle>
+          <CardTitle>{isDean ? 'Department Performance Trend' : 'Performance Trend Across Semesters'}</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>

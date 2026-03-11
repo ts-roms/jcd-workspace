@@ -35,8 +35,14 @@ export class PersonnelService {
     return createdPersonnel.save();
   }
 
-  async findAll(departmentId?: string): Promise<Personnel[]> {
-    const filter = departmentId ? { department: departmentId } : {};
+  async findAll(departmentId?: string, includeStudents = false): Promise<Personnel[]> {
+    const filter: Record<string, unknown> = {};
+    if (departmentId) {
+      filter.department = departmentId;
+    }
+    if (!includeStudents) {
+      filter.personnelType = { $ne: 'Student' };
+    }
     return this.personnelModel.find(filter).populate('department').exec();
   }
 

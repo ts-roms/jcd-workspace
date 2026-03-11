@@ -34,6 +34,7 @@ export default function StudentsPage() {
   const isDean = user?.roles?.some((role: unknown) =>
     typeof role === 'string' ? role.toLowerCase() === 'dean' : (role as { name?: string })?.name?.toLowerCase() === 'dean'
   );
+  const departmentName = user?.department?.name;
 
   const { data: studentsData, isLoading } = useQuery({
     queryKey: ['students', currentPage],
@@ -81,10 +82,14 @@ export default function StudentsPage() {
     <div className="container mx-auto p-4 space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Students</CardTitle>
+          <CardTitle>
+            {isDean && departmentName
+              ? `${departmentName} - Students`
+              : 'Students'}
+          </CardTitle>
           <CardDescription>
-            {isDean
-              ? 'View all students in your department'
+            {isDean && departmentName
+              ? `Showing students under your department: ${departmentName}`
               : 'View all students in the system'}
           </CardDescription>
         </CardHeader>

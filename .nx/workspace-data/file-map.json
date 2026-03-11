@@ -51,11 +51,11 @@
       },
       {
         "file": "package-lock.json",
-        "hash": "9307833629453487151"
+        "hash": "4338191664851104777"
       },
       {
         "file": "package.json",
-        "hash": "15995354406113263440"
+        "hash": "12895598354242437538"
       },
       {
         "file": "test-template.xlsx",
@@ -1045,8 +1045,7 @@
           "hash": "15507769107069524348",
           "deps": [
             "npm:@nestjs/mongoose",
-            "npm:mongoose",
-            "npm:uuid"
+            "npm:mongoose"
           ]
         },
         {
@@ -2534,5 +2533,5 @@
       ]
     }
   },
-  "externalNodesHash": "13716317310915880331"
+  "externalNodesHash": "2493363413885693608"
 }

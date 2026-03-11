@@ -3255,9 +3255,9 @@
       "type": "npm",
       "name": "npm:@nestjs/schedule",
       "data": {
-        "version": "4.1.2",
+        "version": "6.1.1",
         "packageName": "@nestjs/schedule",
-        "hash": "sha512-hCTQ1lNjIA5EHxeu8VvQu2Ed2DBLS1GSC6uKPYlBiQe6LL9a7zfE9iVSK+zuK8E2odsApteEBmfAQchc8Hx0Gg=="
+        "hash": "sha512-kQl1RRgi02GJ0uaUGCrXHCcwISsCsJDciCKe38ykJZgnAeeoeVWs8luWtBo4AqAAXm4nS5K8RlV0smHUJ4+2FA=="
       }
     },
     "npm:@nestjs/schematics": {
@@ -4740,9 +4740,9 @@
       "type": "npm",
       "name": "npm:@types/luxon",
       "data": {
-        "version": "3.4.2",
+        "version": "3.7.1",
         "packageName": "@types/luxon",
-        "hash": "sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA=="
+        "hash": "sha512-H3iskjFIAn5SlJU7OuxUmTEpebK6TKB8rxZShDslBMZJ5u9S//KM1sbdAisiSrqwLQncVjnpi2OK2J51h+4lsg=="
       }
     },
     "npm:@types/methods": {
@@ -6675,9 +6675,9 @@
       "type": "npm",
       "name": "npm:cron",
       "data": {
-        "version": "3.2.1",
+        "version": "4.4.0",
         "packageName": "cron",
-        "hash": "sha512-w2n5l49GMmmkBFEsH9FIDhjZ1n1QgTMOCMGuQtOXs5veNiosZmso6bQGuqOJSYAXXrG84WQFVneNk+Yt0Ua9iw=="
+        "hash": "sha512-fkdfq+b+AHI4cKdhZlppHveI/mgz2qpiYxcm+t5E5TsxX7QrLS1VE0+7GENEk9z0EeGPcpSciGv6ez24duWhwQ=="
       }
     },
     "npm:cross-spawn": {
@@ -9627,9 +9627,9 @@
       "type": "npm",
       "name": "npm:luxon",
       "data": {
-        "version": "3.5.0",
+        "version": "3.7.2",
         "packageName": "luxon",
-        "hash": "sha512-rh+Zjr6DNfUYR3bPwJEnuwDdqMbxZW7LOQfUN4B54+Cl+0o5zaU9RJ6bcidfDtC1cWCZXQ+nvX8bf6bAji37QQ=="
+        "hash": "sha512-vtEhXh/gNjI9Yg1u4jX/0YVPMvxzHuGgCm6tC5kZyb08yjGWGnqAjGJvcXbqQR2P3MyMEFnRbpcdFS6PBcLqew=="
       }
     },
     "npm:make-dir": {
@@ -10008,15 +10008,6 @@
         "version": "8.3.2",
         "packageName": "uuid",
         "hash": "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg=="
-      }
-    },
-    "npm:uuid": {
-      "type": "npm",
-      "name": "npm:uuid",
-      "data": {
-        "version": "11.0.3",
-        "packageName": "uuid",
-        "hash": "sha512-d0z310fCWv5dJwnX1Y/MncBAqGMKEzlBb1AOf7z9K8ALnd0utBX/msg/fA0+sbyN1ihbMsLhrBlnl1ak7Wa0rg=="
       }
     },
     "npm:node-emoji": {
@@ -12389,11 +12380,6 @@
       {
         "source": "api",
         "target": "npm:@tensorflow/tfjs",
-        "type": "static"
-      },
-      {
-        "source": "api",
-        "target": "npm:uuid",
         "type": "static"
       },
       {
@@ -16781,12 +16767,17 @@
     "npm:@nestjs/schedule": [
       {
         "source": "npm:@nestjs/schedule",
-        "target": "npm:cron",
+        "target": "npm:@nestjs/common",
         "type": "static"
       },
       {
         "source": "npm:@nestjs/schedule",
-        "target": "npm:uuid",
+        "target": "npm:@nestjs/core",
+        "type": "static"
+      },
+      {
+        "source": "npm:@nestjs/schedule",
+        "target": "npm:cron",
         "type": "static"
       }
     ],
@@ -29783,5 +29774,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1773236045197
+  "computedAt": 1773236755188
 }

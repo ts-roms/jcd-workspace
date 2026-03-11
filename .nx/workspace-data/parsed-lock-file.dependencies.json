@@ -3821,12 +3821,17 @@
   },
   {
     "source": "npm:@nestjs/schedule",
-    "target": "npm:cron",
+    "target": "npm:@nestjs/common",
     "type": "static"
   },
   {
     "source": "npm:@nestjs/schedule",
-    "target": "npm:uuid",
+    "target": "npm:@nestjs/core",
+    "type": "static"
+  },
+  {
+    "source": "npm:@nestjs/schedule",
+    "target": "npm:cron",
     "type": "static"
   },
   {

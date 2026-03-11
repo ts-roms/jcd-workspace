@@ -1,6 +1,6 @@
 {
   "version": "6.0",
-  "nxVersion": "22.5.3",
+  "nxVersion": "22.5.4",
   "pathMappings": {},
   "nxJsonPlugins": [
     {
@@ -27,7 +27,7 @@
       },
       {
         "file": ".gitignore",
-        "hash": "3943368189484042247"
+        "hash": "1472519754911716541"
       },
       {
         "file": ".npmrc",
@@ -35,15 +35,27 @@
       },
       {
         "file": "Dockerfile.api",
-        "hash": "6539947847511461521"
+        "hash": "5151948739544051213"
       },
       {
         "file": "Dockerfile.web",
-        "hash": "9505897936653212341"
+        "hash": "12379672641111226419"
       },
       {
         "file": "RAILWAY.md",
         "hash": "17682978313924689160"
+      },
+      {
+        "file": "capstone-demo@1.0.0",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "nest",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "nx",
+        "hash": "3244421341483603138"
       },
       {
         "file": "nx.json",
@@ -51,11 +63,11 @@
       },
       {
         "file": "package-lock.json",
-        "hash": "4338191664851104777"
+        "hash": "15109035681628062768"
       },
       {
         "file": "package.json",
-        "hash": "12895598354242437538"
+        "hash": "1051918446099097094"
       },
       {
         "file": "test-template.xlsx",
@@ -167,7 +179,10 @@
         },
         {
           "file": "apps/api/package.json",
-          "hash": "18227206552334271515"
+          "hash": "2902610585249863607",
+          "deps": [
+            "npm:@types/uuid"
+          ]
         },
         {
           "file": "apps/api/project.json",
@@ -1042,7 +1057,7 @@
         },
         {
           "file": "apps/api/src/modules/sessions/schemas/session.schema.ts",
-          "hash": "15507769107069524348",
+          "hash": "15486997874413943952",
           "deps": [
             "npm:@nestjs/mongoose",
             "npm:mongoose"
@@ -2520,7 +2535,7 @@
         },
         {
           "file": "apps/web/types/personnel.ts",
-          "hash": "6617755363354309332"
+          "hash": "17183512655259578537"
         },
         {
           "file": "apps/web/types/subject.ts",
@@ -2533,5 +2548,5 @@
       ]
     }
   },
-  "externalNodesHash": "2493363413885693608"
+  "externalNodesHash": "8738644365646988163"
 }

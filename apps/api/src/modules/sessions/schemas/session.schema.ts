@@ -1,6 +1,6 @@
+import { randomUUID } from 'node:crypto';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
 
 export type SessionDocument = Session & Document;
 
@@ -9,7 +9,7 @@ export class Session {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true, index: true })
   userId: Types.ObjectId;
 
-  @Prop({ required: true, unique: true, default: uuidv4 })
+  @Prop({ required: true, unique: true, default: randomUUID })
   sessionId: string;
 
   @Prop({ required: true, unique: true })

@@ -36,7 +36,12 @@ export const setGlobalSessionAlertHandler = (
   globalSessionAlertHandler = handler;
 };
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+// In the browser, use same-origin /api path (proxied by Next.js rewrites) to avoid
+// cross-origin cookie issues. On the server (SSR), call the API directly.
+const baseURL =
+  typeof window !== 'undefined'
+    ? '/api'
+    : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 const axiosInstance = axios.create({
   baseURL,

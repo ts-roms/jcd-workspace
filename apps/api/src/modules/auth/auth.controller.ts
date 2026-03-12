@@ -124,7 +124,7 @@ export class AuthController {
     response.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       path: '/',
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
@@ -190,9 +190,15 @@ export class AuthController {
       await this.authService.logout(refreshToken);
     }
 
-    // Clear cookies
-    response.clearCookie('accessToken');
-    response.clearCookie('refreshToken');
+    // Clear cookies (must match the options used when setting them)
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: (process.env.NODE_ENV === 'production' ? 'none' : 'lax') as 'none' | 'lax',
+      path: '/',
+    };
+    response.clearCookie('accessToken', cookieOptions);
+    response.clearCookie('refreshToken', cookieOptions);
 
     return {
       success: true,
@@ -211,7 +217,7 @@ export class AuthController {
     response.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       path: '/',
       maxAge: 15 * 60 * 1000,
     });
@@ -224,7 +230,7 @@ export class AuthController {
     response.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       path: '/',
       maxAge: refreshMaxAge,
     });

@@ -62,8 +62,9 @@ const defaultScale: EvaluationScaleItem[] = [
 
 const evaluatorOptionsMap: Record<CreateEvaluationFormDto['audience'], string[]> =
   {
-    teaching: ['Student', 'Other'],
+    teaching: ['Student', 'Peer', 'Self', 'Other'],
     'non-teaching': ['Administrator/Head', 'Peer', 'Self', 'Other'],
+    dean: ['Faculty', 'Staff', 'Peer', 'Other'],
   };
 
 const normalizeEvaluatorOptions = (
@@ -365,11 +366,12 @@ export default function EvaluationFormEditPage() {
                     <SelectContent>
                       <SelectItem value="teaching">Teaching personnel</SelectItem>
                       <SelectItem value="non-teaching">Non-teaching personnel</SelectItem>
+                      <SelectItem value="dean">Dean / Academic Administrator</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                {draft.audience === 'teaching' && (
+                {(draft.audience === 'teaching' || draft.audience === 'dean') && (
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Semester</Label>
@@ -406,6 +408,23 @@ export default function EvaluationFormEditPage() {
                         placeholder="e.g., 2024-2025"
                       />
                     </div>
+                  </div>
+                )}
+                {draft.audience === 'non-teaching' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-form-school-year-nt">School Year</Label>
+                    <Input
+                      id="edit-form-school-year-nt"
+                      value={draft.schoolYear || ''}
+                      onChange={(event) =>
+                        setDraft((current) =>
+                          current
+                            ? { ...current, schoolYear: event.target.value }
+                            : current,
+                        )
+                      }
+                      placeholder="e.g., 2024-2025"
+                    />
                   </div>
                 )}
 

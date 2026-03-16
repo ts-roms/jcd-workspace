@@ -26,8 +26,9 @@ export class AnalyticsService {
 
     // Build filters based on department
     const personnelFilter = departmentId ? { department: departmentId } : {};
+    const userFilter = departmentId ? { department: departmentId } : {};
 
-    const totalUsers = this.userModel.countDocuments();
+    const totalUsers = this.userModel.countDocuments(userFilter);
     const totalPersonnel = this.personnelModel.countDocuments(personnelFilter);
     const totalDepartments = departmentId
       ? Promise.resolve(1) // Dean can only see their department

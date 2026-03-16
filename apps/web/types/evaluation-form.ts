@@ -1,4 +1,4 @@
-export type EvaluationAudience = 'teaching' | 'non-teaching';
+export type EvaluationAudience = 'teaching' | 'non-teaching' | 'dean';
 
 export interface EvaluationScaleItem {
   value: number;

@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 
 export type EvaluationFormDocument = EvaluationForm & Document;
 
-export type EvaluationAudience = 'teaching' | 'non-teaching';
+export type EvaluationAudience = 'teaching' | 'non-teaching' | 'dean';
 
 @Schema({ _id: false })
 class EvaluationScaleItem {
@@ -38,7 +38,7 @@ export class EvaluationForm {
   @Prop({ required: true, trim: true })
   name: string;
 
-  @Prop({ required: true, enum: ['teaching', 'non-teaching'], index: true })
+  @Prop({ required: true, enum: ['teaching', 'non-teaching', 'dean'], index: true })
   audience: EvaluationAudience;
 
   @Prop({ default: '' })

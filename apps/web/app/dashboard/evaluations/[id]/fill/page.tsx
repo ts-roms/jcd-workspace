@@ -37,7 +37,7 @@ export default function FillEvaluationFormPage() {
     enabled: !!formId,
   });
 
-  const isTeachingForm = form?.audience !== 'non-teaching';
+  const isTeachingForm = form?.audience === 'teaching';
 
   // Use enrolled subjects from user profile for teaching evaluations
   const enrolledSubjects = ((user as any)?.enrolledSubjects ?? []) as Subject[];
@@ -124,7 +124,7 @@ export default function FillEvaluationFormPage() {
 
     const allItems: { section: string; item: string }[] = [];
     form.sections
-      ?.filter((s) => !['OTHER', 'CR'].includes(s.key || ''))
+      ?.filter((s) => !['OTHER', 'CR', 'REC'].includes(s.key || ''))
       .forEach((section) => {
         section.items?.forEach((item) => {
           allItems.push({ section: section.title, item });
@@ -179,7 +179,7 @@ export default function FillEvaluationFormPage() {
   }
 
   const totalItems = form.sections
-    ?.filter((s) => !['OTHER', 'CR'].includes(s.key || ''))
+    ?.filter((s) => !['OTHER', 'CR', 'REC'].includes(s.key || ''))
     .reduce((sum, s) => sum + (s.items?.length ?? 0), 0) ?? 0;
   const answeredCount = Object.keys(answers).length;
 
@@ -301,7 +301,7 @@ export default function FillEvaluationFormPage() {
 
       {/* Sections */}
       {form.sections
-        ?.filter((s) => !['OTHER', 'CR'].includes(s.key || ''))
+        ?.filter((s) => !['OTHER', 'CR', 'REC'].includes(s.key || ''))
         .map((section, sectionIdx) => (
         <Card key={sectionIdx}>
           <CardHeader>
@@ -338,6 +338,40 @@ export default function FillEvaluationFormPage() {
           </CardContent>
         </Card>
       ))}
+
+      {/* Recommendations section (dean forms — radio buttons) */}
+      {form.sections?.filter((s) => s.key === 'REC').map((section, idx) => {
+        const selectedRec = section.items?.find((item) => answers[`${section.title}|||${item}`] === 5);
+        return (
+          <Card key={`rec-${idx}`}>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">{section.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-6">
+                {section.items?.map((item) => (
+                  <label key={item} className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name={`rec-${idx}`}
+                      checked={selectedRec === item}
+                      onChange={() => {
+                        // Clear all other recommendations, set this one
+                        section.items?.forEach((i) => {
+                          handleScoreSelect(section.title, i, 0);
+                        });
+                        handleScoreSelect(section.title, item, 5);
+                      }}
+                      className="h-4 w-4 border-gray-300"
+                    />
+                    <span className="text-sm">{item}</span>
+                  </label>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        );
+      })}
 
       {/* Comments and Recommendations / Other Comments */}
       <Card>

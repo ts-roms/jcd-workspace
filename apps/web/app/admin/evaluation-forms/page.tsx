@@ -220,10 +220,115 @@ const nonTeachingTemplate: CreateEvaluationFormDto = {
   ],
 };
 
+/** Dean/Academic Administrator evaluation template. */
+const deanTemplate: CreateEvaluationFormDto = {
+  name: 'Dean / Academic Administrator Evaluation',
+  audience: 'dean',
+  description:
+    'Evaluation of Academic Administrator / Dean. This form is designed to assess the performance of academic administrators in the areas of administrative competence, instructional leadership, professional relationships, and interpersonal relationships. Scale: 5 Excellent, 4 Very Satisfactory, 3 Satisfactory, 2 Fair, 1 Poor.',
+  evaluatorOptions: ['Faculty', 'Staff', 'Peer'],
+  scale: defaultScale,
+  sections: [
+    {
+      key: 'ASC',
+      title: 'Administrative / Supervisory Competence',
+      items: [
+        'Is familiar with the various phases of his/her work',
+        'Demonstrates leadership, especially by providing clear and consistent directions and anticipating problems with advance planning',
+        'Spends a reasonable time for classroom observation regularly',
+        'Encourages teachers to share ideas & suggestions when planning school programs',
+        'Encourages teachers and administrators to work as a team',
+        'Has the supervisory programs that develop and utilized the talents of Department or Unit Heads and teachers',
+        'Evaluates teachers only after sufficient observation',
+        "Focuses on teacher's performance, not personality, when evaluating teachers",
+        "Respects teacher's rights especially by law and contract",
+        'Knows how to, and does confer timely compliment as well as administer the necessary reprimand',
+        'Has the ability and courage to give constructive criticism in a friendly, firm and positive manner',
+        'Delegates leadership responsibilities among teachers and staff whenever appropriate',
+        'Keeps school personnel informed on policies, rules and regulations',
+        'Organizes his/her office and records so that they are an example of efficiency and effectiveness',
+        'Keeps the office open to communication from all sources',
+      ],
+    },
+    {
+      key: 'IL',
+      title: 'Instructional Leadership',
+      items: [
+        'Encourages innovation, creativity, experimentation among teachers and staff as a means of improving instruction',
+        'Encourages teachers and other personnel to implement strategies for carrying out school objectives',
+        'Informally and/or formally meets with teachers to encourage them to share ideas, problems, needs, and feelings',
+        'Establishes a harmonious working relationship with various support service units',
+        'Keeps himself/herself, the faculty and staff up-to-date on current trends and issues',
+        'Is resourceful, presents to teachers new approaches, ideas, and material for teaching and learning',
+        'Is knowledgeable about research in learning and teaching and is able to translate it for the faculty',
+        'Identifies instructional needs and objectives with help from teachers',
+        'Obtains for and aids teachers in using effective instructional supplies and equipment',
+        'Encourages teachers to try new ideas, to experiment, to innovate, and to develop programs',
+        'Provides adequate resources for effective teaching',
+        'Helps teachers define their instructional goals and objectives',
+        'Encourages and promotes professional development of personnel through in-service programs, study, and other activities',
+        "Describes teacher's performance and encourages self-examination and change rather than being judgmental when providing feedback",
+        'Minimizes classroom interruption',
+        'Plans and holds meetings as needed',
+        'Sets and maintains realistic discipline standards for students and assists teachers in the implementation of these standards in the classroom',
+        'Provides leadership in curriculum evaluation and improvement',
+        'Ensures that class days cancelled due to activities, meetings, seminars, etc. are immediately made up',
+      ],
+    },
+    {
+      key: 'PPR',
+      title: 'Personal / Professional Relationships with Personnel',
+      items: [
+        'Enjoys rapport with personnel and other administrators',
+        'Is generally cheerful and displays a sense of humor',
+        'Promotes mutual respect among administrators and faculty',
+        'Knows and respects individual characteristics, talents, and potentials of teachers',
+        'Is available and accessible to faculty members',
+        'Listens to, considers, and acts upon faculty suggestions and complaints',
+        'Avoids publicly reprimanding, ridiculing, criticizing, or making disparaging remarks about teachers',
+        'Seeks to lessen the non-teaching burden of the faculty and avoids unreasonable demands for service during unassigned time',
+        'Is fair in dealing with faculty in conflict',
+        'Supports teachers in their professional activities',
+        'Supports teachers in their professional skills',
+        'Demonstrates an effective philosophy of education which elicits confidence and creates a climate of high student and teacher morale',
+      ],
+    },
+    {
+      key: 'IRS',
+      title: 'Interpersonal Relationship with Students',
+      items: [
+        'Is accessible to students and enjoys rapport with them',
+        'Listens to, considers, and acts on complaints by students',
+        'Supports service and programs established for the welfare of students',
+        'Maintains a warm and friendly but professional relationship with students',
+        'Avoids publicly reprimanding, ridiculing, criticizing, or making disparaging remarks about students',
+        'Imposes discipline in a firm but kind and humane manner',
+      ],
+    },
+    {
+      key: 'REC',
+      title: 'Recommendations',
+      items: [
+        'Retention',
+        'Promotion',
+        'Re-assignment',
+      ],
+    },
+    {
+      key: 'CR',
+      title: 'Comments and Recommendations',
+      items: [
+        'Please write your comments here',
+      ],
+    },
+  ],
+};
+
 const evaluatorOptionsMap: Record<CreateEvaluationFormDto['audience'], string[]> =
   {
-    teaching: ['Student', 'Other'],
+    teaching: ['Student', 'Peer', 'Self', 'Other'],
     'non-teaching': ['Administrator/Head', 'Peer', 'Self', 'Other'],
+    dean: ['Faculty', 'Staff', 'Peer', 'Other'],
   };
 
 const normalizeEvaluatorOptions = (
@@ -438,6 +543,9 @@ export default function EvaluationFormsPage() {
   const handleUseNonTeachingTemplate = (form: DraftForm) =>
     toDraftForm({ ...nonTeachingTemplate, scale: nonTeachingTemplate.scale || defaultScale });
 
+  const handleUseDeanTemplate = (form: DraftForm) =>
+    toDraftForm({ ...deanTemplate, scale: deanTemplate.scale || defaultScale });
+
   const addSection = (form: DraftForm): DraftForm => ({
     ...form,
     sections: [
@@ -600,11 +708,16 @@ export default function EvaluationFormsPage() {
                   value={createForm.audience}
                   onValueChange={(value) => {
                     const audience = value as CreateEvaluationFormDto['audience'];
-                    const template = audience === 'teaching' ? teachingTemplate : nonTeachingTemplate;
+                    const templateMap: Record<string, CreateEvaluationFormDto> = {
+                      teaching: teachingTemplate,
+                      'non-teaching': nonTeachingTemplate,
+                      dean: deanTemplate,
+                    };
+                    const template = templateMap[audience] || teachingTemplate;
                     setCreateForm(toDraftForm({
                       ...template,
                       name: createForm.name || template.name,
-                      description: createForm.description || template.description,
+                      description: template.description,
                       scale: template.scale || defaultScale,
                       evaluatorOptions: normalizeEvaluatorOptions(
                         template.evaluatorOptions,
@@ -619,11 +732,13 @@ export default function EvaluationFormsPage() {
                   <SelectContent>
                     <SelectItem value="teaching">Teaching personnel</SelectItem>
                     <SelectItem value="non-teaching">Non-teaching personnel</SelectItem>
+                    <SelectItem value="dean">Dean / Academic Administrator</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              {createForm.audience === 'teaching' && (
+              {/* Teaching & Dean: Semester + School Year; Non-teaching: School Year only */}
+              {(createForm.audience === 'teaching' || createForm.audience === 'dean') && (
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Semester</Label>
@@ -660,6 +775,22 @@ export default function EvaluationFormsPage() {
                       placeholder="e.g., 2024-2025"
                     />
                   </div>
+                </div>
+              )}
+              {createForm.audience === 'non-teaching' && (
+                <div className="space-y-2">
+                  <Label htmlFor="create-form-school-year-nt">School Year</Label>
+                  <Input
+                    id="create-form-school-year-nt"
+                    value={createForm.schoolYear || ''}
+                    onChange={(event) =>
+                      setCreateForm((current) => ({
+                        ...current,
+                        schoolYear: event.target.value,
+                      }))
+                    }
+                    placeholder="e.g., 2024-2025"
+                  />
                 </div>
               )}
 
@@ -864,6 +995,13 @@ export default function EvaluationFormsPage() {
                   onClick={() => setCreateForm(handleUseNonTeachingTemplate)}
                 >
                   Non-teaching template
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setCreateForm(handleUseDeanTemplate)}
+                >
+                  Dean template
                 </Button>
                 <Button
                   type="button"

@@ -5,7 +5,7 @@ export const subjectsApi = {
   /**
    * Get all subjects with optional filters
    */
-  getAll: async (filters?: { departmentId?: string; gradeLevel?: string }): Promise<Subject[]> => {
+  getAll: async (filters?: { departmentId?: string; gradeLevel?: string; semester?: string }): Promise<Subject[]> => {
     const response = await axiosInstance.get<ApiResponse<Subject[]>>('/subjects', {
       params: cleanParams(filters),
     });

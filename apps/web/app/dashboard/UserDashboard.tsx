@@ -74,8 +74,12 @@ export default function UserDashboard() {
   });
 
   const { data: departmentSubjects = [], isLoading: subjectsLoading } = useQuery<Subject[]>({
-    queryKey: ['subjects', enrollDepartment],
-    queryFn: () => subjectsApi.getAll({ departmentId: enrollDepartment }),
+    queryKey: ['subjects', enrollDepartment, enrollGradeLevel, enrollSemester],
+    queryFn: () => subjectsApi.getAll({
+      departmentId: enrollDepartment,
+      gradeLevel: enrollGradeLevel || undefined,
+      semester: enrollSemester || undefined,
+    }),
     enabled: !!enrollDepartment && enrollDialogOpen,
   });
 
@@ -381,7 +385,7 @@ export default function UserDashboard() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Year Level <span className="text-destructive">*</span></Label>
-                <Select value={enrollGradeLevel} onValueChange={setEnrollGradeLevel}>
+                <Select value={enrollGradeLevel} onValueChange={(val) => { setEnrollGradeLevel(val); setSelectedSubjects([]); }}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select year level" />
                   </SelectTrigger>
@@ -395,7 +399,7 @@ export default function UserDashboard() {
               </div>
               <div className="space-y-2">
                 <Label>Semester <span className="text-destructive">*</span></Label>
-                <Select value={enrollSemester} onValueChange={setEnrollSemester}>
+                <Select value={enrollSemester} onValueChange={(val) => { setEnrollSemester(val); setSelectedSubjects([]); }}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select semester" />
                   </SelectTrigger>

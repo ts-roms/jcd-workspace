@@ -123,11 +123,13 @@ export default function FillEvaluationFormPage() {
     }
 
     const allItems: { section: string; item: string }[] = [];
-    form.sections?.forEach((section) => {
-      section.items?.forEach((item) => {
-        allItems.push({ section: section.title, item });
+    form.sections
+      ?.filter((s) => !['OTHER', 'CR'].includes(s.key || ''))
+      .forEach((section) => {
+        section.items?.forEach((item) => {
+          allItems.push({ section: section.title, item });
+        });
       });
-    });
 
     const unanswered = allItems.filter(
       (i) => !answers[`${i.section}|||${i.item}`]
@@ -176,7 +178,9 @@ export default function FillEvaluationFormPage() {
     );
   }
 
-  const totalItems = form.sections?.reduce((sum, s) => sum + (s.items?.length ?? 0), 0) ?? 0;
+  const totalItems = form.sections
+    ?.filter((s) => !['OTHER', 'CR'].includes(s.key || ''))
+    .reduce((sum, s) => sum + (s.items?.length ?? 0), 0) ?? 0;
   const answeredCount = Object.keys(answers).length;
 
   return (
@@ -296,7 +300,9 @@ export default function FillEvaluationFormPage() {
       </Card>
 
       {/* Sections */}
-      {form.sections?.map((section, sectionIdx) => (
+      {form.sections
+        ?.filter((s) => !['OTHER', 'CR'].includes(s.key || ''))
+        .map((section, sectionIdx) => (
         <Card key={sectionIdx}>
           <CardHeader>
             <CardTitle className="text-base">{section.title}</CardTitle>
@@ -333,10 +339,10 @@ export default function FillEvaluationFormPage() {
         </Card>
       ))}
 
-      {/* Other Comments */}
+      {/* Comments and Recommendations / Other Comments */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Other Comments</CardTitle>
+          <CardTitle className="text-base">Comments and Recommendations</CardTitle>
         </CardHeader>
         <CardContent>
           <Textarea

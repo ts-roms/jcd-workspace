@@ -148,6 +148,78 @@ const teachingTemplate: CreateEvaluationFormDto = {
   ],
 };
 
+/** Default non-teaching sections based on actual evaluation metrics. */
+const nonTeachingTemplate: CreateEvaluationFormDto = {
+  name: 'Non-Teaching Staff Evaluation',
+  audience: 'non-teaching',
+  description:
+    'Non-Teaching Staff Performance Evaluation. Scale: 5 Excellent, 4 Very Satisfactory, 3 Satisfactory, 2 Fair, 1 Poor.',
+  evaluatorOptions: ['Administrator/Head', 'Peer', 'Self'],
+  scale: defaultScale,
+  sections: [
+    {
+      key: 'QW',
+      title: 'Quality of Work',
+      items: [
+        'Thoroughness',
+        'Accuracy',
+        'Neatness and Economy',
+      ],
+    },
+    {
+      key: 'QTW',
+      title: 'Quantity of Work',
+      items: [
+        'Individual Productivity',
+        'Speed in performing the assigned work',
+      ],
+    },
+    {
+      key: 'KW',
+      title: 'Knowledge of Work',
+      items: [
+        'Has a complete and thorough knowledge of all the phases of the assigned task',
+        'Has a good judgment',
+        'Has a great mental power, rarely needs instruction and assistance, Fast thinker',
+      ],
+    },
+    {
+      key: 'RL',
+      title: 'Reliability',
+      items: [
+        'Dependability - can be depended upon to perform work well with little supervision',
+        'Honesty and Trustworthiness, is discreet in keeping inviolate all confidential information, does not indulge in gossip',
+        'Conscientiousness - is dedicated to work; has a sense of responsibility/loyalty to the institution',
+      ],
+    },
+    {
+      key: 'CO',
+      title: 'Cooperation',
+      items: [
+        'Gets along with another employee not within the Department',
+        'Shows willingness to learn up; Is tactful, cheerful, and courteous, not moody',
+        'Shows willingness to listen to the opinion of others; has harmonious relation with the staff',
+        'Is not rumor-monger causing intrigue among fellow workers',
+      ],
+    },
+    {
+      key: 'IN',
+      title: 'Initiative',
+      items: [
+        'Creative and Resourceful. Is able to plan and think. Seeks to improve work',
+        'Punctuality - Rarely comes late. Never loiters during office hours; not a time conscious worker',
+      ],
+    },
+    {
+      key: 'CR',
+      title: 'Comments and Recommendations',
+      items: [
+        'Comments and recommendations for improvement',
+      ],
+    },
+  ],
+};
+
 const evaluatorOptionsMap: Record<CreateEvaluationFormDto['audience'], string[]> =
   {
     teaching: ['Student', 'Other'],
@@ -363,6 +435,9 @@ export default function EvaluationFormsPage() {
   const handleUseTeachingTemplate = (form: DraftForm) =>
     toDraftForm({ ...teachingTemplate, scale: teachingTemplate.scale || defaultScale });
 
+  const handleUseNonTeachingTemplate = (form: DraftForm) =>
+    toDraftForm({ ...nonTeachingTemplate, scale: nonTeachingTemplate.scale || defaultScale });
+
   const addSection = (form: DraftForm): DraftForm => ({
     ...form,
     sections: [
@@ -523,16 +598,20 @@ export default function EvaluationFormsPage() {
                 <Label>Audience</Label>
                 <Select
                   value={createForm.audience}
-                  onValueChange={(value) =>
-                    setCreateForm((current) => ({
-                      ...current,
-                      audience: value as CreateEvaluationFormDto['audience'],
+                  onValueChange={(value) => {
+                    const audience = value as CreateEvaluationFormDto['audience'];
+                    const template = audience === 'teaching' ? teachingTemplate : nonTeachingTemplate;
+                    setCreateForm(toDraftForm({
+                      ...template,
+                      name: createForm.name || template.name,
+                      description: createForm.description || template.description,
+                      scale: template.scale || defaultScale,
                       evaluatorOptions: normalizeEvaluatorOptions(
-                        current.evaluatorOptions,
-                        value as CreateEvaluationFormDto['audience'],
+                        template.evaluatorOptions,
+                        audience,
                       ),
-                    }))
-                  }
+                    }));
+                  }}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select audience" />
@@ -777,7 +856,14 @@ export default function EvaluationFormsPage() {
                   variant="outline"
                   onClick={() => setCreateForm(handleUseTeachingTemplate)}
                 >
-                  Use teaching template
+                  Teaching template
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setCreateForm(handleUseNonTeachingTemplate)}
+                >
+                  Non-teaching template
                 </Button>
                 <Button
                   type="button"

@@ -42,10 +42,14 @@ export default function CompleteProfilePage() {
     queryFn: getDepartments,
   });
 
-  // Fetch subjects based on selected department
+  // Fetch subjects based on selected department, year level, and semester
   const { data: subjects = [], isLoading: subjectsLoading } = useQuery<Subject[]>({
-    queryKey: ['subjects', department],
-    queryFn: () => subjectsApi.getAll({ departmentId: department }),
+    queryKey: ['subjects', department, gradeLevel, semester],
+    queryFn: () => subjectsApi.getAll({
+      departmentId: department,
+      gradeLevel: gradeLevel || undefined,
+      semester: semester || undefined,
+    }),
     enabled: !!department,
   });
 
@@ -188,7 +192,7 @@ export default function CompleteProfilePage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="gradeLevel">Year Level <span className="text-destructive">*</span></Label>
-                <Select value={gradeLevel} onValueChange={setGradeLevel}>
+                <Select value={gradeLevel} onValueChange={(val) => { setGradeLevel(val); setSelectedSubjects([]); }}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select year level" />
                   </SelectTrigger>
@@ -202,7 +206,7 @@ export default function CompleteProfilePage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="semester">Semester <span className="text-destructive">*</span></Label>
-                <Select value={semester} onValueChange={setSemester}>
+                <Select value={semester} onValueChange={(val) => { setSemester(val); setSelectedSubjects([]); }}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select semester" />
                   </SelectTrigger>

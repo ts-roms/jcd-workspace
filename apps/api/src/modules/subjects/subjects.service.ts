@@ -42,6 +42,7 @@ export class SubjectsService {
     departmentId: string,
     gradeLevel?: string,
     filterTeacherDepartment: boolean = false,
+    semester?: string,
   ): Promise<SubjectDocument[]> {
     if (!Types.ObjectId.isValid(departmentId)) {
       return [];
@@ -52,6 +53,9 @@ export class SubjectsService {
     };
     if (gradeLevel) {
       query.gradeLevel = gradeLevel;
+    }
+    if (semester) {
+      query.semester = semester;
     }
     let subjects = await this.subjectModel
       .find(query)

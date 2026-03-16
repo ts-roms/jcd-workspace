@@ -39,6 +39,7 @@ export class SubjectsController {
   findAll(
     @Query('departmentId') departmentId?: string,
     @Query('gradeLevel') gradeLevel?: string,
+    @Query('semester') semester?: string,
     @GetUser() user?: AuthenticatedUser,
   ) {
     // Check if user is a student
@@ -55,6 +56,7 @@ export class SubjectsController {
         studentDepartment,
         gradeLevel || user?.gradeLevel,
         true, // filterTeacherDepartment = true for students
+        semester,
       );
     }
 

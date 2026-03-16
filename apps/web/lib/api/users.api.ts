@@ -50,6 +50,7 @@ export interface UserFilters {
   limit?: number;
   search?: string;
   role?: string;
+  department?: string;
   isActive?: boolean;
 }
 

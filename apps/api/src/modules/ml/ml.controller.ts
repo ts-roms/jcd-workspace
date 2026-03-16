@@ -25,10 +25,13 @@ export class MlController {
 
   @UseGuards(JwtAuthGuard)
   @Get('analytics')
-  async getAnalytics(@GetUser() user: AuthenticatedUser) {
+  async getAnalytics(
+    @GetUser() user: AuthenticatedUser,
+    @Query('personnelId') personnelId?: string,
+  ) {
     const isDean = user.roles.includes('dean');
     const departmentFilter = isDean && user.department ? user.department : undefined;
-    return this.mlService.getAnalytics(departmentFilter);
+    return this.mlService.getAnalytics(departmentFilter, personnelId);
   }
 
   @Get('model-info')

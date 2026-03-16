@@ -544,43 +544,45 @@ export default function EvaluationFormsPage() {
                 </Select>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Semester</Label>
-                  <Select
-                    value={createForm.semester || ''}
-                    onValueChange={(value) =>
-                      setCreateForm((current) => ({
-                        ...current,
-                        semester: value,
-                      }))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select semester" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1st">1st Semester</SelectItem>
-                      <SelectItem value="2nd">2nd Semester</SelectItem>
-                      <SelectItem value="Summer">Summer</SelectItem>
-                    </SelectContent>
-                  </Select>
+              {createForm.audience === 'teaching' && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Semester</Label>
+                    <Select
+                      value={createForm.semester || ''}
+                      onValueChange={(value) =>
+                        setCreateForm((current) => ({
+                          ...current,
+                          semester: value,
+                        }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select semester" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1st">1st Semester</SelectItem>
+                        <SelectItem value="2nd">2nd Semester</SelectItem>
+                        <SelectItem value="Summer">Summer</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="create-form-school-year">School Year</Label>
+                    <Input
+                      id="create-form-school-year"
+                      value={createForm.schoolYear || ''}
+                      onChange={(event) =>
+                        setCreateForm((current) => ({
+                          ...current,
+                          schoolYear: event.target.value,
+                        }))
+                      }
+                      placeholder="e.g., 2024-2025"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="create-form-school-year">School Year</Label>
-                  <Input
-                    id="create-form-school-year"
-                    value={createForm.schoolYear || ''}
-                    onChange={(event) =>
-                      setCreateForm((current) => ({
-                        ...current,
-                        schoolYear: event.target.value,
-                      }))
-                    }
-                    placeholder="e.g., 2024-2025"
-                  />
-                </div>
-              </div>
+              )}
 
               <div className="space-y-2">
                 <Label htmlFor="create-form-end-date">End Date</Label>

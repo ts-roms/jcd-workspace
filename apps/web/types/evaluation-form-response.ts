@@ -16,6 +16,7 @@ export interface EvaluationFormResponse {
   evaluator?: string;
   answers: EvaluationResponseItem[];
   totalScore?: number;
+  comment?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -95,4 +96,5 @@ export interface CreateEvaluationFormResponseDto {
   semester?: string;
   evaluator?: string;
   answers: EvaluationResponseItem[];
+  comment?: string;
 }

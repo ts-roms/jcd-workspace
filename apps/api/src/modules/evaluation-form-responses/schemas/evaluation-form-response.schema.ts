@@ -42,6 +42,9 @@ export class EvaluationFormResponse {
 
   @Prop()
   totalScore?: number;
+
+  @Prop({ trim: true })
+  comment?: string;
 }
 
 export type EvaluationFormResponseDocument = EvaluationFormResponse & Document;

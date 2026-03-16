@@ -18,7 +18,8 @@
       "Bash(git config:*)",
       "Bash(dos2unix:*)",
       "Bash(npm run start:dev:*)",
-      "Bash(npm run migrate:down:*)"
+      "Bash(npm run migrate:down:*)",
+      "Bash(cd:*)"
     ],
     "deny": [],
     "ask": []

@@ -4,12 +4,23 @@ import { useQuery } from '@tanstack/react-query';
 import axios from '@/lib/api/axios';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { PERMISSIONS } from '@/config/permissions';
-import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { getEvaluationForms } from '@/lib/api/evaluation-forms.api';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/app/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/app/components/ui/table';
 import { Button } from '@/app/components/ui/button';
+import { Badge } from '@/app/components/ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Users, Building, Briefcase, FileText, PlusCircle, BarChart2 } from 'lucide-react';
+import { Users, Building, Briefcase, FileText, PlusCircle, BarChart2, ClipboardList } from 'lucide-react';
 import Link from 'next/link';
 import UserDashboard from './UserDashboard';
+import type { EvaluationForm } from '@/types/evaluation-form';
 
 interface DashboardAnalytics {
   stats: {
@@ -30,9 +41,11 @@ const fetchDashboardData = async (): Promise<DashboardAnalytics> => {
 };
 
 export default function DashboardPage() {
-  const { user, hasPermission } = useAuth();
+  const { user, hasPermission, hasRole } = useAuth();
 
+  const isDean = hasRole('dean');
   const isAdmin =
+    isDean ||
     hasPermission(PERMISSIONS.USERS_READ) ||
     hasPermission(PERMISSIONS.ROLES_READ) ||
     hasPermission(PERMISSIONS.SETTINGS_MANAGE);
@@ -52,6 +65,12 @@ function AdminDashboard() {
   const { data, isLoading, error } = useQuery<DashboardAnalytics>({
     queryKey: ['dashboardAnalytics'],
     queryFn: fetchDashboardData,
+  });
+
+  const { data: evalForms = [] } = useQuery<EvaluationForm[]>({
+    queryKey: ['evaluation-forms'],
+    queryFn: getEvaluationForms,
+    enabled: isDean,
   });
 
   if (isLoading) return <div className="p-4">Loading dashboard...</div>;
@@ -120,6 +139,66 @@ function AdminDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Evaluation Forms - Dean View */}
+      {isDean && evalForms.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Evaluation Forms (For Students)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Form Name</TableHead>
+                    <TableHead>Audience</TableHead>
+                    <TableHead>Semester</TableHead>
+                    <TableHead>Sections</TableHead>
+                    <TableHead>Items</TableHead>
+                    <TableHead>End Date</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {evalForms.map((form) => {
+                    const totalItems = form.sections?.reduce((sum, s) => sum + (s.items?.length ?? 0), 0) ?? 0;
+                    return (
+                      <TableRow key={form._id}>
+                        <TableCell className="font-medium">{form.name}</TableCell>
+                        <TableCell>
+                          <Badge variant="secondary" className="capitalize">{form.audience}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          {form.semester && `${form.semester}`}
+                          {form.semester && form.schoolYear && ' · '}
+                          {form.schoolYear && `SY ${form.schoolYear}`}
+                          {!form.semester && !form.schoolYear && '—'}
+                        </TableCell>
+                        <TableCell>{form.sections?.length ?? 0}</TableCell>
+                        <TableCell>{totalItems}</TableCell>
+                        <TableCell>
+                          {form.endDate ? new Date(form.endDate).toLocaleDateString() : '—'}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex gap-2 justify-end">
+                            <Link href={`/admin/evaluation-forms/${form._id}/responses`}>
+                              <Button size="sm" variant="outline">Responses</Button>
+                            </Link>
+                            <Link href={`/admin/evaluation-forms/${form._id}/print`} target="_blank">
+                              <Button size="sm" variant="outline">Print</Button>
+                            </Link>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

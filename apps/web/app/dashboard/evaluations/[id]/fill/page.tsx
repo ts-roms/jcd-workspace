@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAvailableEvaluationForm } from '@/lib/api/evaluation-forms.api';
 import { submitEvaluationFormResponse } from '@/lib/api/evaluation-form-responses.api';
 import { getPersonnel } from '@/lib/api/personnel.api';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Textarea } from '@/app/components/ui/textarea';
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge';
 import { ArrowLeft, Loader2 } from 'lucide-react';
@@ -20,10 +21,12 @@ import type { Personnel } from '@/types/personnel';
 export default function FillEvaluationFormPage() {
   const params = useParams();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const formId = params.id as string;
   const { user } = useAuth();
 
   const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [comment, setComment] = useState('');
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [selectedPersonnel, setSelectedPersonnel] = useState<string>('');
   const [evaluator, setEvaluator] = useState('');
@@ -85,8 +88,10 @@ export default function FillEvaluationFormPage() {
   const submitMutation = useMutation({
     mutationFn: submitEvaluationFormResponse,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['myEvaluationResponses'] });
+      queryClient.invalidateQueries({ queryKey: ['availableEvaluationForms'] });
       toast.success('Evaluation submitted successfully!');
-      router.push('/dashboard/evaluations');
+      router.push('/dashboard');
     },
     onError: () => {
       toast.error('Failed to submit evaluation. Please try again.');
@@ -149,6 +154,7 @@ export default function FillEvaluationFormPage() {
       semester: semesterLabel,
       evaluator: evaluator || undefined,
       answers: formattedAnswers,
+      comment: comment.trim() || undefined,
     });
   };
 
@@ -326,6 +332,21 @@ export default function FillEvaluationFormPage() {
           </CardContent>
         </Card>
       ))}
+
+      {/* Other Comments */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">Other Comments</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Textarea
+            placeholder="Any additional feedback or comments... (optional)"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            rows={4}
+          />
+        </CardContent>
+      </Card>
 
       {/* Progress & Submit */}
       <div className="flex items-center justify-between sticky bottom-0 bg-background/95 backdrop-blur py-4 border-t">

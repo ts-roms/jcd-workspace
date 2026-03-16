@@ -482,6 +482,7 @@ export default function EvaluationFormResponsesPage() {
                       <TableHead>Department</TableHead>
                       <TableHead>Semester</TableHead>
                       <TableHead>Total Score</TableHead>
+                      <TableHead>Comment</TableHead>
                       <TableHead>Submitted</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
@@ -494,6 +495,13 @@ export default function EvaluationFormResponsesPage() {
                         <TableCell>{response.respondentDepartment || '—'}</TableCell>
                         <TableCell>{response.semester || '—'}</TableCell>
                         <TableCell>{response.totalScore ?? '—'}</TableCell>
+                        <TableCell>
+                          {response.comment ? (
+                            <span className="text-xs text-muted-foreground max-w-[150px] truncate block" title={response.comment}>
+                              {response.comment}
+                            </span>
+                          ) : '—'}
+                        </TableCell>
                         <TableCell>
                           {new Date(response.createdAt).toLocaleString()}
                         </TableCell>
@@ -1102,6 +1110,13 @@ export default function EvaluationFormResponsesPage() {
                     ))}
                   </TableBody>
                 </Table>
+              )}
+
+              {selectedResponse.comment && (
+                <div className="rounded-md border p-4 bg-muted/50">
+                  <p className="text-sm font-semibold mb-1">Other Comments</p>
+                  <p className="text-sm whitespace-pre-line">{selectedResponse.comment}</p>
+                </div>
               )}
             </div>
           )}

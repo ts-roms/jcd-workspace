@@ -369,43 +369,45 @@ export default function EvaluationFormEditPage() {
                   </Select>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Semester</Label>
-                    <Select
-                      value={draft.semester || ''}
-                      onValueChange={(value) =>
-                        setDraft((current) =>
-                          current ? { ...current, semester: value } : current,
-                        )
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select semester" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1st">1st Semester</SelectItem>
-                        <SelectItem value="2nd">2nd Semester</SelectItem>
-                        <SelectItem value="Summer">Summer</SelectItem>
-                      </SelectContent>
-                    </Select>
+                {draft.audience === 'teaching' && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Semester</Label>
+                      <Select
+                        value={draft.semester || ''}
+                        onValueChange={(value) =>
+                          setDraft((current) =>
+                            current ? { ...current, semester: value } : current,
+                          )
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select semester" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1st">1st Semester</SelectItem>
+                          <SelectItem value="2nd">2nd Semester</SelectItem>
+                          <SelectItem value="Summer">Summer</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-form-school-year">School Year</Label>
+                      <Input
+                        id="edit-form-school-year"
+                        value={draft.schoolYear || ''}
+                        onChange={(event) =>
+                          setDraft((current) =>
+                            current
+                              ? { ...current, schoolYear: event.target.value }
+                              : current,
+                          )
+                        }
+                        placeholder="e.g., 2024-2025"
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="edit-form-school-year">School Year</Label>
-                    <Input
-                      id="edit-form-school-year"
-                      value={draft.schoolYear || ''}
-                      onChange={(event) =>
-                        setDraft((current) =>
-                          current
-                            ? { ...current, schoolYear: event.target.value }
-                            : current,
-                        )
-                      }
-                      placeholder="e.g., 2024-2025"
-                    />
-                  </div>
-                </div>
+                )}
 
                 <div className="space-y-2">
                   <Label htmlFor="edit-form-end-date">End Date</Label>

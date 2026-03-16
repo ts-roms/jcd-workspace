@@ -42,4 +42,8 @@ export class CreateEvaluationFormResponseDto {
   @ValidateNested({ each: true })
   @Type(() => AnswerItemDto)
   answers: AnswerItemDto[];
+
+  @IsString()
+  @IsOptional()
+  comment?: string;
 }

@@ -116,11 +116,15 @@ export class MlService {
     console.log('Scheduled task: Checking for model updates...');
   }
 
-  async getAnalytics(departmentId?: string) {
+  async getAnalytics(departmentId?: string, personnelId?: string) {
     const pipeline: any[] = [];
 
-    // If filtering by department, match evaluations for personnel in that department
-    if (departmentId) {
+    // If filtering by specific personnel
+    if (personnelId) {
+      const { Types } = await import('mongoose');
+      pipeline.push({ $match: { personnel: new Types.ObjectId(personnelId) } });
+    } else if (departmentId) {
+      // If filtering by department, match evaluations for personnel in that department
       const personnelInDept = await this.personnelService.findAll(departmentId);
       const personnelIds = personnelInDept.map((p) => (p as any)._id);
       pipeline.push({ $match: { personnel: { $in: personnelIds } } });

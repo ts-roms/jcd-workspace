@@ -3,12 +3,23 @@
 import { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { usersApi, type User } from '@/lib/api/users.api';
+import { getDepartments } from '@/lib/api/departments.api';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { useAlert } from '@/lib/contexts/AlertContext';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/app/components/ui/select';
 import { toast } from 'sonner';
 import { GraduationCap } from 'lucide-react';
+import type { Department } from '@/types/department';
+
+const ALL_DEPT_VALUE = '__all__';
 import {
   Table,
   TableBody,
@@ -32,6 +43,7 @@ export default function StudentsPage() {
   const queryClient = useQueryClient();
   const alert = useAlert();
   const [searchTerm, setSearchTerm] = useState('');
+  const [departmentFilter, setDepartmentFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
@@ -105,13 +117,20 @@ export default function StudentsPage() {
     );
   };
 
+  const { data: departments = [] } = useQuery<Department[]>({
+    queryKey: ['departments'],
+    queryFn: getDepartments,
+    enabled: !isDean,
+  });
+
   const { data: studentsData, isLoading } = useQuery({
-    queryKey: ['students', currentPage],
+    queryKey: ['students', currentPage, departmentFilter],
     queryFn: () =>
       usersApi.getAll({
         role: 'Student',
         page: currentPage,
         limit: itemsPerPage,
+        ...(departmentFilter && { department: departmentFilter }),
       }),
     enabled: !!user,
   });
@@ -163,17 +182,9 @@ export default function StudentsPage() {
                 : 'View all students in the system'}
             </CardDescription>
           </div>
-          <Button
-            onClick={handlePromoteAll}
-            disabled={promoteAllMutation.isPending}
-            variant="outline"
-          >
-            <GraduationCap className="mr-2 h-4 w-4" />
-            {promoteAllMutation.isPending ? 'Promoting...' : 'Promote All'}
-          </Button>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Search Bar */}
+          {/* Search & Filter */}
           <div className="flex items-center gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -184,6 +195,27 @@ export default function StudentsPage() {
                 className="pl-9"
               />
             </div>
+            {!isDean && (
+              <Select
+                value={departmentFilter || ALL_DEPT_VALUE}
+                onValueChange={(v) => {
+                  setDepartmentFilter(v === ALL_DEPT_VALUE ? '' : v);
+                  setCurrentPage(1);
+                }}
+              >
+                <SelectTrigger className="w-[220px]">
+                  <SelectValue placeholder="All Departments" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={ALL_DEPT_VALUE}>All Departments</SelectItem>
+                  {departments.map((dept) => (
+                    <SelectItem key={dept._id} value={dept._id}>
+                      {dept.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
           {/* Students Table */}

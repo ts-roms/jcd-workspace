@@ -27,6 +27,7 @@ interface NavItem {
     name: string;
     href: string;
     permission?: string;
+    roles?: string[];
   }[];
 }
 
@@ -61,12 +62,14 @@ const navigation: NavItem[] = [
       {
         name: 'Students',
         href: '/admin/students',
-        permission: PERMISSIONS.USERS_READ
+        permission: PERMISSIONS.USERS_READ,
+        roles: ['dean'],
       },
       {
         name: 'Subjects',
         href: '/admin/subjects',
-        permission: PERMISSIONS.SUBJECTS_READ
+        permission: PERMISSIONS.SUBJECTS_READ,
+        roles: ['dean'],
       },
       {
         name: 'Courses',
@@ -86,12 +89,14 @@ const navigation: NavItem[] = [
       {
         name: 'Evaluation Forms',
         href: '/admin/evaluation-forms',
-        permission: PERMISSIONS.EVALUATION_FORMS_READ,
+        permission: PERMISSIONS.EVALUATION_FORMS_MANAGE,
+        roles: ['super', 'admin', 'hr'],
       },
       {
         name: 'Non-Teaching Eval',
         href: '/admin/non-teaching-evaluations',
-        permission: PERMISSIONS.EVALUATION_FORMS_READ
+        permission: PERMISSIONS.EVALUATION_FORMS_MANAGE,
+        roles: ['super', 'admin', 'hr'],
       },
     ],
     permission: [
@@ -198,7 +203,11 @@ export default function Sidenav() {
 
   const visibleNavItems = navigation.filter((item) => {
     if (item.roles !== undefined && !hasAnyRole(item.roles)) return false;
-    return hasAnyPermission(item.permission);
+    // Show parent if user has permission OR is a Dean (for Management group)
+    if (hasAnyPermission(item.permission)) return true;
+    // Check if any child grants access via roles
+    if (item.children?.some((child) => child.roles?.some((r) => hasRole(r)))) return true;
+    return false;
   });
 
   return (
@@ -210,7 +219,11 @@ export default function Sidenav() {
         <Accordion type="multiple" className="w-full">
           {visibleNavItems.map((item) => {
             if (item.children) {
-              const visibleChildren = item.children.filter(child => !child.permission || hasPermission(child.permission));
+              const visibleChildren = item.children.filter(child => {
+                const hasRoleAccess = child.roles?.length ? child.roles.some((r) => hasRole(r)) : false;
+                const hasPermAccess = !child.permission || hasPermission(child.permission);
+                return hasRoleAccess || hasPermAccess;
+              });
               if (visibleChildren.length === 0) return null;
 
               return (

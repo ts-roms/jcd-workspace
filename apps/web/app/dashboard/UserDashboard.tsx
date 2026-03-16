@@ -166,7 +166,7 @@ export default function UserDashboard() {
   const isLoading = formsLoading || responsesLoading;
 
   const completedFormIds = new Set(
-    myResponses?.map((r) => r.form) ?? []
+    myResponses?.map((r) => typeof r.form === 'object' ? (r.form as any)._id : r.form) ?? []
   );
 
   const pendingForms = forms?.filter((f) => !completedFormIds.has(f._id)) ?? [];

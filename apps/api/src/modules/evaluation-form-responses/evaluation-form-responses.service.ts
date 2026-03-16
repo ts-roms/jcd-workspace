@@ -51,6 +51,7 @@ export class EvaluationFormResponsesService {
       evaluator: dto.evaluator,
       answers: dto.answers,
       totalScore,
+      comment: dto.comment,
     });
 
     return response.save();

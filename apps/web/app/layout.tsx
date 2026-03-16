@@ -20,10 +20,50 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "RBAC Web App",
-  description: "Role-Based Access Control Web Application",
-};
+async function fetchSeoMetadata() {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+    const res = await fetch(`${apiUrl}/settings/seo`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.data || null;
+  } catch {
+    return null;
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await fetchSeoMetadata();
+
+  const siteName = seo?.siteName || "RBAC Web App";
+  const description = seo?.siteDescription || "Role-Based Access Control Web Application";
+  const keywords = seo?.metaKeywords || "";
+  const ogImage = seo?.ogImage || "";
+
+  return {
+    title: {
+      default: siteName,
+      template: `%s | ${siteName}`,
+    },
+    description,
+    ...(keywords && { keywords: keywords.split(",").map((k: string) => k.trim()) }),
+    openGraph: {
+      title: siteName,
+      description,
+      siteName,
+      type: "website",
+      ...(ogImage && { images: [{ url: ogImage }] }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteName,
+      description,
+      ...(ogImage && { images: [ogImage] }),
+    },
+  };
+}
 
 export default function RootLayout({
   children,

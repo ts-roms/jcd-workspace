@@ -1,9 +1,37 @@
-import { IsOptional, IsString, IsNumber, Min } from 'class-validator';
+import { IsOptional, IsString, IsNumber, IsBoolean, Min } from 'class-validator';
 
 export class UpdateSettingsDto {
   @IsOptional()
   @IsString()
-  appName?: string;
+  siteName?: string;
+
+  @IsOptional()
+  @IsString()
+  siteDescription?: string;
+
+  @IsOptional()
+  @IsString()
+  metaKeywords?: string;
+
+  @IsOptional()
+  @IsString()
+  ogImage?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  maintenanceMode?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  allowRegistration?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  emailVerificationRequired?: boolean;
+
+  @IsOptional()
+  @IsString()
+  defaultUserRole?: string;
 
   @IsOptional()
   @IsString()
@@ -42,4 +70,30 @@ export class UpdateSettingsDto {
   @IsNumber()
   @Min(1)
   lockoutDuration?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  sessionTimeout?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  passwordMinLength?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  passwordRequireUppercase?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  passwordRequireLowercase?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  passwordRequireNumbers?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  passwordRequireSpecialChars?: boolean;
 }

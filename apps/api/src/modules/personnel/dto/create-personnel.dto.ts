@@ -4,6 +4,7 @@ import {
   IsOptional,
   IsEmail,
   IsDateString,
+  IsBoolean,
   IsIn,
 } from 'class-validator';
 
@@ -56,4 +57,8 @@ export class CreatePersonnelDto {
   @IsString()
   @IsOptional()
   performanceStatus?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  isActive?: boolean;
 }

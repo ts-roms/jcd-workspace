@@ -14,6 +14,8 @@ import {
   NonTeachingEvaluationSchema,
 } from '../non-teaching-evaluations/schemas/non-teaching-evaluation.schema';
 import { SubjectsModule } from '../subjects/subjects.module';
+import { UsersModule } from '../users/users.module';
+import { Role, RoleSchema } from '../roles/schemas/role.schema';
 
 @Module({
   imports: [
@@ -28,8 +30,10 @@ import { SubjectsModule } from '../subjects/subjects.module';
         name: NonTeachingEvaluation.name,
         schema: NonTeachingEvaluationSchema,
       },
+      { name: Role.name, schema: RoleSchema },
     ]),
     SubjectsModule,
+    UsersModule,
   ],
   controllers: [PersonnelController],
   providers: [PersonnelService, ExcellenceTrackingService],

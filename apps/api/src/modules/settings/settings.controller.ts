@@ -13,12 +13,28 @@ import { RequirePermission } from '../../common/decorators/require-permission.de
 import { UpdateSettingsDto } from './dto/update-settings.dto';
 
 @ApiTags('Settings')
-@ApiBearerAuth('JWT-auth')
 @Controller('settings')
-@UseGuards(JwtAuthGuard, PermissionGuard)
 export class SettingsController {
   constructor(private readonly settingsService: SettingsService) {}
 
+  @ApiOperation({ summary: 'Get public SEO metadata' })
+  @ApiResponse({ status: 200, description: 'SEO metadata retrieved successfully' })
+  @Get('seo')
+  async getSeoMetadata() {
+    const settings = await this.settingsService.getSettings();
+    return {
+      success: true,
+      data: {
+        siteName: settings?.siteName || 'RBAC App',
+        siteDescription: settings?.siteDescription || '',
+        metaKeywords: settings?.metaKeywords || '',
+        ogImage: settings?.ogImage || '',
+      },
+    };
+  }
+
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   @ApiOperation({ summary: 'Get application settings' })
   @ApiResponse({ status: 200, description: 'Settings retrieved successfully' })
   @ApiResponse({
@@ -38,6 +54,8 @@ export class SettingsController {
     };
   }
 
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   @ApiOperation({ summary: 'Update application settings' })
   @ApiBody({ type: UpdateSettingsDto })
   @ApiResponse({ status: 200, description: 'Settings updated successfully' })

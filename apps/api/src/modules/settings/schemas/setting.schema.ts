@@ -6,7 +6,16 @@ export type SettingDocument = Setting & Document;
 @Schema({ timestamps: true })
 export class Setting extends Document {
   @Prop({ default: 'RBAC App' })
-  appName: string;
+  siteName: string;
+
+  @Prop({ default: '' })
+  siteDescription: string;
+
+  @Prop({ default: '' })
+  metaKeywords: string;
+
+  @Prop({ default: '' })
+  ogImage: string;
 
   @Prop({ default: '' })
   appLogo: string;
@@ -16,6 +25,18 @@ export class Setting extends Document {
 
   @Prop({ default: '' })
   companyLogo: string;
+
+  @Prop({ default: false })
+  maintenanceMode: boolean;
+
+  @Prop({ default: true })
+  allowRegistration: boolean;
+
+  @Prop({ default: false })
+  emailVerificationRequired: boolean;
+
+  @Prop({ default: '' })
+  defaultUserRole: string;
 
   @Prop({ required: true })
   jwt_access_token_secret: string;
@@ -37,6 +58,21 @@ export class Setting extends Document {
 
   @Prop({ default: 5 })
   sessionTimeout: number; // Idle timeout in minutes
+
+  @Prop({ default: 8 })
+  passwordMinLength: number;
+
+  @Prop({ default: true })
+  passwordRequireUppercase: boolean;
+
+  @Prop({ default: true })
+  passwordRequireLowercase: boolean;
+
+  @Prop({ default: true })
+  passwordRequireNumbers: boolean;
+
+  @Prop({ default: false })
+  passwordRequireSpecialChars: boolean;
 }
 
 export const SettingSchema = SchemaFactory.createForClass(Setting);

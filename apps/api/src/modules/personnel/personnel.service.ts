@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreatePersonnelDto } from './dto/create-personnel.dto';
@@ -17,10 +17,14 @@ import {
   NonTeachingEvaluation,
   NonTeachingEvaluationDocument,
 } from '../non-teaching-evaluations/schemas/non-teaching-evaluation.schema';
+import { Role, RoleDocument } from '../roles/schemas/role.schema';
+import { UsersService } from '../users/users.service';
 import { classifyPerformance } from './utils/classification.util';
 
 @Injectable()
 export class PersonnelService {
+  private readonly logger = new Logger(PersonnelService.name);
+
   constructor(
     @InjectModel(Personnel.name)
     private readonly personnelModel: Model<PersonnelDocument>,
@@ -28,11 +32,47 @@ export class PersonnelService {
     private readonly performanceEvaluationModel: Model<PerformanceEvaluationDocument>,
     @InjectModel(NonTeachingEvaluation.name)
     private readonly nonTeachingEvaluationModel: Model<NonTeachingEvaluationDocument>,
+    @InjectModel(Role.name)
+    private readonly roleModel: Model<RoleDocument>,
+    private readonly usersService: UsersService,
   ) {}
 
   async create(createPersonnelDto: CreatePersonnelDto): Promise<Personnel> {
     const createdPersonnel = new this.personnelModel(createPersonnelDto);
-    return createdPersonnel.save();
+    const savedPersonnel = await createdPersonnel.save();
+
+    // Auto-create a user account with the matching role
+    try {
+      const existingUser = await this.usersService.findByEmail(createPersonnelDto.email);
+      if (!existingUser) {
+        // Map personnelType to role name
+        const roleName = createPersonnelDto.personnelType === 'Non-Teaching'
+          ? 'non-teaching'
+          : 'teaching';
+
+        const role = await this.roleModel.findOne({ name: roleName }).exec();
+        const roleIds = role ? [role._id.toString()] : [];
+
+        await this.usersService.create({
+          email: createPersonnelDto.email,
+          firstName: createPersonnelDto.firstName,
+          lastName: createPersonnelDto.lastName,
+          password: 'Password@123',
+          roles: roleIds,
+          department: createPersonnelDto.department,
+        });
+
+        this.logger.log(
+          `User account created for ${createPersonnelDto.email} with role: ${roleName}`,
+        );
+      }
+    } catch (error) {
+      this.logger.warn(
+        `Failed to auto-create user account for ${createPersonnelDto.email}: ${error instanceof Error ? error.message : error}`,
+      );
+    }
+
+    return savedPersonnel;
   }
 
   async findAll(departmentId?: string, includeStudents = false): Promise<Personnel[]> {

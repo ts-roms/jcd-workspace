@@ -100,6 +100,37 @@ const SettingsPage = () => {
             </CardContent>
           </Card>
 
+          {/* SEO / Metadata */}
+          <Card>
+            <CardHeader><CardTitle>SEO / Metadata</CardTitle></CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label htmlFor="metaKeywords" className="block text-sm font-medium mb-1">Meta Keywords</label>
+                <Input
+                  type="text"
+                  name="metaKeywords"
+                  id="metaKeywords"
+                  value={formData.metaKeywords || ''}
+                  onChange={handleChange}
+                  placeholder="e.g., education, evaluation, personnel"
+                />
+                <p className="text-xs text-gray-500 mt-1">Comma-separated keywords for search engines</p>
+              </div>
+              <div>
+                <label htmlFor="ogImage" className="block text-sm font-medium mb-1">Open Graph Image URL</label>
+                <Input
+                  type="text"
+                  name="ogImage"
+                  id="ogImage"
+                  value={formData.ogImage || ''}
+                  onChange={handleChange}
+                  placeholder="https://example.com/og-image.png"
+                />
+                <p className="text-xs text-gray-500 mt-1">Image shown when the site is shared on social media</p>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Registration Settings */}
           <Card>
             <CardHeader><CardTitle>Registration Settings</CardTitle></CardHeader>

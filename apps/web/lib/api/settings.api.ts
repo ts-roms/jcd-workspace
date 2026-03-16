@@ -4,6 +4,8 @@ export interface Settings {
   _id: string;
   siteName: string;
   siteDescription?: string;
+  metaKeywords?: string;
+  ogImage?: string;
   maintenanceMode: boolean;
   allowRegistration: boolean;
   emailVerificationRequired: boolean;
@@ -22,6 +24,8 @@ export interface Settings {
 export interface UpdateSettingsDto {
   siteName?: string;
   siteDescription?: string;
+  metaKeywords?: string;
+  ogImage?: string;
   maintenanceMode?: boolean;
   allowRegistration?: boolean;
   emailVerificationRequired?: boolean;

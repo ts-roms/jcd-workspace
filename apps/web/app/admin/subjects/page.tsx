@@ -49,7 +49,7 @@ export default function SubjectsPage() {
     queryFn: getDepartments,
   });
 
-  const { data: personnel = [] } = useQuery<Personnel[]>({
+  const { data: personnel = [], refetch: refetchPersonnel } = useQuery<Personnel[]>({
     queryKey: ['personnel'],
     queryFn: getPersonnel,
   });
@@ -102,11 +102,13 @@ export default function SubjectsPage() {
 
   const handleCreate = () => {
     setSelectedSubject(null);
+    refetchPersonnel();
     setIsDialogOpen(true);
   };
 
   const handleEdit = (subject: Subject) => {
     setSelectedSubject(subject);
+    refetchPersonnel();
     setIsDialogOpen(true);
   };
 

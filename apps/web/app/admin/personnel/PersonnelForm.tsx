@@ -28,6 +28,7 @@ const formSchema = z.object({
   lastName: z.string().min(2, 'Last name must be at least 2 characters.'),
   email: z.string().email('Invalid email address.'),
   department: z.string().min(1, 'Department is required.'),
+  personnelType: z.enum(['Teaching', 'Non-Teaching']),
   jobTitle: z.string().optional(),
   phoneNumber: z.string().optional(),
 });
@@ -47,6 +48,7 @@ export function PersonnelForm({ onSubmit, defaultValues, departments, isSubmitti
       lastName: defaultValues?.lastName || '',
       email: defaultValues?.email || '',
       department: defaultValues?.department?._id || '',
+      personnelType: (defaultValues?.personnelType as 'Teaching' | 'Non-Teaching') || 'Teaching',
       jobTitle: defaultValues?.jobTitle || '',
       phoneNumber: defaultValues?.phoneNumber || '',
     },
@@ -112,6 +114,27 @@ export function PersonnelForm({ onSubmit, defaultValues, departments, isSubmitti
                       {dept.name}
                     </SelectItem>
                   ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="personnelType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Personnel Type</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="Teaching">Teaching</SelectItem>
+                  <SelectItem value="Non-Teaching">Non-Teaching</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

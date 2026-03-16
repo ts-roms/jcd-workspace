@@ -20,6 +20,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/app/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/popover';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/app/components/ui/command';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Subject } from '@/types/subject';
 import { Department } from '@/types/department';
 import { Personnel } from '@/types/personnel';
@@ -161,32 +172,72 @@ export function SubjectForm({
         <FormField
           control={form.control}
           name="teacher"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Teacher (Optional)</FormLabel>
-              <Select
-                onValueChange={(v) => field.onChange(v === NONE_VALUE ? '' : v)}
-                value={field.value || NONE_VALUE}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select teacher" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value={NONE_VALUE}>None</SelectItem>
-                  {personnel
-                    .filter((p) => p.isActive)
-                    .map((person) => (
-                      <SelectItem key={person._id} value={person._id}>
-                        {person.firstName} {person.lastName}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const activePersonnel = personnel.filter((p) => p.isActive !== false);
+            const selectedTeacher = activePersonnel.find((p) => p._id === field.value);
+            return (
+              <FormItem className="flex flex-col">
+                <FormLabel>Teacher (Optional)</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          'w-full justify-between',
+                          !field.value && 'text-muted-foreground'
+                        )}
+                      >
+                        {selectedTeacher
+                          ? `${selectedTeacher.firstName} ${selectedTeacher.lastName}`
+                          : 'Select teacher'}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0" align="start">
+                    <Command>
+                      <CommandInput placeholder="Search teacher..." />
+                      <CommandList>
+                        <CommandEmpty>No teacher found.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            value="none"
+                            onSelect={() => field.onChange('')}
+                          >
+                            <Check
+                              className={cn(
+                                'mr-2 h-4 w-4',
+                                !field.value ? 'opacity-100' : 'opacity-0'
+                              )}
+                            />
+                            None
+                          </CommandItem>
+                          {activePersonnel.map((person) => (
+                            <CommandItem
+                              key={person._id}
+                              value={`${person.firstName} ${person.lastName}`}
+                              onSelect={() => field.onChange(person._id)}
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  field.value === person._id ? 'opacity-100' : 'opacity-0'
+                                )}
+                              />
+                              {person.firstName} {person.lastName}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
 
         <div className="grid grid-cols-2 gap-4">

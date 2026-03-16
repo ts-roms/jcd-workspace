@@ -36,6 +36,9 @@ export class Personnel {
   @Prop({ enum: ['Teaching', 'Non-Teaching', 'Student'], default: 'Teaching' })
   personnelType: string;
 
+  @Prop({ default: true })
+  isActive: boolean;
+
   @Prop()
   predictedPerformance: string;
 

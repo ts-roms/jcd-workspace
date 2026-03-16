@@ -24,11 +24,14 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../common/interfaces/jwt-payload.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserFiltersDto } from './dto/user-filters.dto';
 import { AssignRolesDto } from './dto/assign-roles.dto';
+import { Role, RoleDocument } from '../roles/schemas/role.schema';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { PermissionGuard } from '../../common/guards/permission.guard';
 import { RequirePermission } from '../../common/decorators/require-permission.decorator';
@@ -40,7 +43,10 @@ import { ParseMongoIdPipe } from '../../common/pipes/parse-mongo-id.pipe';
 @Controller('users')
 @UseGuards(JwtAuthGuard, PermissionGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    @InjectModel(Role.name) private readonly roleModel: Model<RoleDocument>,
+  ) {}
 
   private isDean(user: AuthenticatedUser): boolean {
     return user.roles.some((r) => r.toLowerCase() === 'dean');
@@ -309,6 +315,62 @@ export class UsersController {
       data: {
         user: this.sanitizeUser(updatedUser),
       },
+    };
+  }
+
+  @ApiOperation({ summary: 'Promote a single student to the next semester/year level' })
+  @ApiResponse({ status: 200, description: 'Student promoted successfully' })
+  @Post(':id/promote')
+  @RequirePermission('users.update')
+  async promoteSingleStudent(
+    @Param('id', ParseMongoIdPipe) id: string,
+    @GetUser() currentUser: AuthenticatedUser,
+  ) {
+    // Dean can only promote students in their department
+    if (this.isDean(currentUser) && currentUser.department) {
+      const student = await this.usersService.findById(id);
+      if (!student) throw new NotFoundException('Student not found');
+      const deptId = this.getDepartmentId(student);
+      if (deptId !== currentUser.department) {
+        throw new ForbiddenException('You can only promote students in your department');
+      }
+    }
+
+    const result = await this.usersService.promoteSingleStudent(id);
+    return {
+      success: true,
+      message: result.status === 'graduated'
+        ? 'Student has graduated.'
+        : `Student promoted to ${result.gradeLevel} - ${result.semester}.`,
+      data: result,
+    };
+  }
+
+  @ApiOperation({ summary: 'Promote all students to the next semester/year level' })
+  @ApiResponse({ status: 200, description: 'Students promoted successfully' })
+  @Post('promote-students')
+  @RequirePermission('users.update')
+  async promoteStudents(@GetUser() currentUser: AuthenticatedUser) {
+    const studentRole = await this.roleModel.findOne({ name: 'student' }).exec();
+    if (!studentRole) {
+      throw new BadRequestException('Student role not found');
+    }
+
+    // Dean can only promote students in their department
+    const departmentFilter =
+      this.isDean(currentUser) && currentUser.department
+        ? currentUser.department
+        : undefined;
+
+    const result = await this.usersService.promoteStudents(
+      studentRole._id.toString(),
+      departmentFilter,
+    );
+
+    return {
+      success: true,
+      message: `Promoted ${result.promoted} student(s), ${result.graduated} graduated.`,
+      data: result,
     };
   }
 

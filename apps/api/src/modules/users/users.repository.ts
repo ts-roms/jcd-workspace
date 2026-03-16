@@ -43,6 +43,7 @@ export class UsersRepository {
         populate: { path: 'permissions' },
       })
       .populate('department')
+      .populate('enrolledSubjects')
       .exec();
   }
 
@@ -126,6 +127,7 @@ export class UsersRepository {
         populate: { path: 'permissions' },
       })
       .populate('department')
+      .populate('enrolledSubjects')
       .sort({ [sortBy]: order === 'asc' ? 1 : -1 })
       .skip((page - 1) * limit)
       .limit(limit)
@@ -143,12 +145,19 @@ export class UsersRepository {
   }
 
   async update(id: string, data: UpdateUserDto): Promise<UserDocument | null> {
+    const updateData: Record<string, unknown> = { ...data };
+    if (data.enrolledSubjects) {
+      updateData.enrolledSubjects = data.enrolledSubjects.map(
+        (id) => new Types.ObjectId(id),
+      );
+    }
     return this.userModel
-      .findByIdAndUpdate(id, data, { new: true })
+      .findByIdAndUpdate(id, updateData, { new: true })
       .populate({
         path: 'roles',
         populate: { path: 'permissions' },
       })
+      .populate('enrolledSubjects')
       .exec();
   }
 
@@ -182,6 +191,98 @@ export class UsersRepository {
     await this.userModel.findByIdAndUpdate(id, {
       currentSessionId: sessionId,
     });
+  }
+
+  /**
+   * Promote all students to the next semester/year.
+   * 1st Sem → 2nd Sem (same year)
+   * 2nd Sem → 1st Sem (next year level)
+   * 4th Year 2nd Sem → graduated (marked inactive)
+   */
+  async promoteStudents(
+    studentRoleId: string,
+    departmentId?: string,
+  ): Promise<{ promoted: number; graduated: number }> {
+    const filter: FilterQuery<UserDocument> = {
+      roles: studentRoleId,
+      isActive: true,
+    };
+    if (departmentId) {
+      filter.department = new Types.ObjectId(departmentId);
+    }
+
+    const students = await this.userModel.find(filter).exec();
+
+    const yearOrder = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
+    let promoted = 0;
+    let graduated = 0;
+
+    for (const student of students) {
+      const currentSem = student.semester || '1st Sem';
+      const currentYear = student.gradeLevel || '1st Year';
+      const yearIndex = yearOrder.indexOf(currentYear);
+
+      if (currentSem === '1st Sem') {
+        // Move to 2nd Sem, same year
+        student.semester = '2nd Sem';
+        // Clear enrolled subjects for the new semester
+        student.enrolledSubjects = [];
+        await student.save();
+        promoted++;
+      } else {
+        // 2nd Sem → next year, 1st Sem
+        if (yearIndex >= 0 && yearIndex < yearOrder.length - 1) {
+          student.gradeLevel = yearOrder[yearIndex + 1];
+          student.semester = '1st Sem';
+          student.enrolledSubjects = [];
+          await student.save();
+          promoted++;
+        } else {
+          // 4th Year 2nd Sem → graduated
+          student.isActive = false;
+          student.enrolledSubjects = [];
+          await student.save();
+          graduated++;
+        }
+      }
+    }
+
+    return { promoted, graduated };
+  }
+
+  /**
+   * Promote a single student to the next semester/year.
+   */
+  async promoteSingleStudent(
+    studentId: string,
+  ): Promise<{ status: 'promoted' | 'graduated'; gradeLevel: string; semester: string }> {
+    const student = await this.userModel.findById(studentId).exec();
+    if (!student) throw new Error('Student not found');
+
+    const yearOrder = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
+    const currentSem = student.semester || '1st Sem';
+    const currentYear = student.gradeLevel || '1st Year';
+    const yearIndex = yearOrder.indexOf(currentYear);
+
+    if (currentSem === '1st Sem') {
+      student.semester = '2nd Sem';
+      student.enrolledSubjects = [];
+      await student.save();
+      return { status: 'promoted', gradeLevel: student.gradeLevel || '1st Year', semester: '2nd Sem' };
+    } else {
+      if (yearIndex >= 0 && yearIndex < yearOrder.length - 1) {
+        student.gradeLevel = yearOrder[yearIndex + 1];
+        student.semester = '1st Sem';
+        student.enrolledSubjects = [];
+        await student.save();
+        return { status: 'promoted', gradeLevel: student.gradeLevel || '1st Year', semester: '1st Sem' };
+      } else {
+        student.isActive = false;
+        student.enrolledSubjects = [];
+        await student.save();
+        return { status: 'graduated', gradeLevel: currentYear, semester: currentSem };
+      }
+    }
   }
 
   async count(filters: UserFiltersDto = {}): Promise<number> {

@@ -1,18 +1,37 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { getAvailableEvaluationForms } from '@/lib/api/evaluation-forms.api';
 import { getMyEvaluationFormResponses } from '@/lib/api/evaluation-form-responses.api';
+import { subjectsApi } from '@/lib/api/subjects.api';
+import { usersApi } from '@/lib/api/users.api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Badge } from '@/app/components/ui/badge';
 import { Button } from '@/app/components/ui/button';
+import { Checkbox } from '@/app/components/ui/checkbox';
 import { Alert, AlertDescription, AlertTitle } from '@/app/components/ui/alert';
-import { ClipboardList, AlertCircle, CheckCircle2, User, Mail, Building } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/app/components/ui/dialog';
+import { ClipboardList, AlertCircle, CheckCircle2, User, Mail, Building, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
+import type { Subject } from '@/types/subject';
+import type { Personnel } from '@/types/personnel';
 
 export default function UserDashboard() {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
+  const router = useRouter();
+  const [enrollDialogOpen, setEnrollDialogOpen] = useState(false);
+  const [pendingFormId, setPendingFormId] = useState<string | null>(null);
+  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
 
   const { data: forms, isLoading: formsLoading } = useQuery({
     queryKey: ['availableEvaluationForms'],
@@ -23,6 +42,67 @@ export default function UserDashboard() {
     queryKey: ['myEvaluationResponses'],
     queryFn: getMyEvaluationFormResponses,
   });
+
+  const departmentId = typeof user?.department === 'object'
+    ? (user.department as any)?._id
+    : user?.department;
+
+  const { data: departmentSubjects = [], isLoading: subjectsLoading } = useQuery<Subject[]>({
+    queryKey: ['subjects', departmentId],
+    queryFn: () => subjectsApi.getAll({ departmentId: departmentId || '' }),
+    enabled: !!departmentId && enrollDialogOpen,
+  });
+
+  const activeSubjects = departmentSubjects.filter((s) => s.isActive !== false);
+
+  const enrollMutation = useMutation({
+    mutationFn: async (subjectIds: string[]) => {
+      if (!user) throw new Error('No user');
+      await usersApi.updateMyProfile(user._id, { enrolledSubjects: subjectIds });
+    },
+    onSuccess: async () => {
+      await refreshUser();
+      toast.success('Subjects enrolled successfully!');
+      setEnrollDialogOpen(false);
+      setSelectedSubjects([]);
+      if (pendingFormId) {
+        router.push(`/dashboard/evaluations/${pendingFormId}/fill`);
+        setPendingFormId(null);
+      }
+    },
+    onError: () => {
+      toast.error('Failed to enroll subjects.');
+    },
+  });
+
+  const handleFillForm = (formId: string) => {
+    const enrolled = (user as any)?.enrolledSubjects ?? [];
+    const hasEnrolled = Array.isArray(enrolled) && enrolled.length > 0;
+
+    if (hasEnrolled) {
+      router.push(`/dashboard/evaluations/${formId}/fill`);
+    } else {
+      setPendingFormId(formId);
+      setSelectedSubjects([]);
+      setEnrollDialogOpen(true);
+    }
+  };
+
+  const handleSubjectToggle = (subjectId: string) => {
+    setSelectedSubjects((prev) =>
+      prev.includes(subjectId)
+        ? prev.filter((id) => id !== subjectId)
+        : [...prev, subjectId],
+    );
+  };
+
+  const handleEnrollSubmit = () => {
+    if (selectedSubjects.length === 0) {
+      toast.error('Please select at least one subject.');
+      return;
+    }
+    enrollMutation.mutate(selectedSubjects);
+  };
 
   const isLoading = formsLoading || responsesLoading;
 
@@ -149,11 +229,13 @@ export default function UserDashboard() {
                       <span>{totalItems} item{totalItems !== 1 ? 's' : ''}</span>
                     </div>
                     {!isCompleted && (
-                      <Link href={`/dashboard/evaluations/${form._id}/fill`}>
-                        <Button size="sm" className="w-full mt-2">
-                          Fill Out Form
-                        </Button>
-                      </Link>
+                      <Button
+                        size="sm"
+                        className="w-full mt-2"
+                        onClick={() => handleFillForm(form._id)}
+                      >
+                        Fill Out Form
+                      </Button>
                     )}
                   </CardContent>
                 </Card>
@@ -169,6 +251,71 @@ export default function UserDashboard() {
           You have completed {completedForms.length} of {forms?.length ?? 0} evaluation form{(forms?.length ?? 0) !== 1 ? 's' : ''}.
         </div>
       )}
+
+      {/* Enroll Subjects Dialog */}
+      <Dialog open={enrollDialogOpen} onOpenChange={setEnrollDialogOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Enroll in Subjects</DialogTitle>
+            <DialogDescription>
+              You need to select your enrolled subjects before filling out an evaluation form.
+            </DialogDescription>
+          </DialogHeader>
+          {subjectsLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          ) : activeSubjects.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-4">
+              No subjects available for your department.
+            </p>
+          ) : (
+            <div className="space-y-4">
+              <div className="max-h-72 overflow-y-auto rounded-md border p-3 space-y-2">
+                {activeSubjects.map((subject) => {
+                  const teacher = subject.teacher && typeof subject.teacher === 'object'
+                    ? subject.teacher as Personnel
+                    : null;
+                  return (
+                    <label
+                      key={subject._id}
+                      className="flex items-start gap-2 text-sm cursor-pointer hover:bg-muted/50 rounded p-1.5"
+                    >
+                      <Checkbox
+                        checked={selectedSubjects.includes(subject._id)}
+                        onCheckedChange={() => handleSubjectToggle(subject._id)}
+                        className="mt-0.5"
+                      />
+                      <div>
+                        <span className="font-medium">{subject.code}</span>
+                        <span className="text-muted-foreground"> — {subject.name}</span>
+                        {teacher && (
+                          <span className="text-xs text-muted-foreground block">
+                            Teacher: {teacher.firstName} {teacher.lastName}
+                          </span>
+                        )}
+                      </div>
+                    </label>
+                  );
+                })}
+              </div>
+              {selectedSubjects.length > 0 && (
+                <p className="text-xs text-muted-foreground">
+                  {selectedSubjects.length} subject{selectedSubjects.length > 1 ? 's' : ''} selected
+                </p>
+              )}
+              <Button
+                className="w-full"
+                onClick={handleEnrollSubmit}
+                disabled={enrollMutation.isPending || selectedSubjects.length === 0}
+              >
+                {enrollMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {enrollMutation.isPending ? 'Saving...' : 'Enroll & Continue'}
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

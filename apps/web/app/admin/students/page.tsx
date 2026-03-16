@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { usersApi, type User } from '@/lib/api/users.api';
 import { useAuth } from '@/lib/contexts/AuthContext';
+import { useAlert } from '@/lib/contexts/AlertContext';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
+import { toast } from 'sonner';
+import { GraduationCap } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -26,6 +29,8 @@ import { Search } from 'lucide-react';
 
 export default function StudentsPage() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const alert = useAlert();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -35,6 +40,70 @@ export default function StudentsPage() {
     typeof role === 'string' ? role.toLowerCase() === 'dean' : (role as { name?: string })?.name?.toLowerCase() === 'dean'
   );
   const departmentName = user?.department?.name;
+
+  const promoteAllMutation = useMutation({
+    mutationFn: usersApi.promoteStudents,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['students'] });
+      toast.success(
+        `Promoted ${data.promoted} student(s). ${data.graduated} graduated.`,
+      );
+    },
+    onError: () => {
+      toast.error('Failed to promote students.');
+    },
+  });
+
+  const promoteSingleMutation = useMutation({
+    mutationFn: usersApi.promoteStudent,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['students'] });
+      toast.success(
+        data.status === 'graduated'
+          ? 'Student has graduated.'
+          : `Promoted to ${data.gradeLevel} - ${data.semester}.`,
+      );
+    },
+    onError: () => {
+      toast.error('Failed to promote student.');
+    },
+  });
+
+  const handlePromoteAll = () => {
+    alert.showConfirm(
+      'This will advance all active students to the next semester/year level. Students in 4th Year 2nd Sem will be marked as graduated. Their enrolled subjects will be cleared so they can re-enroll. Continue?',
+      {
+        title: 'Promote All Students',
+        confirmText: 'Promote All',
+        onConfirm: () => promoteAllMutation.mutate(),
+      },
+    );
+  };
+
+  const handlePromoteSingle = (student: User) => {
+    const yearOrder = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
+    const currentYear = student.gradeLevel || '1st Year';
+    const currentSem = student.semester || '1st Sem';
+    const yearIndex = yearOrder.indexOf(currentYear);
+
+    let nextLabel: string;
+    if (currentSem === '1st Sem') {
+      nextLabel = `${currentYear} - 2nd Sem`;
+    } else if (yearIndex >= 0 && yearIndex < yearOrder.length - 1) {
+      nextLabel = `${yearOrder[yearIndex + 1]} - 1st Sem`;
+    } else {
+      nextLabel = 'Graduated';
+    }
+
+    alert.showConfirm(
+      `Promote ${student.firstName} ${student.lastName} to ${nextLabel}? Their enrolled subjects will be cleared.`,
+      {
+        title: 'Promote Student',
+        confirmText: 'Promote',
+        onConfirm: () => promoteSingleMutation.mutate(student._id),
+      },
+    );
+  };
 
   const { data: studentsData, isLoading } = useQuery({
     queryKey: ['students', currentPage],
@@ -81,17 +150,27 @@ export default function StudentsPage() {
   return (
     <div className="container mx-auto p-4 space-y-6">
       <Card>
-        <CardHeader>
-          <CardTitle>
-            {isDean && departmentName
-              ? `${departmentName} - Students`
-              : 'Students'}
-          </CardTitle>
-          <CardDescription>
-            {isDean && departmentName
-              ? `Showing students under your department: ${departmentName}`
-              : 'View all students in the system'}
-          </CardDescription>
+        <CardHeader className="flex flex-row items-start justify-between">
+          <div>
+            <CardTitle>
+              {isDean && departmentName
+                ? `${departmentName} - Students`
+                : 'Students'}
+            </CardTitle>
+            <CardDescription>
+              {isDean && departmentName
+                ? `Showing students under your department: ${departmentName}`
+                : 'View all students in the system'}
+            </CardDescription>
+          </div>
+          <Button
+            onClick={handlePromoteAll}
+            disabled={promoteAllMutation.isPending}
+            variant="outline"
+          >
+            <GraduationCap className="mr-2 h-4 w-4" />
+            {promoteAllMutation.isPending ? 'Promoting...' : 'Promote All'}
+          </Button>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Search Bar */}
@@ -115,16 +194,17 @@ export default function StudentsPage() {
                   <TableHead>Student ID</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
-                  <TableHead>Grade Level</TableHead>
+                  <TableHead>Year Level</TableHead>
+                  <TableHead>Semester</TableHead>
                   <TableHead>Department</TableHead>
-                  <TableHead>Adviser</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredStudents.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground">
+                    <TableCell colSpan={8} className="text-center text-muted-foreground">
                       {searchTerm ? 'No students found matching your search' : 'No students found'}
                     </TableCell>
                   </TableRow>
@@ -144,12 +224,25 @@ export default function StudentsPage() {
                         </TableCell>
                         <TableCell>{student.email}</TableCell>
                         <TableCell>{student.gradeLevel || 'N/A'}</TableCell>
+                        <TableCell>{student.semester || 'N/A'}</TableCell>
                         <TableCell>{department}</TableCell>
-                        <TableCell>{student.adviser || 'N/A'}</TableCell>
                         <TableCell>
                           <Badge variant={student.isActive ? 'default' : 'secondary'}>
                             {student.isActive ? 'Active' : 'Inactive'}
                           </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {student.isActive && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handlePromoteSingle(student)}
+                              disabled={promoteSingleMutation.isPending}
+                            >
+                              <GraduationCap className="mr-1 h-3.5 w-3.5" />
+                              Promote
+                            </Button>
+                          )}
                         </TableCell>
                       </TableRow>
                     );

@@ -55,8 +55,17 @@ export class User {
   @Prop({ trim: true })
   gradeLevel?: string;
 
+  @Prop({ trim: true, enum: ['1st Sem', '2nd Sem'], default: '1st Sem' })
+  semester?: string;
+
   @Prop({ trim: true })
   adviser?: string;
+
+  @Prop({ trim: true })
+  course?: string;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Subject' }], default: [] })
+  enrolledSubjects: Types.ObjectId[];
 
   @Prop()
   lastLoginAt?: Date;

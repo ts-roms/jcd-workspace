@@ -23,8 +23,10 @@ export default function ProfileGuard({
     // Already on the complete-profile page
     if (pathname === '/dashboard/complete-profile') return;
 
+    const enrolledSubjects = (user as any).enrolledSubjects;
+    const hasEnrolledSubjects = Array.isArray(enrolledSubjects) && enrolledSubjects.length > 0;
     const isProfileIncomplete =
-      !user.department || !user.studentId || !user.gradeLevel || !user.adviser;
+      !user.department || !user.studentId || !user.gradeLevel || !(user as any).course || !hasEnrolledSubjects;
 
     if (isProfileIncomplete) {
       router.push('/dashboard/complete-profile');

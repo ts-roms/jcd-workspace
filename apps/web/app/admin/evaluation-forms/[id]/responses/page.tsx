@@ -38,6 +38,7 @@ import {
   PaginationPrevious,
 } from '@/app/components/ui/pagination';
 import { useAlert } from '@/lib/contexts/AlertContext';
+import { useAuth } from '@/lib/contexts/AuthContext';
 import { usePermission } from '@/lib/hooks/usePermission';
 import { PERMISSIONS } from '@/config/permissions';
 import { useParams } from 'next/navigation';
@@ -77,6 +78,9 @@ const buildSemesterOptions = () => {
 export default function EvaluationFormResponsesPage() {
   const queryClient = useQueryClient();
   const alert = useAlert();
+  const { user, hasRole } = useAuth();
+  const isDean = hasRole('dean');
+  const deanDepartmentName = (user?.department as { name?: string })?.name || '';
   const canManageForms = usePermission(PERMISSIONS.EVALUATION_FORMS_MANAGE);
   const params = useParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -91,7 +95,7 @@ export default function EvaluationFormResponsesPage() {
     startDate: '',
     endDate: '',
     semester: '',
-    department: '',
+    department: isDean ? deanDepartmentName : '',
   });
   const [reportSemester, setReportSemester] = useState('');
   const [reportRequest, setReportRequest] = useState(0);

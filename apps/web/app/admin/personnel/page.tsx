@@ -35,10 +35,14 @@ import { ExcellenceAnalytics } from './ExcellenceAnalytics';
 import { toast } from 'sonner';
 import { Upload, UserCheck, Award, RefreshCw } from 'lucide-react';
 import { useAlert } from '@/lib/contexts/AlertContext';
+import { useAuth } from '@/lib/contexts/AuthContext';
 import { Input } from '@/app/components/ui';
 
 export default function PersonnelPage() {
   const queryClient = useQueryClient();
+  const { user, hasRole } = useAuth();
+  const isDean = hasRole('dean');
+  const departmentName = (user?.department as { name?: string })?.name;
   const alert = useAlert();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false);
@@ -231,7 +235,9 @@ export default function PersonnelPage() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Personnel</h1>
+        <h1 className="text-2xl font-bold">
+          {isDean && departmentName ? `${departmentName} - Personnel` : 'Personnel'}
+        </h1>
         <div className="flex gap-2">
           <Button
             onClick={() => syncMetricsMutation.mutate()}

@@ -61,4 +61,15 @@ export class UsersService {
   async count(filters: UserFiltersDto): Promise<number> {
     return this.usersRepository.count(filters);
   }
+
+  async promoteSingleStudent(studentId: string) {
+    return this.usersRepository.promoteSingleStudent(studentId);
+  }
+
+  async promoteStudents(
+    studentRoleId: string,
+    departmentId?: string,
+  ): Promise<{ promoted: number; graduated: number }> {
+    return this.usersRepository.promoteStudents(studentRoleId, departmentId);
+  }
 }

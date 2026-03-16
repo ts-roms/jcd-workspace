@@ -56,5 +56,17 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
+  semester?: string;
+
+  @IsString()
+  @IsOptional()
   adviser?: string;
+
+  @IsString()
+  @IsOptional()
+  course?: string;
+
+  @IsArray()
+  @IsOptional()
+  enrolledSubjects?: string[];
 }

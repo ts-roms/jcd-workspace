@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getAvailableEvaluationForm } from '@/lib/api/evaluation-forms.api';
 import { submitEvaluationFormResponse } from '@/lib/api/evaluation-form-responses.api';
-import { subjectsApi } from '@/lib/api/subjects.api';
+import { getPersonnel } from '@/lib/api/personnel.api';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
@@ -25,6 +25,7 @@ export default function FillEvaluationFormPage() {
 
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [selectedSubject, setSelectedSubject] = useState<string>('');
+  const [selectedPersonnel, setSelectedPersonnel] = useState<string>('');
   const [evaluator, setEvaluator] = useState('');
 
   const { data: form, isLoading, error } = useQuery({
@@ -33,33 +34,53 @@ export default function FillEvaluationFormPage() {
     enabled: !!formId,
   });
 
-  // Fetch subjects for the student's department and grade level
-  const { data: subjects = [] } = useQuery<Subject[]>({
-    queryKey: ['subjects', user?.department, user?.gradeLevel],
-    queryFn: () => {
-      const departmentId = typeof user?.department === 'object'
-        ? (user.department as any)._id
-        : user?.department;
-      return subjectsApi.getByDepartmentAndGrade(departmentId || '', user?.gradeLevel);
-    },
-    enabled: !!user?.department,
+  const isTeachingForm = form?.audience !== 'non-teaching';
+
+  // Use enrolled subjects from user profile for teaching evaluations
+  const enrolledSubjects = ((user as any)?.enrolledSubjects ?? []) as Subject[];
+  const subjects = isTeachingForm ? enrolledSubjects.filter((s) => s && s._id) : [];
+
+  // Fetch personnel for non-teaching evaluations
+  const { data: personnel = [] } = useQuery<Personnel[]>({
+    queryKey: ['personnel'],
+    queryFn: getPersonnel,
+    enabled: !isTeachingForm,
   });
 
-  // Update evaluator when subject is selected
+  const nonTeachingPersonnel = personnel.filter(
+    (p) => p.personnelType === 'Non-Teaching' && p.isActive !== false,
+  );
+
+  // Update evaluator when subject is selected (teaching)
   useEffect(() => {
+    if (!isTeachingForm) return;
     if (selectedSubject) {
       const subject = subjects.find((s) => s._id === selectedSubject);
       if (subject && subject.teacher) {
         const teacher = subject.teacher as Personnel;
-        const teacherName = `${teacher.firstName} ${teacher.lastName}`;
-        setEvaluator(teacherName);
+        setEvaluator(`${teacher.firstName} ${teacher.lastName}`);
       } else {
         setEvaluator('');
       }
     } else {
       setEvaluator('');
     }
-  }, [selectedSubject, subjects]);
+  }, [selectedSubject, subjects, isTeachingForm]);
+
+  // Update evaluator when personnel is selected (non-teaching)
+  useEffect(() => {
+    if (isTeachingForm) return;
+    if (selectedPersonnel) {
+      const person = nonTeachingPersonnel.find((p) => p._id === selectedPersonnel);
+      if (person) {
+        setEvaluator(`${person.firstName} ${person.lastName}`);
+      } else {
+        setEvaluator('');
+      }
+    } else {
+      setEvaluator('');
+    }
+  }, [selectedPersonnel, nonTeachingPersonnel, isTeachingForm]);
 
   const submitMutation = useMutation({
     mutationFn: submitEvaluationFormResponse,
@@ -80,16 +101,20 @@ export default function FillEvaluationFormPage() {
   const handleSubmit = () => {
     if (!form) return;
 
-    // Check if subject is selected
-    if (!selectedSubject) {
-      toast.error('Please select a subject to evaluate.');
-      return;
-    }
-
-    // Check if teacher is assigned to subject
-    if (!evaluator) {
-      toast.error('No teacher assigned to this subject. Please select another subject.');
-      return;
+    if (isTeachingForm) {
+      if (!selectedSubject) {
+        toast.error('Please select a subject to evaluate.');
+        return;
+      }
+      if (!evaluator) {
+        toast.error('No teacher assigned to this subject. Please select another subject.');
+        return;
+      }
+    } else {
+      if (!selectedPersonnel) {
+        toast.error('Please select the personnel to evaluate.');
+        return;
+      }
     }
 
     const allItems: { section: string; item: string }[] = [];
@@ -203,30 +228,53 @@ export default function FillEvaluationFormPage() {
                 </p>
               </div>
             )}
-            <div>
-              <label className="text-sm font-medium mb-1.5 block">
-                Subject <span className="text-destructive">*</span>
-              </label>
-              <select
-                value={selectedSubject}
-                onChange={(e) => setSelectedSubject(e.target.value)}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                required
-              >
-                <option value="">Select a subject</option>
-                {subjects.map((subject) => (
-                  <option key={subject._id} value={subject._id}>
-                    {subject.code} - {subject.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            {selectedSubject && evaluator && (
-              <div>
-                <label className="text-sm font-medium mb-1.5 block">Teacher/Personnel</label>
-                <div className="w-full rounded-md border border-input bg-muted/50 px-3 py-2 text-sm font-medium">
-                  {evaluator}
+            {isTeachingForm ? (
+              <>
+                <div>
+                  <label className="text-sm font-medium mb-1.5 block">
+                    Subject <span className="text-destructive">*</span>
+                  </label>
+                  <select
+                    value={selectedSubject}
+                    onChange={(e) => setSelectedSubject(e.target.value)}
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    required
+                  >
+                    <option value="">Select a subject</option>
+                    {subjects.map((subject) => (
+                      <option key={subject._id} value={subject._id}>
+                        {subject.code} - {subject.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+                {selectedSubject && evaluator && (
+                  <div>
+                    <label className="text-sm font-medium mb-1.5 block">Teacher</label>
+                    <div className="w-full rounded-md border border-input bg-muted/50 px-3 py-2 text-sm font-medium">
+                      {evaluator}
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div>
+                <label className="text-sm font-medium mb-1.5 block">
+                  Personnel <span className="text-destructive">*</span>
+                </label>
+                <select
+                  value={selectedPersonnel}
+                  onChange={(e) => setSelectedPersonnel(e.target.value)}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  required
+                >
+                  <option value="">Select personnel to evaluate</option>
+                  {nonTeachingPersonnel.map((person) => (
+                    <option key={person._id} value={person._id}>
+                      {person.firstName} {person.lastName}{person.jobTitle ? ` — ${person.jobTitle}` : ''}
+                    </option>
+                  ))}
+                </select>
               </div>
             )}
           </div>

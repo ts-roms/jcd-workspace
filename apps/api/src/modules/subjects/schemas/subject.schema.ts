@@ -23,6 +23,9 @@ export class Subject {
   teacher?: Personnel;
 
   @Prop({ trim: true })
+  course?: string;
+
+  @Prop({ trim: true })
   gradeLevel?: string;
 
   @Prop({ trim: true })

@@ -30,11 +30,14 @@ import {
   CommandList,
 } from '@/app/components/ui/command';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { coursesApi } from '@/lib/api/courses.api';
 import { Subject } from '@/types/subject';
 import { Department } from '@/types/department';
 import { Personnel } from '@/types/personnel';
+import type { Course } from '@/types/course';
 
 /** Sentinel for "None" in Select; Radix Select does not allow value="". */
 const NONE_VALUE = '__none__';
@@ -44,6 +47,7 @@ const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
   description: z.string().optional(),
   department: z.string().min(1, 'Department is required.'),
+  course: z.string().optional(),
   teacher: z.string().optional(),
   gradeLevel: z.string().optional(),
   semester: z.string().optional(),
@@ -90,10 +94,19 @@ export function SubjectForm({
       teacher: typeof defaultValues?.teacher === 'string'
         ? defaultValues.teacher
         : (defaultValues?.teacher as any)?._id || '',
+      course: (defaultValues as any)?.course || '',
       gradeLevel: defaultValues?.gradeLevel || '',
       semester: defaultValues?.semester || '',
       isActive: defaultValues?.isActive ?? true,
     },
+  });
+
+  const watchedDepartment = form.watch('department');
+
+  const { data: courses = [] } = useQuery<Course[]>({
+    queryKey: ['courses', watchedDepartment],
+    queryFn: () => coursesApi.getByDepartment(watchedDepartment),
+    enabled: !!watchedDepartment,
   });
 
   return (
@@ -161,6 +174,35 @@ export function SubjectForm({
                   {availableDepartments.map((dept) => (
                     <SelectItem key={dept._id} value={dept._id}>
                       {dept.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="course"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Course (Optional)</FormLabel>
+              <Select
+                onValueChange={(v) => field.onChange(v === NONE_VALUE ? '' : v)}
+                value={field.value || NONE_VALUE}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select course" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value={NONE_VALUE}>None</SelectItem>
+                  {courses.map((c) => (
+                    <SelectItem key={c._id} value={c.name}>
+                      {c.code} - {c.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -248,10 +290,24 @@ export function SubjectForm({
             name="gradeLevel"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Grade Level (Optional)</FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g., Grade 11" {...field} />
-                </FormControl>
+                <FormLabel>Year Level (Optional)</FormLabel>
+                <Select
+                  onValueChange={(v) => field.onChange(v === NONE_VALUE ? '' : v)}
+                  value={field.value || NONE_VALUE}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select year level" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value={NONE_VALUE}>None</SelectItem>
+                    <SelectItem value="1st Year">1st Year</SelectItem>
+                    <SelectItem value="2nd Year">2nd Year</SelectItem>
+                    <SelectItem value="3rd Year">3rd Year</SelectItem>
+                    <SelectItem value="4th Year">4th Year</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

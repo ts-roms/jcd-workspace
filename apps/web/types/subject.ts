@@ -8,6 +8,7 @@ export interface Subject {
   description?: string;
   department: Department | string;
   teacher?: Personnel | string;
+  course?: string;
   gradeLevel?: string;
   semester?: string;
   isActive: boolean;
@@ -21,6 +22,7 @@ export interface CreateSubjectDto {
   description?: string;
   department: string;
   teacher?: string;
+  course?: string;
   gradeLevel?: string;
   semester?: string;
   isActive?: boolean;

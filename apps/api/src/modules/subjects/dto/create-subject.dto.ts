@@ -23,6 +23,10 @@ export class CreateSubjectDto {
 
   @IsString()
   @IsOptional()
+  course?: string;
+
+  @IsString()
+  @IsOptional()
   gradeLevel?: string;
 
   @IsString()

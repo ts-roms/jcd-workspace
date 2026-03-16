@@ -74,12 +74,16 @@ export default function UserDashboard() {
   });
 
   const { data: departmentSubjects = [], isLoading: subjectsLoading } = useQuery<Subject[]>({
-    queryKey: ['subjects', enrollDepartment, enrollGradeLevel, enrollSemester],
-    queryFn: () => subjectsApi.getAll({
-      departmentId: enrollDepartment,
-      gradeLevel: enrollGradeLevel || undefined,
-      semester: enrollSemester || undefined,
-    }),
+    queryKey: ['subjects', enrollDepartment, enrollCourse, enrollGradeLevel, enrollSemester],
+    queryFn: () => {
+      const semMap: Record<string, string> = { '1st Sem': '1st', '2nd Sem': '2nd' };
+      return subjectsApi.getAll({
+        departmentId: enrollDepartment,
+        course: enrollCourse || undefined,
+        gradeLevel: enrollGradeLevel || undefined,
+        semester: semMap[enrollSemester] || enrollSemester || undefined,
+      });
+    },
     enabled: !!enrollDepartment && enrollDialogOpen,
   });
 

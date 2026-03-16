@@ -48,9 +48,10 @@ export function SubjectsTable({ subjects, onEdit, onDelete, pagination }: Subjec
             <TableRow>
               <TableHead>Code</TableHead>
               <TableHead>Name</TableHead>
+              <TableHead>Course</TableHead>
               <TableHead>Department</TableHead>
               <TableHead>Teacher</TableHead>
-              <TableHead>Grade Level</TableHead>
+              <TableHead>Year Level</TableHead>
               <TableHead>Semester</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Actions</TableHead>
@@ -59,7 +60,7 @@ export function SubjectsTable({ subjects, onEdit, onDelete, pagination }: Subjec
           <TableBody>
             {subjects.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center text-muted-foreground">
+                <TableCell colSpan={9} className="text-center text-muted-foreground">
                   No subjects found
                 </TableCell>
               </TableRow>
@@ -69,18 +70,24 @@ export function SubjectsTable({ subjects, onEdit, onDelete, pagination }: Subjec
                   ? subject.department
                   : subject.department?.name || 'N/A';
 
-                const teacher = typeof subject.teacher === 'string'
-                  ? 'N/A'
-                  : subject.teacher
-                    ? `${subject.teacher.firstName} ${subject.teacher.lastName}`
-                    : 'Unassigned';
+                const teacherObj = typeof subject.teacher === 'object' ? subject.teacher : null;
+                const teacherName = teacherObj
+                  ? `${teacherObj.firstName} ${teacherObj.lastName}`
+                  : typeof subject.teacher === 'string' ? 'N/A' : 'Unassigned';
+                const teacherType = teacherObj?.personnelType || '';
 
                 return (
                   <TableRow key={subject._id}>
                     <TableCell className="font-medium">{subject.code}</TableCell>
                     <TableCell>{subject.name}</TableCell>
+                    <TableCell>{(subject as any).course || '—'}</TableCell>
                     <TableCell>{department}</TableCell>
-                    <TableCell>{teacher}</TableCell>
+                    <TableCell>
+                      <div>{teacherName}</div>
+                      {teacherType && (
+                        <span className="text-xs text-muted-foreground">{teacherType}</span>
+                      )}
+                    </TableCell>
                     <TableCell>{subject.gradeLevel || 'N/A'}</TableCell>
                     <TableCell>{subject.semester || 'N/A'}</TableCell>
                     <TableCell>

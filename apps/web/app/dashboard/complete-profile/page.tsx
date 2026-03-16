@@ -34,6 +34,7 @@ export default function CompleteProfilePage() {
   const [course, setCourse] = useState((user as any)?.course ?? '');
   const [gradeLevel, setGradeLevel] = useState(user?.gradeLevel ?? '');
   const [semester, setSemester] = useState((user as any)?.semester ?? '1st Sem');
+  const [isIrregular, setIsIrregular] = useState(false);
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -42,13 +43,17 @@ export default function CompleteProfilePage() {
     queryFn: getDepartments,
   });
 
-  // Fetch subjects based on selected department, year level, and semester
+  // Map student semester (1st Sem / 2nd Sem) to subject semester (1st / 2nd)
+  const subjectSemester = semester === '1st Sem' ? '1st' : semester === '2nd Sem' ? '2nd' : semester;
+
+  // Fetch subjects — irregular students see all subjects in department
   const { data: subjects = [], isLoading: subjectsLoading } = useQuery<Subject[]>({
-    queryKey: ['subjects', department, gradeLevel, semester],
+    queryKey: ['subjects', department, course, isIrregular ? 'all' : gradeLevel, isIrregular ? 'all' : subjectSemester],
     queryFn: () => subjectsApi.getAll({
       departmentId: department,
-      gradeLevel: gradeLevel || undefined,
-      semester: semester || undefined,
+      course: isIrregular ? undefined : (course || undefined),
+      gradeLevel: isIrregular ? undefined : (gradeLevel || undefined),
+      semester: isIrregular ? undefined : (subjectSemester || undefined),
     }),
     enabled: !!department,
   });
@@ -171,10 +176,10 @@ export default function CompleteProfilePage() {
                   id="course"
                   placeholder="e.g., BS Information Technology"
                   value={course}
-                  onChange={(e) => setCourse(e.target.value)}
+                  onChange={(e) => { setCourse(e.target.value); setSelectedSubjects([]); }}
                 />
               ) : (
-                <Select value={course} onValueChange={setCourse}>
+                <Select value={course} onValueChange={(val) => { setCourse(val); setSelectedSubjects([]); }}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select your course" />
                   </SelectTrigger>
@@ -219,7 +224,19 @@ export default function CompleteProfilePage() {
             </div>
 
             {department && (
-              <div className="space-y-2">
+              <div className="space-y-3">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <Checkbox
+                    checked={isIrregular}
+                    onCheckedChange={(checked) => {
+                      setIsIrregular(!!checked);
+                      setSelectedSubjects([]);
+                    }}
+                  />
+                  <span className="text-sm font-medium">Irregular Student</span>
+                  <span className="text-xs text-muted-foreground">(show all subjects across year levels and semesters)</span>
+                </label>
+
                 <Label>Enrolled Subjects <span className="text-destructive">*</span></Label>
                 {subjectsLoading ? (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">

@@ -121,10 +121,18 @@ export default function SubjectsPage() {
   };
 
   const handleSubmit = (values: any) => {
+    // Remove empty optional fields so backend validation doesn't reject them
+    const cleaned = { ...values };
+    if (!cleaned.teacher) delete cleaned.teacher;
+    if (!cleaned.course) delete cleaned.course;
+    if (!cleaned.gradeLevel) delete cleaned.gradeLevel;
+    if (!cleaned.semester) delete cleaned.semester;
+    if (!cleaned.description) delete cleaned.description;
+
     if (selectedSubject) {
-      updateMutation.mutate({ id: selectedSubject._id, data: values });
+      updateMutation.mutate({ id: selectedSubject._id, data: cleaned });
     } else {
-      createMutation.mutate(values);
+      createMutation.mutate(cleaned);
     }
   };
 

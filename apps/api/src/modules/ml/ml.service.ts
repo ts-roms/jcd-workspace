@@ -185,12 +185,17 @@ export class MlService {
     // Prepare training data
     const trainingData = prepareTrainingData(data);
 
-    // Split data for validation (80-20 split)
-    const splitIndex = Math.floor(trainingData.features.length * 0.8);
-    const trainFeatures = trainingData.features.slice(0, splitIndex);
-    const trainTargets = trainingData.targets.slice(0, splitIndex);
-    const testFeatures = trainingData.features.slice(splitIndex);
-    const testTargets = trainingData.targets.slice(splitIndex);
+    // Split data for evaluation (80-20 split)
+    const shuffled = trainingData.features.map((f, i) => ({ f, t: trainingData.targets[i] }));
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    const splitIndex = Math.floor(shuffled.length * 0.8);
+    const trainFeatures = shuffled.slice(0, splitIndex).map((s) => s.f);
+    const trainTargets = shuffled.slice(0, splitIndex).map((s) => s.t);
+    const testFeatures = shuffled.slice(splitIndex).map((s) => s.f);
+    const testTargets = shuffled.slice(splitIndex).map((s) => s.t);
 
     // Dispose of previous model if it exists
     if (tensorflowModel?.model) {
@@ -202,19 +207,19 @@ export class MlService {
     const normalizer = new DataNormalizer();
 
     console.log(
-      `Training on ${trainFeatures.length} samples, validating on ${testFeatures.length} samples`,
+      `Training on ${trainFeatures.length} samples (augmented 5x), evaluating on ${testFeatures.length} samples`,
     );
 
-    // Train the model
+    // Train the model with augmented data, early stopping, and more epochs
     const history = await trainModel(
       model,
       normalizer,
       { features: trainFeatures, targets: trainTargets },
-      100, // epochs
+      300, // epochs (early stopping will cut short if converged)
       0.2, // validation split
     );
 
-    // Evaluate on test set
+    // Evaluate on held-out test set (not augmented)
     const metrics = await evaluateModel(model, normalizer, {
       features: testFeatures,
       targets: testTargets,

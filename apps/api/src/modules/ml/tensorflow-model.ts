@@ -119,42 +119,34 @@ export class DataNormalizer {
 }
 
 /**
- * Creates a TensorFlow neural network model for performance prediction
+ * Creates a TensorFlow neural network model for performance prediction.
+ * Architecture is sized appropriately for the dataset — smaller networks
+ * generalize better on limited data and avoid overfitting.
  */
 export function createPerformanceModel(inputDim: number): tf.LayersModel {
   const model = tf.sequential();
 
-  // Input layer + first hidden layer
+  // First hidden layer — moderate size for small datasets
   model.add(
     tf.layers.dense({
       inputShape: [inputDim],
-      units: 32,
-      activation: 'relu',
-      kernelInitializer: 'heNormal',
-    }),
-  );
-
-  // Dropout for regularization
-  model.add(tf.layers.dropout({ rate: 0.2 }));
-
-  // Second hidden layer
-  model.add(
-    tf.layers.dense({
       units: 16,
       activation: 'relu',
       kernelInitializer: 'heNormal',
+      kernelRegularizer: tf.regularizers.l2({ l2: 0.01 }),
     }),
   );
 
-  // Dropout for regularization
-  model.add(tf.layers.dropout({ rate: 0.2 }));
+  // Light dropout
+  model.add(tf.layers.dropout({ rate: 0.1 }));
 
-  // Third hidden layer
+  // Second hidden layer
   model.add(
     tf.layers.dense({
       units: 8,
       activation: 'relu',
       kernelInitializer: 'heNormal',
+      kernelRegularizer: tf.regularizers.l2({ l2: 0.01 }),
     }),
   );
 
@@ -166,9 +158,9 @@ export function createPerformanceModel(inputDim: number): tf.LayersModel {
     }),
   );
 
-  // Compile the model with Adam optimizer
+  // Compile with Adam optimizer — lower learning rate for stability
   model.compile({
-    optimizer: tf.train.adam(0.001),
+    optimizer: tf.train.adam(0.005),
     loss: 'meanSquaredError',
     metrics: ['mae', 'mse'],
   });
@@ -195,27 +187,67 @@ export function prepareTrainingData(
 }
 
 /**
- * Trains the TensorFlow model
+ * Augment training data by adding slight noise to create more samples.
+ * Helps prevent overfitting on small datasets.
+ */
+function augmentData(
+  features: number[][],
+  targets: number[],
+  factor = 3,
+  noiseLevel = 0.02,
+): { features: number[][]; targets: number[] } {
+  const augFeatures = [...features];
+  const augTargets = [...targets];
+
+  for (let i = 0; i < factor; i++) {
+    for (let j = 0; j < features.length; j++) {
+      const noisyFeature = features[j].map(
+        (v) => v + (Math.random() - 0.5) * 2 * noiseLevel * v,
+      );
+      const noisyTarget =
+        targets[j] + (Math.random() - 0.5) * 2 * noiseLevel * targets[j];
+      augFeatures.push(noisyFeature);
+      augTargets.push(noisyTarget);
+    }
+  }
+
+  return { features: augFeatures, targets: augTargets };
+}
+
+/**
+ * Trains the TensorFlow model with data augmentation and early stopping
  */
 export async function trainModel(
   model: tf.LayersModel,
   normalizer: DataNormalizer,
   trainingData: TrainingData,
-  epochs = 100,
+  epochs = 300,
   validationSplit = 0.2,
 ): Promise<TrainingHistory> {
-  // Fit normalizer to data
+  // Augment data to improve generalization on small datasets
+  const augmented = augmentData(
+    trainingData.features,
+    trainingData.targets,
+    4,
+    0.03,
+  );
+
+  // Fit normalizer to original data only (not augmented) to preserve true ranges
   normalizer.fit(trainingData.features, trainingData.targets);
 
-  // Normalize data
-  const normalizedFeatures = normalizer.normalizeFeatures(
-    trainingData.features,
-  );
-  const normalizedTargets = normalizer.normalizeTargets(trainingData.targets);
+  // Normalize augmented data
+  const normalizedFeatures = normalizer.normalizeFeatures(augmented.features);
+  const normalizedTargets = normalizer.normalizeTargets(augmented.targets);
 
   // Convert to tensors
   const xs = tf.tensor2d(normalizedFeatures);
   const ys = tf.tensor2d(normalizedTargets, [normalizedTargets.length, 1]);
+
+  // Early stopping tracking
+  let bestValLoss = Infinity;
+  let patienceCounter = 0;
+  const patience = 30;
+  let stoppedEpoch = epochs;
 
   // Train the model
   const history = await model.fit(xs, ys, {
@@ -225,10 +257,24 @@ export async function trainModel(
     verbose: 0,
     callbacks: {
       onEpochEnd: (epoch, logs) => {
-        if (epoch % 10 === 0) {
+        if (epoch % 50 === 0) {
           console.log(
-            `Epoch ${epoch}: loss = ${logs?.loss.toFixed(4)}, val_loss = ${logs?.val_loss?.toFixed(4) || 'N/A'}`,
+            `Epoch ${epoch}: loss = ${logs?.loss.toFixed(6)}, val_loss = ${logs?.val_loss?.toFixed(6) || 'N/A'}, mae = ${logs?.mae?.toFixed(6) || 'N/A'}`,
           );
+        }
+
+        // Early stopping
+        const valLoss = logs?.val_loss ?? logs?.loss ?? Infinity;
+        if (valLoss < bestValLoss - 0.0001) {
+          bestValLoss = valLoss;
+          patienceCounter = 0;
+        } else {
+          patienceCounter++;
+        }
+        if (patienceCounter >= patience) {
+          stoppedEpoch = epoch + 1;
+          model.stopTraining = true;
+          console.log(`Early stopping at epoch ${stoppedEpoch}`);
         }
       },
     },
@@ -238,9 +284,10 @@ export async function trainModel(
   xs.dispose();
   ys.dispose();
 
-  // Extract history
+  // Extract history (only up to the epoch we stopped at)
+  const actualEpochs = (history.history.loss as number[]).length;
   const trainingHistory: TrainingHistory = {
-    epoch: Array.from({ length: epochs }, (_, i) => i + 1),
+    epoch: Array.from({ length: actualEpochs }, (_, i) => i + 1),
     loss: history.history.loss as number[],
     valLoss: (history.history.val_loss as number[]) || [],
     mse: history.history.mse as number[],

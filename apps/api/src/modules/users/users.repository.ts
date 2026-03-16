@@ -35,16 +35,26 @@ export class UsersRepository {
     return user;
   }
 
-  async findById(id: string): Promise<UserDocument | null> {
-    return this.userModel
+  async findById(id: string, populateSubjects = false): Promise<UserDocument | null> {
+    const query = this.userModel
       .findById(id)
       .populate({
         path: 'roles',
         populate: { path: 'permissions' },
       })
-      .populate('department')
-      .populate('enrolledSubjects')
-      .exec();
+      .populate('department');
+
+    if (populateSubjects) {
+      query.populate({
+        path: 'enrolledSubjects',
+        populate: [
+          { path: 'teacher' },
+          { path: 'department' },
+        ],
+      });
+    }
+
+    return query.exec();
   }
 
   async findByEmail(email: string): Promise<UserDocument | null> {
@@ -127,7 +137,13 @@ export class UsersRepository {
         populate: { path: 'permissions' },
       })
       .populate('department')
-      .populate('enrolledSubjects')
+      .populate({
+        path: 'enrolledSubjects',
+        populate: [
+          { path: 'teacher' },
+          { path: 'department' },
+        ],
+      })
       .sort({ [sortBy]: order === 'asc' ? 1 : -1 })
       .skip((page - 1) * limit)
       .limit(limit)
@@ -157,7 +173,13 @@ export class UsersRepository {
         path: 'roles',
         populate: { path: 'permissions' },
       })
-      .populate('enrolledSubjects')
+      .populate({
+        path: 'enrolledSubjects',
+        populate: [
+          { path: 'teacher' },
+          { path: 'department' },
+        ],
+      })
       .exec();
   }
 

@@ -7,11 +7,22 @@ import { useAuth } from '@/lib/contexts/AuthContext';
 import { getAvailableEvaluationForms } from '@/lib/api/evaluation-forms.api';
 import { getMyEvaluationFormResponses } from '@/lib/api/evaluation-form-responses.api';
 import { subjectsApi } from '@/lib/api/subjects.api';
+import { coursesApi } from '@/lib/api/courses.api';
 import { usersApi } from '@/lib/api/users.api';
+import { getDepartments } from '@/lib/api/departments.api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Badge } from '@/app/components/ui/badge';
 import { Button } from '@/app/components/ui/button';
 import { Checkbox } from '@/app/components/ui/checkbox';
+import { Input } from '@/app/components/ui/input';
+import { Label } from '@/app/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/app/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/app/components/ui/alert';
 import {
   Dialog,
@@ -24,7 +35,9 @@ import { ClipboardList, AlertCircle, CheckCircle2, User, Mail, Building, Loader2
 import Link from 'next/link';
 import { toast } from 'sonner';
 import type { Subject } from '@/types/subject';
+import type { Course } from '@/types/course';
 import type { Personnel } from '@/types/personnel';
+import type { Department } from '@/types/department';
 
 export default function UserDashboard() {
   const { user, refreshUser } = useAuth();
@@ -32,6 +45,11 @@ export default function UserDashboard() {
   const [enrollDialogOpen, setEnrollDialogOpen] = useState(false);
   const [pendingFormId, setPendingFormId] = useState<string | null>(null);
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
+  const [enrollDepartment, setEnrollDepartment] = useState('');
+  const [enrollCourse, setEnrollCourse] = useState('');
+  const [enrollStudentId, setEnrollStudentId] = useState('');
+  const [enrollGradeLevel, setEnrollGradeLevel] = useState('');
+  const [enrollSemester, setEnrollSemester] = useState('1st Sem');
 
   const { data: forms, isLoading: formsLoading } = useQuery({
     queryKey: ['availableEvaluationForms'],
@@ -43,26 +61,41 @@ export default function UserDashboard() {
     queryFn: getMyEvaluationFormResponses,
   });
 
-  const departmentId = typeof user?.department === 'object'
-    ? (user.department as any)?._id
-    : user?.department;
+  const { data: departments = [] } = useQuery<Department[]>({
+    queryKey: ['departments'],
+    queryFn: getDepartments,
+    enabled: enrollDialogOpen,
+  });
+
+  const { data: enrollCourses = [], isLoading: coursesLoading } = useQuery<Course[]>({
+    queryKey: ['courses', enrollDepartment],
+    queryFn: () => coursesApi.getByDepartment(enrollDepartment),
+    enabled: !!enrollDepartment && enrollDialogOpen,
+  });
 
   const { data: departmentSubjects = [], isLoading: subjectsLoading } = useQuery<Subject[]>({
-    queryKey: ['subjects', departmentId],
-    queryFn: () => subjectsApi.getAll({ departmentId: departmentId || '' }),
-    enabled: !!departmentId && enrollDialogOpen,
+    queryKey: ['subjects', enrollDepartment],
+    queryFn: () => subjectsApi.getAll({ departmentId: enrollDepartment }),
+    enabled: !!enrollDepartment && enrollDialogOpen,
   });
 
   const activeSubjects = departmentSubjects.filter((s) => s.isActive !== false);
 
   const enrollMutation = useMutation({
-    mutationFn: async (subjectIds: string[]) => {
+    mutationFn: async (data: {
+      department: string;
+      studentId: string;
+      course: string;
+      gradeLevel: string;
+      semester: string;
+      enrolledSubjects: string[];
+    }) => {
       if (!user) throw new Error('No user');
-      await usersApi.updateMyProfile(user._id, { enrolledSubjects: subjectIds });
+      await usersApi.updateMyProfile(user._id, data);
     },
     onSuccess: async () => {
       await refreshUser();
-      toast.success('Subjects enrolled successfully!');
+      toast.success('Profile completed successfully!');
       setEnrollDialogOpen(false);
       setSelectedSubjects([]);
       if (pendingFormId) {
@@ -71,7 +104,7 @@ export default function UserDashboard() {
       }
     },
     onError: () => {
-      toast.error('Failed to enroll subjects.');
+      toast.error('Failed to save profile.');
     },
   });
 
@@ -84,8 +117,23 @@ export default function UserDashboard() {
     } else {
       setPendingFormId(formId);
       setSelectedSubjects([]);
+      // Pre-fill from existing user data
+      const deptId = typeof user?.department === 'object'
+        ? (user.department as any)?._id
+        : user?.department || '';
+      setEnrollDepartment(deptId);
+      setEnrollStudentId(user?.studentId || '');
+      setEnrollCourse((user as any)?.course || '');
+      setEnrollGradeLevel(user?.gradeLevel || '');
+      setEnrollSemester((user as any)?.semester || '1st Sem');
       setEnrollDialogOpen(true);
     }
+  };
+
+  const handleEnrollDepartmentChange = (val: string) => {
+    setEnrollDepartment(val);
+    setEnrollCourse('');
+    setSelectedSubjects([]);
   };
 
   const handleSubjectToggle = (subjectId: string) => {
@@ -97,11 +145,22 @@ export default function UserDashboard() {
   };
 
   const handleEnrollSubmit = () => {
+    if (!enrollDepartment || !enrollStudentId || !enrollCourse || !enrollGradeLevel) {
+      toast.error('Please fill in all required fields.');
+      return;
+    }
     if (selectedSubjects.length === 0) {
       toast.error('Please select at least one subject.');
       return;
     }
-    enrollMutation.mutate(selectedSubjects);
+    enrollMutation.mutate({
+      department: enrollDepartment,
+      studentId: enrollStudentId,
+      course: enrollCourse,
+      gradeLevel: enrollGradeLevel,
+      semester: enrollSemester,
+      enrolledSubjects: selectedSubjects,
+    });
   };
 
   const isLoading = formsLoading || responsesLoading;
@@ -252,68 +311,161 @@ export default function UserDashboard() {
         </div>
       )}
 
-      {/* Enroll Subjects Dialog */}
+      {/* Complete Profile / Enroll Dialog */}
       <Dialog open={enrollDialogOpen} onOpenChange={setEnrollDialogOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Enroll in Subjects</DialogTitle>
+            <DialogTitle>Complete Your Profile</DialogTitle>
             <DialogDescription>
-              You need to select your enrolled subjects before filling out an evaluation form.
+              Please fill in the following details to continue using the system.
+              This is a one-time setup. Any corrections can be made by your admin or dean.
             </DialogDescription>
           </DialogHeader>
-          {subjectsLoading ? (
-            <div className="flex items-center justify-center py-8">
-              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Department <span className="text-destructive">*</span></Label>
+              <Select value={enrollDepartment} onValueChange={handleEnrollDepartmentChange}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select your department" />
+                </SelectTrigger>
+                <SelectContent>
+                  {departments.map((dept) => (
+                    <SelectItem key={dept._id} value={dept._id}>
+                      {dept.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-          ) : activeSubjects.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-4">
-              No subjects available for your department.
-            </p>
-          ) : (
-            <div className="space-y-4">
-              <div className="max-h-72 overflow-y-auto rounded-md border p-3 space-y-2">
-                {activeSubjects.map((subject) => {
-                  const teacher = subject.teacher && typeof subject.teacher === 'object'
-                    ? subject.teacher as Personnel
-                    : null;
-                  return (
-                    <label
-                      key={subject._id}
-                      className="flex items-start gap-2 text-sm cursor-pointer hover:bg-muted/50 rounded p-1.5"
-                    >
-                      <Checkbox
-                        checked={selectedSubjects.includes(subject._id)}
-                        onCheckedChange={() => handleSubjectToggle(subject._id)}
-                        className="mt-0.5"
-                      />
-                      <div>
-                        <span className="font-medium">{subject.code}</span>
-                        <span className="text-muted-foreground"> — {subject.name}</span>
-                        {teacher && (
-                          <span className="text-xs text-muted-foreground block">
-                            Teacher: {teacher.firstName} {teacher.lastName}
-                          </span>
-                        )}
-                      </div>
-                    </label>
-                  );
-                })}
-              </div>
-              {selectedSubjects.length > 0 && (
-                <p className="text-xs text-muted-foreground">
-                  {selectedSubjects.length} subject{selectedSubjects.length > 1 ? 's' : ''} selected
+
+            <div className="space-y-2">
+              <Label>Student ID <span className="text-destructive">*</span></Label>
+              <Input
+                placeholder="Enter your student ID"
+                value={enrollStudentId}
+                onChange={(e) => setEnrollStudentId(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Course / Program <span className="text-destructive">*</span></Label>
+              {!enrollDepartment ? (
+                <p className="text-sm text-muted-foreground px-3 py-2 rounded-md border border-input bg-muted/50">
+                  Select a department first
                 </p>
+              ) : coursesLoading ? (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Loading courses...
+                </div>
+              ) : enrollCourses.length === 0 ? (
+                <Input
+                  placeholder="e.g., BS Information Technology"
+                  value={enrollCourse}
+                  onChange={(e) => setEnrollCourse(e.target.value)}
+                />
+              ) : (
+                <Select value={enrollCourse} onValueChange={setEnrollCourse}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select your course" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {enrollCourses.map((c) => (
+                      <SelectItem key={c._id} value={c.name}>{c.code} - {c.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
-              <Button
-                className="w-full"
-                onClick={handleEnrollSubmit}
-                disabled={enrollMutation.isPending || selectedSubjects.length === 0}
-              >
-                {enrollMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {enrollMutation.isPending ? 'Saving...' : 'Enroll & Continue'}
-              </Button>
             </div>
-          )}
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Year Level <span className="text-destructive">*</span></Label>
+                <Select value={enrollGradeLevel} onValueChange={setEnrollGradeLevel}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select year level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1st Year">1st Year</SelectItem>
+                    <SelectItem value="2nd Year">2nd Year</SelectItem>
+                    <SelectItem value="3rd Year">3rd Year</SelectItem>
+                    <SelectItem value="4th Year">4th Year</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Semester <span className="text-destructive">*</span></Label>
+                <Select value={enrollSemester} onValueChange={setEnrollSemester}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select semester" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1st Sem">1st Semester</SelectItem>
+                    <SelectItem value="2nd Sem">2nd Semester</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {enrollDepartment && (
+              <div className="space-y-2">
+                <Label>Enrolled Subjects <span className="text-destructive">*</span></Label>
+                {subjectsLoading ? (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Loading subjects...
+                  </div>
+                ) : activeSubjects.length === 0 ? (
+                  <p className="text-sm text-muted-foreground px-3 py-2 rounded-md border border-input bg-muted/50">
+                    No subjects available for this department.
+                  </p>
+                ) : (
+                  <div className="max-h-48 overflow-y-auto rounded-md border p-3 space-y-2">
+                    {activeSubjects.map((subject) => {
+                      const teacher = subject.teacher && typeof subject.teacher === 'object'
+                        ? subject.teacher as Personnel
+                        : null;
+                      return (
+                        <label
+                          key={subject._id}
+                          className="flex items-start gap-2 text-sm cursor-pointer hover:bg-muted/50 rounded p-1.5"
+                        >
+                          <Checkbox
+                            checked={selectedSubjects.includes(subject._id)}
+                            onCheckedChange={() => handleSubjectToggle(subject._id)}
+                            className="mt-0.5"
+                          />
+                          <div>
+                            <span className="font-medium">{subject.code}</span>
+                            <span className="text-muted-foreground"> — {subject.name}</span>
+                            {teacher && (
+                              <span className="text-xs text-muted-foreground block">
+                                Teacher: {teacher.firstName} {teacher.lastName}
+                              </span>
+                            )}
+                          </div>
+                        </label>
+                      );
+                    })}
+                  </div>
+                )}
+                {selectedSubjects.length > 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    {selectedSubjects.length} subject{selectedSubjects.length > 1 ? 's' : ''} selected
+                  </p>
+                )}
+              </div>
+            )}
+
+            <Button
+              className="w-full"
+              onClick={handleEnrollSubmit}
+              disabled={enrollMutation.isPending}
+            >
+              {enrollMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {enrollMutation.isPending ? 'Saving...' : 'Complete Profile'}
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

@@ -1,5 +1,7 @@
 import { useAuth } from '@/lib/contexts/AuthContext';
 
+const SUPER_ADMIN_ROLES = ['super', 'superadmin', 'super admin'];
+
 export function useSystemAdmin(): boolean {
   const { user } = useAuth();
 
@@ -7,6 +9,7 @@ export function useSystemAdmin(): boolean {
     return false;
   }
 
-  // Check if the user has a role with the 'isSystemRole' flag
-  return user.roles.some(role => role.isSystemRole);
+  return user.roles.some(
+    (role) => role.isSystemRole || SUPER_ADMIN_ROLES.includes(role.name?.toLowerCase()),
+  );
 }

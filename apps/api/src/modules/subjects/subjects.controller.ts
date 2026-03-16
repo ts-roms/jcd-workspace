@@ -45,12 +45,15 @@ export class SubjectsController {
     const isStudent = user?.roles?.some((r) => r.toLowerCase() === 'student');
 
     // Students can access subjects in their department without permission
-    if (isStudent && user?.department) {
-      // Students can only see subjects in their department and grade level
-      // Filter to ensure teachers are also from the same department
+    if (isStudent) {
+      // Use query param if provided (e.g., during profile setup), otherwise use JWT department
+      const studentDepartment = departmentId || user?.department;
+      if (!studentDepartment) {
+        return [];
+      }
       return this.subjectsService.findByDepartmentAndGradeLevel(
-        user.department,
-        user.gradeLevel,
+        studentDepartment,
+        gradeLevel || user?.gradeLevel,
         true, // filterTeacherDepartment = true for students
       );
     }

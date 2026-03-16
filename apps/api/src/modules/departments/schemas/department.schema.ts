@@ -10,6 +10,7 @@ export class Department {
 
   @Prop()
   description: string;
+
 }
 
 export const DepartmentSchema = SchemaFactory.createForClass(Department);

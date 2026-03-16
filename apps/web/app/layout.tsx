@@ -23,7 +23,7 @@ const geistMono = Geist_Mono({
 async function fetchSeoMetadata() {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-    const res = await fetch(`${apiUrl}/settings/seo`, {
+    const res = await fetch(`${apiUrl}/settings/public`, {
       next: { revalidate: 60 },
     });
     if (!res.ok) return null;

@@ -29,6 +29,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/app/components/ui/command';
+import { useState } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Subject } from '@/types/subject';
@@ -173,12 +174,13 @@ export function SubjectForm({
           control={form.control}
           name="teacher"
           render={({ field }) => {
+            const [teacherOpen, setTeacherOpen] = useState(false);
             const activePersonnel = personnel.filter((p) => p.isActive !== false);
             const selectedTeacher = activePersonnel.find((p) => p._id === field.value);
             return (
               <FormItem className="flex flex-col">
                 <FormLabel>Teacher (Optional)</FormLabel>
-                <Popover>
+                <Popover open={teacherOpen} onOpenChange={setTeacherOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -204,7 +206,7 @@ export function SubjectForm({
                         <CommandGroup>
                           <CommandItem
                             value="none"
-                            onSelect={() => field.onChange('')}
+                            onSelect={() => { field.onChange(''); setTeacherOpen(false); }}
                           >
                             <Check
                               className={cn(
@@ -218,7 +220,7 @@ export function SubjectForm({
                             <CommandItem
                               key={person._id}
                               value={`${person.firstName} ${person.lastName}`}
-                              onSelect={() => field.onChange(person._id)}
+                              onSelect={() => { field.onChange(person._id); setTeacherOpen(false); }}
                             >
                               <Check
                                 className={cn(

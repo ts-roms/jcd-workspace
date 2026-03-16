@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/contexts/AuthContext';
 import { usersApi } from '@/lib/api/users.api';
 import { getDepartments } from '@/lib/api/departments.api';
 import { subjectsApi } from '@/lib/api/subjects.api';
+import { coursesApi } from '@/lib/api/courses.api';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
@@ -22,6 +23,7 @@ import {
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Subject } from '@/types/subject';
+import type { Course } from '@/types/course';
 
 export default function CompleteProfilePage() {
   const { user, refreshUser } = useAuth();
@@ -49,8 +51,15 @@ export default function CompleteProfilePage() {
 
   const activeSubjects = subjects.filter((s) => s.isActive !== false);
 
+  const { data: courses = [], isLoading: coursesLoading } = useQuery<Course[]>({
+    queryKey: ['courses', department],
+    queryFn: () => coursesApi.getByDepartment(department),
+    enabled: !!department,
+  });
+
   const handleDepartmentChange = (val: string) => {
     setDepartment(val);
+    setCourse('');
     setSelectedSubjects([]);
   };
 
@@ -144,12 +153,36 @@ export default function CompleteProfilePage() {
 
             <div className="space-y-2">
               <Label htmlFor="course">Course / Program <span className="text-destructive">*</span></Label>
-              <Input
-                id="course"
-                placeholder="e.g., BS Information Technology"
-                value={course}
-                onChange={(e) => setCourse(e.target.value)}
-              />
+              {!department ? (
+                <p className="text-sm text-muted-foreground px-3 py-2 rounded-md border border-input bg-muted/50">
+                  Select a department first
+                </p>
+              ) : coursesLoading ? (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Loading courses...
+                </div>
+              ) : courses.length === 0 ? (
+                <Input
+                  id="course"
+                  placeholder="e.g., BS Information Technology"
+                  value={course}
+                  onChange={(e) => setCourse(e.target.value)}
+                />
+              ) : (
+                <Select value={course} onValueChange={setCourse}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select your course" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {courses.map((c) => (
+                      <SelectItem key={c._id} value={c.name}>
+                        {c.code} - {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">

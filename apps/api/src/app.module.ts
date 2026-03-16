@@ -21,6 +21,7 @@ import { NonTeachingEvaluationsModule } from './modules/non-teaching-evaluations
 import { EvaluationFormsModule } from './modules/evaluation-forms/evaluation-forms.module';
 import { EvaluationFormResponsesModule } from './modules/evaluation-form-responses/evaluation-form-responses.module';
 import { SubjectsModule } from './modules/subjects/subjects.module';
+import { CoursesModule } from './modules/courses/courses.module';
 import { MlModule } from './modules/ml/ml.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { CustomThrottlerGuard } from './common/guards/throttler.guard';
@@ -77,6 +78,7 @@ import * as Joi from 'joi';
     EvaluationFormsModule,
     EvaluationFormResponsesModule,
     SubjectsModule,
+    CoursesModule,
     MlModule,
     AnalyticsModule,
   ],

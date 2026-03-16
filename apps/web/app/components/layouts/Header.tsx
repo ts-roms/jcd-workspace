@@ -3,7 +3,9 @@
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { useHeader } from '@/lib/contexts/HeaderContext';
 import { useState } from 'react';
+import Link from 'next/link';
 import { ThemeToggle } from '@/app/components/ui/theme-toggle';
+import { User, Settings, LogOut } from 'lucide-react';
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -54,16 +56,37 @@ export default function Header() {
                     className="fixed inset-0 z-10"
                     onClick={() => setShowMenu(false)}
                   ></div>
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-20 border border-gray-200 dark:border-gray-700">
-                    <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                  <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-20 border border-gray-200 dark:border-gray-700">
+                    <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        {user?.fullName}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                         {user?.email}
                       </p>
                     </div>
+                    <Link
+                      href="/dashboard/my-account"
+                      onClick={() => setShowMenu(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      <User className="h-4 w-4" />
+                      My Account
+                    </Link>
+                    <Link
+                      href="/dashboard/settings"
+                      onClick={() => setShowMenu(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      <Settings className="h-4 w-4" />
+                      Settings
+                    </Link>
+                    <div className="border-t border-gray-200 dark:border-gray-700" />
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
+                      <LogOut className="h-4 w-4" />
                       Sign out
                     </button>
                   </div>

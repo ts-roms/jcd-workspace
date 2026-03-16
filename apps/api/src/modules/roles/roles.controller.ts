@@ -139,12 +139,14 @@ export class RolesController {
       throw new NotFoundException('Role not found');
     }
 
-    // Prevent updating system roles
+    // Prevent updating system roles unless user is super admin
     if (role.isSystemRole) {
-      const isSystemAdmin = user.roles.includes('super admin');
-      if (!isSystemAdmin) {
+      const isSuperAdmin = user.roles.some(
+        (r) => ['super', 'superadmin', 'super admin'].includes(r.toLowerCase()),
+      );
+      if (!isSuperAdmin) {
         throw new BadRequestException(
-          'Only system admin can update system roles',
+          'Only super admin can update system roles',
         );
       }
     }
@@ -182,12 +184,14 @@ export class RolesController {
       throw new NotFoundException('Role not found');
     }
 
-    // Prevent deleting system roles
+    // Prevent deleting system roles unless user is super admin
     if (role.isSystemRole) {
-      const isSystemAdmin = user.roles.includes('super admin');
-      if (!isSystemAdmin) {
+      const isSuperAdmin = user.roles.some(
+        (r) => ['super', 'superadmin', 'super admin'].includes(r.toLowerCase()),
+      );
+      if (!isSuperAdmin) {
         throw new BadRequestException(
-          'Only system admin can delete system roles',
+          'Only super admin can delete system roles',
         );
       }
     }

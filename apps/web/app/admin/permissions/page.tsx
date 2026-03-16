@@ -78,13 +78,11 @@ export default function PermissionsPage() {
   const fetchPermissions = async () => {
     try {
       setLoading(true);
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: '10',
-      });
-      const response = await axiosInstance.get(`/permissions?${params}`);
-      setPermissions(response.data.permissions);
-      setTotalPages(response.data.pagination.totalPages);
+      const response = await axiosInstance.get('/permissions');
+      const data = response.data as any;
+      const perms = data?.permissions || data || [];
+      setPermissions(Array.isArray(perms) ? perms : []);
+      setTotalPages(data?.pagination?.totalPages || 1);
     } catch (error) {
       console.error('Error fetching permissions:', error);
       alert.showError('Failed to load permissions. Please try again or contact support.', {

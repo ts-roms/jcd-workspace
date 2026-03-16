@@ -241,11 +241,19 @@ export default function FillEvaluationFormPage() {
                     required
                   >
                     <option value="">Select a subject</option>
-                    {subjects.map((subject) => (
-                      <option key={subject._id} value={subject._id}>
-                        {subject.code} - {subject.name}
-                      </option>
-                    ))}
+                    {subjects.map((subject) => {
+                      const teacher = subject.teacher && typeof subject.teacher === 'object'
+                        ? (subject.teacher as Personnel)
+                        : null;
+                      const teacherLabel = teacher
+                        ? ` (${teacher.firstName} ${teacher.lastName})`
+                        : '';
+                      return (
+                        <option key={subject._id} value={subject._id}>
+                          {subject.code} - {subject.name}{teacherLabel}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 {selectedSubject && evaluator && (

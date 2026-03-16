@@ -86,7 +86,7 @@ export class AuthService {
           ip: deviceInfo.ip,
         },
       );
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('The email or password you entered is incorrect.');
     }
 
     if (!user.comparePassword) {
@@ -97,7 +97,7 @@ export class AuthService {
           context: 'AuthService',
         },
       );
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('The email or password you entered is incorrect.');
     }
 
     const isPasswordValid = await user.comparePassword(credentials.password);
@@ -111,7 +111,7 @@ export class AuthService {
           userId: user._id.toString(),
         },
       );
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('The email or password you entered is incorrect.');
     }
 
     // Update last login
@@ -268,7 +268,12 @@ export class AuthService {
   }
 
   async getUserById(userId: string): Promise<UserDocument | null> {
-    return this.usersService.findById(userId);
+    try {
+      return await this.usersService.findById(userId, true);
+    } catch {
+      // Fallback without subject population
+      return this.usersService.findById(userId, false);
+    }
   }
 
   async logoutAllSessions(userId: string): Promise<void> {

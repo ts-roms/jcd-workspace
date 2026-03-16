@@ -38,6 +38,10 @@ export const PERMISSIONS = {
   SUBJECTS_READ: 'subjects.read',
   SUBJECTS_UPDATE: 'subjects.update',
   SUBJECTS_DELETE: 'subjects.delete',
+
+  // Course Management
+  COURSES_READ: 'courses.read',
+  COURSES_MANAGE: 'courses.manage',
 } as const;
 
 export const PERMISSION_CATEGORIES = {
@@ -49,6 +53,7 @@ export const PERMISSION_CATEGORIES = {
   SETTINGS_MANAGEMENT: 'Settings Management',
   EVALUATION_FORMS: 'Evaluation Forms',
   SUBJECT_MANAGEMENT: 'Subject Management',
+  COURSE_MANAGEMENT: 'Course Management',
 } as const;
 
 export type PermissionKey = keyof typeof PERMISSIONS;

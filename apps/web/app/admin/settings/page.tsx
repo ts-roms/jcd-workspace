@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { settingsApi, UpdateSettingsDto } from '@/lib/api/settings.api';
 import PermissionGate from '@/app/components/guards/PermissionGate';
 import { PERMISSIONS } from '@/config/permissions';
-import { useHeader } from '@/lib/contexts/HeaderContext';
 import { useSettings } from '@/lib/contexts/SettingsContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Input } from '@/app/components/ui/input';
@@ -14,19 +13,28 @@ import { toast } from 'sonner';
 import { useAlert } from '@/lib/contexts/AlertContext';
 
 const SettingsPage = () => {
-  const { setTitle } = useHeader();
   const { settings, loading, refetch } = useSettings();
   const alert = useAlert();
   const [formData, setFormData] = useState<Partial<UpdateSettingsDto>>({});
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    setTitle('Application Settings');
-  }, [setTitle]);
-
-  useEffect(() => {
     if (settings) {
-      setFormData(settings);
+      // Only pick fields that the update DTO accepts
+      const {
+        siteName, siteDescription, metaKeywords, ogImage,
+        maintenanceMode, allowRegistration, emailVerificationRequired,
+        defaultUserRole, sessionTimeout, maxLoginAttempts,
+        passwordMinLength, passwordRequireUppercase, passwordRequireLowercase,
+        passwordRequireNumbers, passwordRequireSpecialChars,
+      } = settings;
+      setFormData({
+        siteName, siteDescription, metaKeywords, ogImage,
+        maintenanceMode, allowRegistration, emailVerificationRequired,
+        defaultUserRole, sessionTimeout, maxLoginAttempts,
+        passwordMinLength, passwordRequireUppercase, passwordRequireLowercase,
+        passwordRequireNumbers, passwordRequireSpecialChars,
+      });
     }
   }, [settings]);
 

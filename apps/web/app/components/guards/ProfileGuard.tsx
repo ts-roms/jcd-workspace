@@ -17,7 +17,9 @@ export default function ProfileGuard({
     if (isLoading || !user) return;
 
     // Only students must complete profile (department, studentId, gradeLevel, adviser)
-    const isStudent = user.roles?.some((r) => String(r).toLowerCase() === 'student');
+    const isStudent = user.roles?.some((r: any) =>
+      (typeof r === 'string' ? r : r?.name)?.toLowerCase() === 'student'
+    );
     if (!isStudent) return;
 
     // Already on the complete-profile page

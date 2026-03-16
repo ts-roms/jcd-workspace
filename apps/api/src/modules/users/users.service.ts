@@ -13,8 +13,8 @@ export class UsersService {
     return this.usersRepository.create(data);
   }
 
-  async findById(id: string): Promise<UserDocument | null> {
-    return this.usersRepository.findById(id);
+  async findById(id: string, populateSubjects = false): Promise<UserDocument | null> {
+    return this.usersRepository.findById(id, populateSubjects);
   }
 
   async findByEmail(email: string): Promise<UserDocument | null> {

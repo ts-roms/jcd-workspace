@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import Link from 'next/link';
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
+import axiosInstance from '@/lib/api/axios';
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -13,6 +14,18 @@ export default function LoginForm() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [allowRegistration, setAllowRegistration] = useState(true);
+
+  useEffect(() => {
+    axiosInstance.get('/settings/public')
+      .then((res) => {
+        const data = res.data as any;
+        if (data?.allowRegistration === false) {
+          setAllowRegistration(false);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,12 +116,14 @@ export default function LoginForm() {
         {isLoading ? 'Signing in...' : 'Sign in'}
       </button>
 
-      <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-        Don&apos;t have an account?{' '}
-        <Link href="/register" className="text-blue-600 hover:text-blue-500 dark:text-blue-400">
-          Sign up
-        </Link>
-      </p>
+      {allowRegistration && (
+        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+          Don&apos;t have an account?{' '}
+          <Link href="/register" className="text-blue-600 hover:text-blue-500 dark:text-blue-400">
+            Sign up
+          </Link>
+        </p>
+      )}
     </form>
   );
 }

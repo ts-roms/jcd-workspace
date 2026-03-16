@@ -17,10 +17,10 @@ import { UpdateSettingsDto } from './dto/update-settings.dto';
 export class SettingsController {
   constructor(private readonly settingsService: SettingsService) {}
 
-  @ApiOperation({ summary: 'Get public SEO metadata' })
-  @ApiResponse({ status: 200, description: 'SEO metadata retrieved successfully' })
-  @Get('seo')
-  async getSeoMetadata() {
+  @ApiOperation({ summary: 'Get public settings (SEO, registration)' })
+  @ApiResponse({ status: 200, description: 'Public settings retrieved successfully' })
+  @Get('public')
+  async getPublicSettings() {
     const settings = await this.settingsService.getSettings();
     return {
       success: true,
@@ -29,6 +29,7 @@ export class SettingsController {
         siteDescription: settings?.siteDescription || '',
         metaKeywords: settings?.metaKeywords || '',
         ogImage: settings?.ogImage || '',
+        allowRegistration: settings?.allowRegistration ?? true,
       },
     };
   }

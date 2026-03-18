@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/contexts/AuthContext';
@@ -59,6 +59,13 @@ export default function CompleteProfilePage() {
   });
 
   const activeSubjects = subjects.filter((s) => s.isActive !== false);
+
+  // Pre-select all subjects matching the student's year level and semester
+  useEffect(() => {
+    if (!isIrregular && activeSubjects.length > 0) {
+      setSelectedSubjects(activeSubjects.map((s) => s._id));
+    }
+  }, [subjects, isIrregular]);
 
   const { data: courses = [], isLoading: coursesLoading } = useQuery<Course[]>({
     queryKey: ['courses', department],
@@ -176,10 +183,10 @@ export default function CompleteProfilePage() {
                   id="course"
                   placeholder="e.g., BS Information Technology"
                   value={course}
-                  onChange={(e) => { setCourse(e.target.value); setSelectedSubjects([]); }}
+                  onChange={(e) => setCourse(e.target.value)}
                 />
               ) : (
-                <Select value={course} onValueChange={(val) => { setCourse(val); setSelectedSubjects([]); }}>
+                <Select value={course} onValueChange={setCourse}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select your course" />
                   </SelectTrigger>
@@ -197,7 +204,7 @@ export default function CompleteProfilePage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="gradeLevel">Year Level <span className="text-destructive">*</span></Label>
-                <Select value={gradeLevel} onValueChange={(val) => { setGradeLevel(val); setSelectedSubjects([]); }}>
+                <Select value={gradeLevel} onValueChange={setGradeLevel}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select year level" />
                   </SelectTrigger>
@@ -211,7 +218,7 @@ export default function CompleteProfilePage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="semester">Semester <span className="text-destructive">*</span></Label>
-                <Select value={semester} onValueChange={(val) => { setSemester(val); setSelectedSubjects([]); }}>
+                <Select value={semester} onValueChange={setSemester}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select semester" />
                   </SelectTrigger>

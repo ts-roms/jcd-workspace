@@ -10,6 +10,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "cleanup": "ts-node -r tsconfig-paths/register src/database/seeds/cleanup.ts",
     "seed": "ts-node -r tsconfig-paths/register src/database/seeds/seed.ts",
     "seed:audit-logs": "ts-node -r tsconfig-paths/register src/database/seeds/audit-logs.seed.ts",
     "seed:evaluation-forms": "ts-node -r tsconfig-paths/register src/database/seeds/evaluation-forms-responses.seed.ts",

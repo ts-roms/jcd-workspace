@@ -389,7 +389,7 @@ export default function UserDashboard() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Year Level <span className="text-destructive">*</span></Label>
-                <Select value={enrollGradeLevel} onValueChange={(val) => { setEnrollGradeLevel(val); setSelectedSubjects([]); }}>
+                <Select value={enrollGradeLevel} onValueChange={setEnrollGradeLevel}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select year level" />
                   </SelectTrigger>
@@ -403,7 +403,7 @@ export default function UserDashboard() {
               </div>
               <div className="space-y-2">
                 <Label>Semester <span className="text-destructive">*</span></Label>
-                <Select value={enrollSemester} onValueChange={(val) => { setEnrollSemester(val); setSelectedSubjects([]); }}>
+                <Select value={enrollSemester} onValueChange={setEnrollSemester}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select semester" />
                   </SelectTrigger>

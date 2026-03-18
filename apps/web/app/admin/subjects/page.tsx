@@ -5,8 +5,16 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { subjectsApi } from '@/lib/api/subjects.api';
 import { Department } from '@/types/department';
 import { Personnel } from '@/types/personnel';
-import { Subject } from '@/types/subject';
+import { Subject, CreateSubjectDto } from '@/types/subject';
 import { Button } from '@/app/components/ui/button';
+import { Input } from '@/app/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/app/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -29,6 +37,15 @@ export default function SubjectsPage() {
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
   const [page, setPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
+
+  // Filter state
+  const ALL_VALUE = '__all__';
+  const [nameSearch, setNameSearch] = useState('');
+  const [debouncedNameSearch, setDebouncedNameSearch] = useState('');
+  const [teacherSearch, setTeacherSearch] = useState('');
+  const [debouncedTeacherSearch, setDebouncedTeacherSearch] = useState('');
+  const [departmentFilter, setDepartmentFilter] = useState(ALL_VALUE);
+  const [yearLevelFilter, setYearLevelFilter] = useState(ALL_VALUE);
 
   // Check if user is Dean (role name is 'dean' from API)
   const isDean = user?.roles?.some((role: unknown) =>
@@ -60,6 +77,69 @@ export default function SubjectsPage() {
     }
   }, [isError, alert]);
 
+  // Debounce search inputs
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedNameSearch(nameSearch);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [nameSearch]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedTeacherSearch(teacherSearch);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [teacherSearch]);
+
+  // Derive unique year levels from subjects for the dropdown
+  const yearLevelOptions = useMemo(() => {
+    const levels = new Set<string>();
+    subjects.forEach((s) => {
+      if (s.gradeLevel) levels.add(s.gradeLevel);
+    });
+    return Array.from(levels).sort();
+  }, [subjects]);
+
+  // Apply filters
+  const filteredSubjects = useMemo(() => {
+    return subjects.filter((subject) => {
+      // Name search
+      if (debouncedNameSearch) {
+        const search = debouncedNameSearch.toLowerCase();
+        const matchesName = subject.name.toLowerCase().includes(search);
+        const matchesCode = subject.code.toLowerCase().includes(search);
+        if (!matchesName && !matchesCode) return false;
+      }
+
+      // Teacher search
+      if (debouncedTeacherSearch) {
+        const search = debouncedTeacherSearch.toLowerCase();
+        const teacherObj = typeof subject.teacher === 'object' ? subject.teacher : null;
+        if (!teacherObj) return false;
+        const fullName = `${teacherObj.firstName} ${teacherObj.lastName}`.toLowerCase();
+        if (!fullName.includes(search)) return false;
+      }
+
+      // Department filter
+      if (departmentFilter !== ALL_VALUE) {
+        const deptId = typeof subject.department === 'string'
+          ? subject.department
+          : subject.department?._id;
+        if (deptId !== departmentFilter) return false;
+      }
+
+      // Year Level filter
+      if (yearLevelFilter !== ALL_VALUE) {
+        if (subject.gradeLevel !== yearLevelFilter) return false;
+      }
+
+      return true;
+    });
+  }, [subjects, debouncedNameSearch, debouncedTeacherSearch, departmentFilter, yearLevelFilter]);
+
   const createMutation = useMutation({
     mutationFn: subjectsApi.create,
     onSuccess: () => {
@@ -67,14 +147,14 @@ export default function SubjectsPage() {
       toast.success('Subject created successfully.');
       setIsDialogOpen(false);
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || 'Failed to create subject.';
+    onError: (error: Error) => {
+      const message = (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Failed to create subject.';
       alert.showError(message, { title: 'Create Failed' });
     },
   });
 
   const updateMutation = useMutation({
-    mutationFn: (variables: { id: string; data: any }) =>
+    mutationFn: (variables: { id: string; data: Partial<CreateSubjectDto> }) =>
       subjectsApi.update(variables.id, variables.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['subjects'] });
@@ -82,8 +162,8 @@ export default function SubjectsPage() {
       setIsDialogOpen(false);
       setSelectedSubject(null);
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || 'Failed to update subject.';
+    onError: (error: Error) => {
+      const message = (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Failed to update subject.';
       alert.showError(message, { title: 'Update Failed' });
     },
   });
@@ -94,8 +174,8 @@ export default function SubjectsPage() {
       queryClient.invalidateQueries({ queryKey: ['subjects'] });
       toast.success('Subject deleted successfully.');
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || 'Failed to delete subject.';
+    onError: (error: Error) => {
+      const message = (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Failed to delete subject.';
       alert.showError(message, { title: 'Delete Failed' });
     },
   });
@@ -120,7 +200,7 @@ export default function SubjectsPage() {
     });
   };
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: CreateSubjectDto) => {
     // Remove empty optional fields so backend validation doesn't reject them
     const cleaned = { ...values };
     if (!cleaned.teacher) delete cleaned.teacher;
@@ -138,10 +218,10 @@ export default function SubjectsPage() {
 
   const paginatedSubjects = useMemo(() => {
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
-    return subjects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [subjects, page]);
+    return filteredSubjects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredSubjects, page]);
 
-  const totalPages = Math.ceil(subjects.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredSubjects.length / ITEMS_PER_PAGE);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -159,6 +239,45 @@ export default function SubjectsPage() {
           )}
         </div>
         <Button onClick={handleCreate}>Add Subject</Button>
+      </div>
+
+      <div className="flex justify-between gap-4 mb-4">
+        <Input
+          placeholder="Search by name or code..."
+          value={nameSearch}
+          onChange={(e) => setNameSearch(e.target.value)}
+        />
+        <Select value={departmentFilter} onValueChange={(v) => { setDepartmentFilter(v); setPage(1); }}>
+          <SelectTrigger>
+            <SelectValue placeholder="All Departments" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ALL_VALUE}>All Departments</SelectItem>
+            {departments.map((dept) => (
+              <SelectItem key={dept._id} value={dept._id}>
+                {dept.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Input
+          placeholder="Search by teacher name..."
+          value={teacherSearch}
+          onChange={(e) => setTeacherSearch(e.target.value)}
+        />
+        <Select value={yearLevelFilter} onValueChange={(v) => { setYearLevelFilter(v); setPage(1); }}>
+          <SelectTrigger>
+            <SelectValue placeholder="All Year Levels" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ALL_VALUE}>All Year Levels</SelectItem>
+            {yearLevelOptions.map((level) => (
+              <SelectItem key={level} value={level}>
+                {level}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

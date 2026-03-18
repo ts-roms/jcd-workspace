@@ -440,30 +440,24 @@ export default function EvaluationFormsPage() {
   const queryClient = useQueryClient();
   const alert = useAlert();
   const canManageForms = usePermission(PERMISSIONS.EVALUATION_FORMS_MANAGE);
-  const [createForm, setCreateForm] = useState<DraftForm>(() =>
-    toDraftForm(emptyForm),
-  );
+  const [createForm, setCreateForm] = useState<DraftForm>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(CREATE_FORM_STORAGE_KEY);
+      if (saved) {
+        try {
+          const hydrated = hydrateDraftForm(JSON.parse(saved));
+          if (hydrated) return hydrated;
+        } catch { /* ignore corrupt draft */ }
+      }
+    }
+    return toDraftForm(emptyForm);
+  });
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
 
   const { data: forms = [], isLoading } = useQuery<EvaluationForm[]>({
     queryKey: ['evaluation-forms'],
     queryFn: getEvaluationForms,
   });
-
-  useEffect(() => {
-    const saved = localStorage.getItem(CREATE_FORM_STORAGE_KEY);
-    if (!saved) return;
-    try {
-      const parsed = JSON.parse(saved);
-      const hydrated = hydrateDraftForm(parsed);
-      if (hydrated) {
-        setCreateForm(hydrated);
-        setLastSavedAt(new Date());
-      }
-    } catch (error) {
-      console.warn('Failed to restore evaluation form draft', error);
-    }
-  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -482,9 +476,9 @@ export default function EvaluationFormsPage() {
       localStorage.removeItem(CREATE_FORM_STORAGE_KEY);
       setLastSavedAt(null);
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       alert.showError(
-        error.response?.data?.message || 'Failed to create form.',
+        (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Failed to create form.',
         { title: 'Create Failed' },
       );
     },
@@ -496,9 +490,9 @@ export default function EvaluationFormsPage() {
       queryClient.invalidateQueries({ queryKey: ['evaluation-forms'] });
       toast.success('Evaluation form deleted.');
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       alert.showError(
-        error.response?.data?.message || 'Failed to delete form.',
+        (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Failed to delete form.',
         { title: 'Delete Failed' },
       );
     },
@@ -537,13 +531,13 @@ export default function EvaluationFormsPage() {
     });
   };
 
-  const handleUseTeachingTemplate = (form: DraftForm) =>
+  const handleUseTeachingTemplate = () =>
     toDraftForm({ ...teachingTemplate, scale: teachingTemplate.scale || defaultScale });
 
-  const handleUseNonTeachingTemplate = (form: DraftForm) =>
+  const handleUseNonTeachingTemplate = () =>
     toDraftForm({ ...nonTeachingTemplate, scale: nonTeachingTemplate.scale || defaultScale });
 
-  const handleUseDeanTemplate = (form: DraftForm) =>
+  const handleUseDeanTemplate = () =>
     toDraftForm({ ...deanTemplate, scale: deanTemplate.scale || defaultScale });
 
   const addSection = (form: DraftForm): DraftForm => ({
@@ -702,44 +696,43 @@ export default function EvaluationFormsPage() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label>Audience</Label>
-                <Select
-                  value={createForm.audience}
-                  onValueChange={(value) => {
-                    const audience = value as CreateEvaluationFormDto['audience'];
-                    const templateMap: Record<string, CreateEvaluationFormDto> = {
-                      teaching: teachingTemplate,
-                      'non-teaching': nonTeachingTemplate,
-                      dean: deanTemplate,
-                    };
-                    const template = templateMap[audience] || teachingTemplate;
-                    setCreateForm(toDraftForm({
-                      ...template,
-                      name: createForm.name || template.name,
-                      description: template.description,
-                      scale: template.scale || defaultScale,
-                      evaluatorOptions: normalizeEvaluatorOptions(
-                        template.evaluatorOptions,
-                        audience,
-                      ),
-                    }));
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select audience" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="teaching">Teaching personnel</SelectItem>
-                    <SelectItem value="non-teaching">Non-teaching personnel</SelectItem>
-                    <SelectItem value="dean">Dean / Academic Administrator</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <div className="space-y-2">
+                  <Label>Audience</Label>
+                  <Select
+                    value={createForm.audience}
+                    onValueChange={(value) => {
+                      const audience = value as CreateEvaluationFormDto['audience'];
+                      const templateMap: Record<string, CreateEvaluationFormDto> = {
+                        teaching: teachingTemplate,
+                        'non-teaching': nonTeachingTemplate,
+                        dean: deanTemplate,
+                      };
+                      const template = templateMap[audience] || teachingTemplate;
+                      setCreateForm(toDraftForm({
+                        ...template,
+                        name: createForm.name || template.name,
+                        description: template.description,
+                        scale: template.scale || defaultScale,
+                        evaluatorOptions: normalizeEvaluatorOptions(
+                          template.evaluatorOptions,
+                          audience,
+                        ),
+                      }));
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select audience" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="teaching">Teaching personnel</SelectItem>
+                      <SelectItem value="non-teaching">Non-teaching personnel</SelectItem>
+                      <SelectItem value="dean">Dean / Academic Administrator</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              {/* Teaching & Dean: Semester + School Year; Non-teaching: School Year only */}
-              {(createForm.audience === 'teaching' || createForm.audience === 'dean') && (
-                <div className="grid grid-cols-2 gap-4">
+                {createForm.audience !== 'non-teaching' && (
                   <div className="space-y-2">
                     <Label>Semester</Label>
                     <Select
@@ -761,27 +754,12 @@ export default function EvaluationFormsPage() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="create-form-school-year">School Year</Label>
-                    <Input
-                      id="create-form-school-year"
-                      value={createForm.schoolYear || ''}
-                      onChange={(event) =>
-                        setCreateForm((current) => ({
-                          ...current,
-                          schoolYear: event.target.value,
-                        }))
-                      }
-                      placeholder="e.g., 2024-2025"
-                    />
-                  </div>
-                </div>
-              )}
-              {createForm.audience === 'non-teaching' && (
+                )}
+
                 <div className="space-y-2">
-                  <Label htmlFor="create-form-school-year-nt">School Year</Label>
+                  <Label htmlFor="create-form-school-year">School Year</Label>
                   <Input
-                    id="create-form-school-year-nt"
+                    id="create-form-school-year"
                     value={createForm.schoolYear || ''}
                     onChange={(event) =>
                       setCreateForm((current) => ({
@@ -792,21 +770,21 @@ export default function EvaluationFormsPage() {
                     placeholder="e.g., 2024-2025"
                   />
                 </div>
-              )}
 
-              <div className="space-y-2">
-                <Label htmlFor="create-form-end-date">End Date</Label>
-                <Input
-                  id="create-form-end-date"
-                  type="date"
-                  value={createForm.endDate || ''}
-                  onChange={(event) =>
-                    setCreateForm((current) => ({
-                      ...current,
-                      endDate: event.target.value,
-                    }))
-                  }
-                />
+                <div className="space-y-2">
+                  <Label htmlFor="create-form-end-date">End Date</Label>
+                  <Input
+                    id="create-form-end-date"
+                    type="date"
+                    value={createForm.endDate || ''}
+                    onChange={(event) =>
+                      setCreateForm((current) => ({
+                        ...current,
+                        endDate: event.target.value,
+                      }))
+                    }
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -827,7 +805,7 @@ export default function EvaluationFormsPage() {
 
               <div className="space-y-3">
                 <Label>Evaluators</Label>
-                <div className="space-y-2">
+                <div className="grid grid-cols-8 gap-2">
                   {evaluatorOptionsMap[createForm.audience].map((option) => {
                     const checked = (createForm.evaluatorOptions || []).includes(option);
                     return (
@@ -859,31 +837,33 @@ export default function EvaluationFormsPage() {
               </div>
 
               <div className="space-y-3">
-                <Label>Scale</Label>
-                <div className="space-y-2">
-                  {(createForm.scale || []).map((item, idx) => (
-                    <div key={item.value} className="flex gap-2">
-                      <Input
-                        type="number"
-                        value={item.value}
-                        onChange={(event) =>
-                          setCreateForm((current) =>
-                            updateScale(current, idx, 'value', event.target.value),
-                          )
-                        }
-                        className="w-24"
-                      />
-                      <Input
-                        value={item.label}
-                        onChange={(event) =>
-                          setCreateForm((current) =>
-                            updateScale(current, idx, 'label', event.target.value),
-                          )
-                        }
-                        placeholder="Label"
-                      />
-                    </div>
-                  ))}
+                <div className="flex items-center gap-4">
+                  <Label className="shrink-0">Scale</Label>
+                  <div className="grid grid-cols-5 gap-2 flex-1">
+                    {(createForm.scale || []).map((item, idx) => (
+                      <div key={item.value} className="flex gap-2">
+                        <Input
+                          type="number"
+                          value={item.value}
+                          onChange={(event) =>
+                            setCreateForm((current) =>
+                              updateScale(current, idx, 'value', event.target.value),
+                            )
+                          }
+                          className="w-16"
+                        />
+                        <Input
+                          value={item.label}
+                          onChange={(event) =>
+                            setCreateForm((current) =>
+                              updateScale(current, idx, 'label', event.target.value),
+                            )
+                          }
+                          placeholder="Label"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -1076,7 +1056,7 @@ export default function EvaluationFormsPage() {
                   </div>
                 )}
 
-                {createForm.sections.map((section, sectionIndex) => (
+                {createForm.sections.map((section) => (
                   <div key={section.id} className="space-y-2">
                     <p className="font-semibold">{section.title}</p>
                     {section.items.length === 0 ? (

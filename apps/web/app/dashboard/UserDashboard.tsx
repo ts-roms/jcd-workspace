@@ -117,7 +117,15 @@ export default function UserDashboard() {
   });
 
   const handleFillForm = (formId: string) => {
-    const enrolled = (user as any)?.enrolledSubjects ?? [];
+    const form = forms?.find((f) => f._id === formId);
+
+    // Non-teaching evaluations don't require enrolled subjects
+    if (form?.audience !== 'teaching') {
+      router.push(`/dashboard/evaluations/${formId}/fill`);
+      return;
+    }
+
+    const enrolled = user?.enrolledSubjects ?? [];
     const hasEnrolled = Array.isArray(enrolled) && enrolled.length > 0;
 
     if (hasEnrolled) {
@@ -126,14 +134,11 @@ export default function UserDashboard() {
       setPendingFormId(formId);
       setSelectedSubjects([]);
       // Pre-fill from existing user data
-      const deptId = typeof user?.department === 'object'
-        ? (user.department as any)?._id
-        : user?.department || '';
-      setEnrollDepartment(deptId);
+      setEnrollDepartment(user?.department?._id || '');
       setEnrollStudentId(user?.studentId || '');
-      setEnrollCourse((user as any)?.course || '');
+      setEnrollCourse(user?.course || '');
       setEnrollGradeLevel(user?.gradeLevel || '');
-      setEnrollSemester((user as any)?.semester || '1st Sem');
+      setEnrollSemester(user?.semester || '1st Sem');
       setEnrollDialogOpen(true);
     }
   };
@@ -174,7 +179,7 @@ export default function UserDashboard() {
   const isLoading = formsLoading || responsesLoading;
 
   const completedFormIds = new Set(
-    myResponses?.map((r) => typeof r.form === 'object' ? (r.form as any)._id : r.form) ?? []
+    myResponses?.map((r) => typeof r.form === 'object' ? (r.form as { _id: string })._id : r.form) ?? []
   );
 
   const pendingForms = forms?.filter((f) => !completedFormIds.has(f._id)) ?? [];

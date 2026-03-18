@@ -4,18 +4,15 @@ import { useAuth } from '@/lib/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Badge } from '@/app/components/ui/badge';
 import { User, Mail, Building, GraduationCap, BookOpen, Calendar, IdCard } from 'lucide-react';
-import type { Subject } from '@/types/subject';
 import type { Personnel } from '@/types/personnel';
 
 export default function MyAccountPage() {
   const { user } = useAuth();
 
-  const enrolledSubjects = ((user as any)?.enrolledSubjects ?? []) as Subject[];
-  const departmentName = typeof user?.department === 'object'
-    ? (user.department as any)?.name
-    : null;
-  const course = (user as any)?.course;
-  const semester = (user as any)?.semester;
+  const enrolledSubjects = user?.enrolledSubjects ?? [];
+  const departmentName = user?.department?.name ?? null;
+  const course = user?.course;
+  const semester = user?.semester;
   const isStudent = user?.roles?.some((r) => r.name?.toLowerCase() === 'student');
 
   return (

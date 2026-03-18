@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAvailableEvaluationForm } from '@/lib/api/evaluation-forms.api';
@@ -15,7 +15,6 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import type { EvaluationResponseItem } from '@/types/evaluation-form-response';
-import type { Subject } from '@/types/subject';
 import type { Personnel } from '@/types/personnel';
 
 export default function FillEvaluationFormPage() {
@@ -29,7 +28,6 @@ export default function FillEvaluationFormPage() {
   const [comment, setComment] = useState('');
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [selectedPersonnel, setSelectedPersonnel] = useState<string>('');
-  const [evaluator, setEvaluator] = useState('');
 
   const { data: form, isLoading, error } = useQuery({
     queryKey: ['availableEvaluationForm', formId],
@@ -40,8 +38,16 @@ export default function FillEvaluationFormPage() {
   const isTeachingForm = form?.audience === 'teaching';
 
   // Use enrolled subjects from user profile for teaching evaluations
-  const enrolledSubjects = ((user as any)?.enrolledSubjects ?? []) as Subject[];
-  const subjects = isTeachingForm ? enrolledSubjects.filter((s) => s && s._id) : [];
+  // Filter out null entries (deleted subjects that MongoDB can't populate)
+  const enrolledSubjects = useMemo(
+    () => user?.enrolledSubjects ?? [],
+    [user?.enrolledSubjects],
+  );
+  const subjects = useMemo(
+    () => isTeachingForm ? enrolledSubjects.filter((s) => s && s._id) : [],
+    [enrolledSubjects, isTeachingForm],
+  );
+  const hasDeletedSubjects = isTeachingForm && enrolledSubjects.length > subjects.length;
 
   // Fetch personnel for non-teaching evaluations
   const { data: personnel = [] } = useQuery<Personnel[]>({
@@ -50,40 +56,26 @@ export default function FillEvaluationFormPage() {
     enabled: !isTeachingForm,
   });
 
-  const nonTeachingPersonnel = personnel.filter(
-    (p) => p.personnelType === 'Non-Teaching' && p.isActive !== false,
+  const nonTeachingPersonnel = useMemo(
+    () => personnel.filter((p) => p.personnelType === 'Non-Teaching' && p.isActive !== false),
+    [personnel],
   );
 
-  // Update evaluator when subject is selected (teaching)
-  useEffect(() => {
-    if (!isTeachingForm) return;
-    if (selectedSubject) {
+  // Derive evaluator name from selected subject/personnel
+  const evaluator = useMemo(() => {
+    if (isTeachingForm) {
+      if (!selectedSubject) return '';
       const subject = subjects.find((s) => s._id === selectedSubject);
-      if (subject && subject.teacher) {
+      if (subject?.teacher && typeof subject.teacher === 'object') {
         const teacher = subject.teacher as Personnel;
-        setEvaluator(`${teacher.firstName} ${teacher.lastName}`);
-      } else {
-        setEvaluator('');
+        return `${teacher.firstName} ${teacher.lastName}`;
       }
-    } else {
-      setEvaluator('');
+      return '';
     }
-  }, [selectedSubject, subjects, isTeachingForm]);
-
-  // Update evaluator when personnel is selected (non-teaching)
-  useEffect(() => {
-    if (isTeachingForm) return;
-    if (selectedPersonnel) {
-      const person = nonTeachingPersonnel.find((p) => p._id === selectedPersonnel);
-      if (person) {
-        setEvaluator(`${person.firstName} ${person.lastName}`);
-      } else {
-        setEvaluator('');
-      }
-    } else {
-      setEvaluator('');
-    }
-  }, [selectedPersonnel, nonTeachingPersonnel, isTeachingForm]);
+    if (!selectedPersonnel) return '';
+    const person = nonTeachingPersonnel.find((p) => p._id === selectedPersonnel);
+    return person ? `${person.firstName} ${person.lastName}` : '';
+  }, [isTeachingForm, selectedSubject, subjects, selectedPersonnel, nonTeachingPersonnel]);
 
   const submitMutation = useMutation({
     mutationFn: submitEvaluationFormResponse,
@@ -244,27 +236,38 @@ export default function FillEvaluationFormPage() {
                   <label className="text-sm font-medium mb-1.5 block">
                     Subject <span className="text-destructive">*</span>
                   </label>
-                  <select
-                    value={selectedSubject}
-                    onChange={(e) => setSelectedSubject(e.target.value)}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    required
-                  >
-                    <option value="">Select a subject</option>
-                    {subjects.map((subject) => {
-                      const teacher = subject.teacher && typeof subject.teacher === 'object'
-                        ? (subject.teacher as Personnel)
-                        : null;
-                      const teacherLabel = teacher
-                        ? ` (${teacher.firstName} ${teacher.lastName})`
-                        : '';
-                      return (
-                        <option key={subject._id} value={subject._id}>
-                          {subject.code} - {subject.name}{teacherLabel}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  {subjects.length === 0 ? (
+                    <p className="text-sm text-muted-foreground px-3 py-2 rounded-md border border-input bg-muted/50">
+                      No enrolled subjects available. Please update your profile to enroll in subjects.
+                    </p>
+                  ) : (
+                    <select
+                      value={selectedSubject}
+                      onChange={(e) => setSelectedSubject(e.target.value)}
+                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      required
+                    >
+                      <option value="">Select a subject</option>
+                      {subjects.map((subject) => {
+                        const teacher = subject.teacher && typeof subject.teacher === 'object'
+                          ? (subject.teacher as Personnel)
+                          : null;
+                        const teacherLabel = teacher
+                          ? ` (${teacher.firstName} ${teacher.lastName})`
+                          : '';
+                        return (
+                          <option key={subject._id} value={subject._id}>
+                            {subject.code} - {subject.name}{teacherLabel}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  )}
+                  {hasDeletedSubjects && (
+                    <p className="text-xs text-yellow-600 mt-1">
+                      Some of your enrolled subjects are no longer available and have been removed from the list.
+                    </p>
+                  )}
                 </div>
                 {selectedSubject && evaluator && (
                   <div>

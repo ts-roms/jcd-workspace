@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/contexts/AuthContext';
@@ -23,6 +23,7 @@ import {
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Subject } from '@/types/subject';
+import type { Personnel } from '@/types/personnel';
 import type { Course } from '@/types/course';
 
 export default function CompleteProfilePage() {
@@ -31,9 +32,9 @@ export default function CompleteProfilePage() {
 
   const [department, setDepartment] = useState(user?.department?._id ?? '');
   const [studentId, setStudentId] = useState(user?.studentId ?? '');
-  const [course, setCourse] = useState((user as any)?.course ?? '');
+  const [course, setCourse] = useState(user?.course ?? '');
   const [gradeLevel, setGradeLevel] = useState(user?.gradeLevel ?? '');
-  const [semester, setSemester] = useState((user as any)?.semester ?? '1st Sem');
+  const [semester, setSemester] = useState(user?.semester ?? '1st Sem');
   const [isIrregular, setIsIrregular] = useState(false);
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,9 +62,16 @@ export default function CompleteProfilePage() {
   const activeSubjects = subjects.filter((s) => s.isActive !== false);
 
   // Pre-select all subjects matching the student's year level and semester
+  const prevSubjectsRef = useRef(subjects);
   useEffect(() => {
-    if (!isIrregular && activeSubjects.length > 0) {
-      setSelectedSubjects(activeSubjects.map((s) => s._id));
+    if (subjects !== prevSubjectsRef.current) {
+      prevSubjectsRef.current = subjects;
+      const active = subjects.filter((s) => s.isActive !== false);
+      if (!isIrregular && active.length > 0) {
+        setSelectedSubjects(active.map((s) => s._id));
+      } else if (!isIrregular) {
+        setSelectedSubjects([]);
+      }
     }
   }, [subjects, isIrregular]);
 
@@ -258,7 +266,7 @@ export default function CompleteProfilePage() {
                   <div className="max-h-60 overflow-y-auto rounded-md border border-input p-3 space-y-2">
                     {activeSubjects.map((subject) => {
                       const teacherName = subject.teacher && typeof subject.teacher === 'object'
-                        ? `${(subject.teacher as any).firstName} ${(subject.teacher as any).lastName}`
+                        ? `${(subject.teacher as Personnel).firstName} ${(subject.teacher as Personnel).lastName}`
                         : null;
                       return (
                         <label

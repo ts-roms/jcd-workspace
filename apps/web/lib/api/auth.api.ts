@@ -25,7 +25,10 @@ export interface User {
   department?: { _id: string; name: string };
   studentId?: string;
   gradeLevel?: string;
+  semester?: string;
+  course?: string;
   adviser?: string;
+  enrolledSubjects?: Array<{ _id: string; name: string; code: string; teacher?: { _id: string; firstName: string; lastName: string }; department?: { _id: string; name: string } }>;
   createdAt: string;
   updatedAt: string;
   lastLoginAt?: string;

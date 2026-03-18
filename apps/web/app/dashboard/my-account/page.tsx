@@ -131,7 +131,6 @@ export default function MyAccountPage() {
                         </p>
                       )}
                     </div>
-                    <Badge variant="outline">{subject.semester || '—'}</Badge>
                   </div>
                 );
               })}

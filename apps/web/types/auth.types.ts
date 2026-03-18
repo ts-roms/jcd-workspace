@@ -1,5 +1,4 @@
 import { Role } from '@/lib/api/roles.api';
-import type { Subject } from '@/types/subject';
 
 export interface LoginCredentials {
   email: string;
@@ -33,7 +32,13 @@ export interface AuthUser {
   semester?: string;
   course?: string;
   adviser?: string;
-  enrolledSubjects?: Subject[];
+  enrolledSubjects?: {
+    _id: string;
+    name: string;
+    code: string;
+    teacher?: { _id: string; firstName: string; lastName: string };
+    department?: { _id: string; name: string };
+  }[];
   isActive: boolean;
   lastLoginAt?: string;
 }

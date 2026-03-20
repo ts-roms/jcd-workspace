@@ -62,10 +62,11 @@ export default function CompleteProfilePage() {
   const activeSubjects = subjects.filter((s) => s.isActive !== false);
 
   // Pre-select all subjects matching the student's year level and semester
-  const prevSubjectsRef = useRef(subjects);
+  const prevSubjectIdsRef = useRef('');
   useEffect(() => {
-    if (subjects !== prevSubjectsRef.current) {
-      prevSubjectsRef.current = subjects;
+    const subjectIds = subjects.map((s) => s._id).join(',');
+    if (subjectIds !== prevSubjectIdsRef.current) {
+      prevSubjectIdsRef.current = subjectIds;
       const active = subjects.filter((s) => s.isActive !== false);
       if (!isIrregular && active.length > 0) {
         setSelectedSubjects(active.map((s) => s._id));
